@@ -40,6 +40,7 @@ type
     GroupBox4: TGroupBox;
     ImageList1: TImageList;
     Label1: TLabel;
+    lblPocetSouboru: TLabel;
     leVelikostSegmentu: TLabeledEdit;
     memLog: TMemo;
     prbUkazatel: TProgressBar;
@@ -50,8 +51,9 @@ type
     procedure btnSmazLogClick(Sender: TObject);
     procedure btnVideoClick(Sender: TObject);
     procedure FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
+    procedure FileNameEdit1Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure runFFMPEG(exeFile,myParameters:String);
+    procedure runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);
   private
 
   public
@@ -78,68 +80,103 @@ end;
 { TfrmBase }
 
 procedure TfrmBase.FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
+// fired before property DialogFile filled
+// intend as validation of user input but uncount more files could be selected
+begin
+end;
+
+procedure TfrmBase.FileNameEdit1Change(Sender: TObject);
+// only here is possible to use property DialogFile
 var
   jData:TJSONData;
   jObject:TJSONObject;
+  i: Integer;
+  progressMax:Integer;
 begin
-  memLog.Clear;
-  runFFMPEG(ffprobe,'-v quiet, -print_format json, -show_format, -show_streams, '+
-                     AnsiQuotedStr(value,'"'));
-  // capture json ffmpeg output from memLog component
-  jData:=GetJSON(memLog.Text);  // !!! object created it needs to be freed in the end :-)
-  jObject:=TJSONObject(jData);
-  vleVlastnosti.InsertRow('video',
-                          jObject.FindPath('streams[0].codec_name').AsString,
-                          True);
-  vleVlastnosti.InsertRow('audio',
-                          jObject.FindPath('streams[1].codec_name').AsString,
-                          True);
-  prbUkazatel.Max:=round(jObject.FindPath('format.duration').AsFloat);
-  jData.Free;                  // Object cleaned after 5 min debugging :-)
+//  vleVlastnosti.Rows[0].Text:='aaaaa'+LineEnding+'bbbbb';
+//  vleVlastnosti.Keys[2]:='audio 1';
+//  vleVlastnosti.Values['audio 1'] :='value 1';
+  progressMax:=0;
+  vleVlastnosti.Clear;
+  lblPocetSouboru.Caption:='Celkem vybráno souborů: ' + IntToStr(FileNameEdit1.DialogFiles.Count);
+  for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
+    begin
+      memLog.Clear;
+      runFFMPEG(ffprobe,'-v quiet, -print_format json, -show_format, -show_streams, '+
+                         AnsiQuotedStr(FileNameEdit1.DialogFiles[i],'"'),0);
+      // capture json ffmpeg output from memLog component
+      jData:=GetJSON(memLog.Text);  // !!! object created it needs to be freed in the end :-)
+      jObject:=TJSONObject(jData);
+
+      vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
+                              'video: '+jObject.FindPath('streams[0].codec_name').AsString,
+                              True);
+      vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
+                              'audio: '+jObject.FindPath('streams[1].codec_name').AsString,
+                              True);
+      progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
+      jData.Free;                  // Object cleaned after 5 min debugging :-)
+    end;
+   prbUkazatel.Max:=progressMax;
 end;
 
 procedure TfrmBase.btnVideoClick(Sender: TObject);
 var
   pomFile:String;
+  i: Integer;
 begin
-  pomFile:=FileNameEdit1.FileName;
-  // ExtractFileDir(pomFile)          i:\Jirka-video-audiobook čárka
-  // ExtractFileNameOnly(pomFile)     Astrid_Lindgrenová_Děti_z_Bullerbynu
-  // ExtractFileName(pomFile)         Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4
-  // ExtractFileExt(pomFile)          .mp4
-  // ExtractFilePath(pomFile)         i:\Jirka-video-audiobook čárka\
-  runFFMPEG(ffmpeg,'-progress stats.txt, -i, '+AnsiQuotedStr(FileNameEdit1.FileName,'"')+
-                   ' -c copy, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
-                   ', -f segment, -reset_timestamps 1,'+
-                   AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                 '_%03d.mp4','"'));
+  prbUkazatel.Position:=0;
+  for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
+    begin
+      pomFile:=FileNameEdit1.DialogFiles[i];
+      // ExtractFileDir(pomFile)          i:\Jirka-video-audiobook čárka
+      // ExtractFileNameOnly(pomFile)     Astrid_Lindgrenová_Děti_z_Bullerbynu
+      // ExtractFileName(pomFile)         Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4
+      // ExtractFileExt(pomFile)          .mp4
+      // ExtractFilePath(pomFile)         i:\Jirka-video-audiobook čárka\
+      runFFMPEG(ffmpeg,'-progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
+                       ' -c copy, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
+                       ', -f segment, -reset_timestamps 1,'+
+                       AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
+                                     '_%03d.mp4','"'),prbUkazatel.Position);
+    end;
 end;
 
 procedure TfrmBase.btnAudioPuvodniClick(Sender: TObject);
 var
   pomFile: String;
+  i: Integer;
 begin
-  pomFile:=FileNameEdit1.FileName;
-  runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(FileNameEdit1.FileName,'"')+
-                   ' -vn, -c copy, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
-                   ', -f segment, -reset_timestamps 1,'+
-                   AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                 '_%03d.aac','"'));
+  prbUkazatel.Position:=0;
+  for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
+    begin
+      pomFile:=FileNameEdit1.DialogFiles[i];
+      runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
+                       ' -vn, -c copy, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
+                       ', -f segment, -reset_timestamps 1,'+
+                       AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
+                                     '_%03d.aac','"'),prbUkazatel.Position);
+    end;
 end;
 
 procedure TfrmBase.btnAudioMP3Click(Sender: TObject);
 var
   pomFile: String;
+  i: Integer;
 begin
-  pomFile:=FileNameEdit1.FileName;
-  runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(FileNameEdit1.FileName,'"')+
-                   ' -vn, -c mp3, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
-                   ', -f segment, -reset_timestamps 1,'+
-                   AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                 '_%03d.mp3','"'));
+  prbUkazatel.Position:=0;
+  for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
+    begin
+      pomFile:=FileNameEdit1.DialogFiles[i];;
+      runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(FileNameEdit1.FileName,'"')+
+                       ' -vn, -c mp3, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
+                       ', -f segment, -reset_timestamps 1,'+
+                       AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
+                                     '_%03d.mp3','"'),prbUkazatel.Position);
+    end;
 end;
 
-procedure TfrmBase.runFFMPEG(exeFile,myParameters:String);
+procedure TfrmBase.runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);
 var
   AProcess     : TProcess;
   B: array[0..BUF_SIZE] of Char;
@@ -158,7 +195,6 @@ begin
   // run ffmpeg
   AProcess.Execute;
   // create objects needed for progress displaying
-  prbUkazatel.Position:=0;
     // stat.txt is written by ffmpeg process see: -progress stats.txt
   progresFile:=TFileStream.Create('stats.txt',fmCreate or fmShareDenyNone);
     // TStringList needed for simple processing key=value lines in stats.txt
@@ -174,7 +210,7 @@ begin
     progresTStrings.LoadFromStream(progresFile);
     pomS2:=progresTStrings.Values['out_time_ms'];
     if not (poms2 = '') then
-         prbUkazatel.position:=round(StrToFloat(pomS2)/1e6);
+         prbUkazatel.position:=progressBegin+round(StrToFloat(pomS2)/1e6);
     // application needs to be responsive
     Application.ProcessMessages;
   until (N = 0) or (not AProcess.Running);
@@ -195,8 +231,8 @@ begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
   //FileNameEdit1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
-  vleVlastnosti.ColWidths[0]:=100;
-  vleVlastnosti.ColWidths[1]:=473;
+  vleVlastnosti.ColWidths[0]:=473;
+  vleVlastnosti.ColWidths[1]:=100;
 end;
 
 procedure TfrmBase.btnSmazLogClick(Sender: TObject);
