@@ -128,7 +128,8 @@ begin
   prbUkazatel.Position:=0;
   for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
     begin
-      pomFile:=FileNameEdit1.DialogFiles[i];
+      try
+        pomFile:=FileNameEdit1.DialogFiles[i];
       // ExtractFileDir(pomFile)          i:\Jirka-video-audiobook čárka
       // ExtractFileNameOnly(pomFile)     Astrid_Lindgrenová_Děti_z_Bullerbynu
       // ExtractFileName(pomFile)         Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4
@@ -139,6 +140,14 @@ begin
                        ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                      '_%03d.mp4','"'),prbUkazatel.Position);
+      except
+        on E:Exception do
+          begin
+            memLog.Append('Chyba: ' + e.Message);
+            exit;
+          end;
+      end;
+
     end;
 end;
 
@@ -191,7 +200,7 @@ begin
   AProcess.Executable := 'exes\'+exeFile;
   AProcess.Parameters.Delimiter:=',';
   AProcess.Parameters.DelimitedText:=myParameters;
-  AProcess.Options := [poUsePipes,poStderrToOutPut];
+  AProcess.Options := [poUsePipes,poStderrToOutPut,poNoConsole];
   // run ffmpeg
   AProcess.Execute;
   // create objects needed for progress displaying
