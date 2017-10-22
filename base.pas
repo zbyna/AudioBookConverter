@@ -121,6 +121,11 @@ begin
 end;
 
 procedure TfrmBase.btnVideoClick(Sender: TObject);
+// ExtractFileDir(pomFile)          i:\Jirka-video-audiobook čárka
+// ExtractFileNameOnly(pomFile)     Astrid_Lindgrenová_Děti_z_Bullerbynu
+// ExtractFileName(pomFile)         Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4
+// ExtractFileExt(pomFile)          .mp4
+// ExtractFilePath(pomFile)         i:\Jirka-video-audiobook čárka\
 var
   pomFile:String;
   i: Integer;
@@ -130,16 +135,12 @@ begin
     begin
       try
         pomFile:=FileNameEdit1.DialogFiles[i];
-      // ExtractFileDir(pomFile)          i:\Jirka-video-audiobook čárka
-      // ExtractFileNameOnly(pomFile)     Astrid_Lindgrenová_Děti_z_Bullerbynu
-      // ExtractFileName(pomFile)         Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4
-      // ExtractFileExt(pomFile)          .mp4
-      // ExtractFilePath(pomFile)         i:\Jirka-video-audiobook čárka\
-      runFFMPEG(ffmpeg,'-progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
-                       ' -c copy, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
-                       ', -f segment, -reset_timestamps 1,'+
-                       AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                     '_%03d.mp4','"'),prbUkazatel.Position);
+
+        runFFMPEG(ffmpeg,'-progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
+                         ' -c copy, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
+                         ', -f segment, -reset_timestamps 1,'+
+                         AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
+                                       '_%03d.mp4','"'),prbUkazatel.Position);
       except
         on E:Exception do
           begin
@@ -147,8 +148,8 @@ begin
             exit;
           end;
       end;
-
     end;
+  memLog.Append('HOTOVO :-)');
 end;
 
 procedure TfrmBase.btnAudioPuvodniClick(Sender: TObject);
