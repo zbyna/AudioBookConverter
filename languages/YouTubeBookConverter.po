@@ -1,0 +1,59 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: tfrmbase.btnaudiomp3.caption
+msgid "AUDIO MP3"
+msgstr ""
+
+#: tfrmbase.btnaudiopuvodni.caption
+msgid "AUDIO původní"
+msgstr ""
+
+#: tfrmbase.btnexit.caption
+msgid "Ukonči program"
+msgstr ""
+
+#: tfrmbase.btnsmazlog.caption
+msgid "Smaž log"
+msgstr ""
+
+#: tfrmbase.btnvideo.caption
+msgid "VIDEO původni"
+msgstr ""
+
+#: tfrmbase.groupbox1.caption
+msgid "Vstup: "
+msgstr ""
+
+#: tfrmbase.groupbox2.caption
+msgid "Progress: "
+msgstr ""
+
+#: tfrmbase.groupbox3.caption
+msgid "Výstup: "
+msgstr ""
+
+#: tfrmbase.groupbox4.caption
+msgid "Log: "
+msgstr ""
+
+#: tfrmbase.hint
+msgid "Exit"
+msgstr ""
+
+#: tfrmbase.label1.caption
+msgid "Cesta k souborům:"
+msgstr ""
+
+#: tfrmbase.lblpocetsouboru.caption
+msgid "Celkem vybráno souborů: "
+msgstr ""
+
+#: tfrmbase.levelikostsegmentu.editlabel.caption
+msgid "Velikost segmentu v minutách: "
+msgstr ""
+
+#: tfrmbase.levelikostsegmentu.text
+msgid "30"
+msgstr ""
+

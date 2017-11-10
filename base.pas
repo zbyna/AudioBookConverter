@@ -9,7 +9,7 @@ uses
   Classes, SysUtils, FileUtil, RTTICtrls, TATools, Forms, Controls, Graphics,
   Dialogs, ActnList, ComCtrls, StdCtrls, Buttons,
   EditBtn, ExtCtrls,
-  ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils;
+  ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils,localizedforms,DefaultTranslator;
 
 const
   BUF_SIZE = 2048;
@@ -27,7 +27,7 @@ type
 
   { TfrmBase }
 
-  TfrmBase = class(TForm)
+  TfrmBase = class(TLocalizedForm)
     btnVideo: TButton;
     btnAudioPuvodni: TButton;
     btnAudioMP3: TButton;
@@ -57,7 +57,7 @@ type
   private
 
   public
-
+    procedure UpdateTranslation(ALang: String); override;
   end;
 
 var
@@ -229,6 +229,12 @@ begin
   progresTStrings.Free;
   AProcess.Free;
   DeleteFileUTF8('stats.txt');
+end;
+
+procedure TfrmBase.UpdateTranslation(ALang: String);
+begin
+  inherited UpdateTranslation(ALang);
+  lblPocetSouboru.Refresh;
 end;
 
 procedure TfrmBase.btnExitClick(Sender: TObject);

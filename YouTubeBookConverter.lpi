@@ -11,6 +11,10 @@
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
     </General>
+    <i18n>
+      <EnableI18N Value="True"/>
+      <OutDir Value="languages"/>
+    </i18n>
     <BuildModes Count="3">
       <Item1 Name="Default" Default="True"/>
       <Item2 Name="Debug">
@@ -90,6 +94,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+        <CommandLineParams Value="-l EN"/>
       </local>
     </RunParams>
     <RequiredPackages Count="3">

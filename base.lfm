@@ -13,7 +13,6 @@ object frmBase: TfrmBase
   DesignTimePPI = 134
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '1.7'
   Visible = False
   object GroupBox1: TGroupBox
     AnchorSideRight.Control = Owner
@@ -261,8 +260,8 @@ object frmBase: TfrmBase
     AllocBy = 2
     Height = 64
     Width = 64
-    Left = 487
-    Top = 440
+    Left = 372
+    Top = 448
     Bitmap = {
       4C69020000004000000040000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
