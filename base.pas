@@ -213,9 +213,12 @@ begin
   repeat
     // copy ffmpeg process output to memLog component
     N := AProcess.Output.Read(B, BUF_SIZE);
-    SetLength(pomS, N);
-    Move(B, PomS[1], N);
-    memLog.Append(pomS);
+    if N <> 0 then
+         begin
+           SetLength(pomS, N);
+           Move(B, PomS[1], N);
+           memLog.Append(pomS);
+         end;
     // read and "parse" stats.txt
     progresTStrings.LoadFromStream(progresFile);
     pomS2:=progresTStrings.Values['out_time_ms'];
@@ -223,7 +226,7 @@ begin
          prbUkazatel.position:=progressBegin+round(StrToFloat(pomS2)/1e6);
     // application needs to be responsive
     Application.ProcessMessages;
-  until (N = 0) or (not AProcess.Running);
+  until (N = 0) and (not AProcess.Running);
   // clean up objects including stats.txt file
   progresFile.Free;
   progresTStrings.Free;
@@ -247,6 +250,7 @@ begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
   //FileNameEdit1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
+  memLog.MaxLength:=0;
   vleVlastnosti.ColWidths[0]:=473;
   vleVlastnosti.ColWidths[1]:=100;
 end;
