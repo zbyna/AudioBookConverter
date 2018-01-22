@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, RTTICtrls, TATools, Forms, Controls, Graphics,
   Dialogs, ActnList, ComCtrls, StdCtrls, Buttons,
-  EditBtn, ExtCtrls,
+  EditBtn, ExtCtrls,windows,
   ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils,localizedforms,DefaultTranslator;
 
 const
@@ -218,6 +218,7 @@ begin
            SetLength(pomS, N);
            Move(B, PomS[1], N);
            memLog.Text:= memLog.Text + pomS;
+           SendMessage(memLog.Handle, WM_VSCROLL, SB_BOTTOM, 0);
          end;
     // read and "parse" stats.txt
     progresTStrings.LoadFromStream(progresFile);
