@@ -217,7 +217,7 @@ begin
          begin
            SetLength(pomS, N);
            Move(B, PomS[1], N);
-           memLog.Append(pomS);
+           memLog.Text:= memLog.Text + pomS;
          end;
     // read and "parse" stats.txt
     progresTStrings.LoadFromStream(progresFile);
