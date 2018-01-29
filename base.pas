@@ -178,7 +178,7 @@ begin
   for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
     begin
       pomFile:=FileNameEdit1.DialogFiles[i];;
-      runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(FileNameEdit1.FileName,'"')+
+      runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                        ' -vn, -c mp3, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
                        ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
