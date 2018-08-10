@@ -108,14 +108,23 @@ begin
       jData:=GetJSON(memLog.Text);  // !!! object created it needs to be freed in the end :-)
       jObject:=TJSONObject(jData);
 
-      vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
-                              'video: '+jObject.FindPath('streams[0].codec_name').AsString,
-                              True);
-      vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
-                              'audio: '+jObject.FindPath('streams[1].codec_name').AsString,
-                              True);
-      progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
-      jData.Free;                  // Object cleaned after 5 min debugging :-)
+      try
+       try
+         progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
+         vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
+                                 jObject.FindPath('streams[0].codec_type').AsString +': ' +
+                                 jObject.FindPath('streams[0].codec_name').AsString,
+                                 True);
+         vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
+                                 jObject.FindPath('streams[1].codec_type').AsString+': '+
+                                 jObject.FindPath('streams[1].codec_name').AsString,
+                                 True);
+       except
+         Continue;
+       end;
+      finally
+        jData.Free;                  // Object cleaned after 5 min debugging :-)
+      end;
     end;
    prbUkazatel.Max:=progressMax;
 end;
@@ -251,6 +260,7 @@ begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
   //FileNameEdit1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
+  frmBase.Caption:=frmBase.Caption + ' v1.3';
   memLog.MaxLength:=0;
   vleVlastnosti.ColWidths[0]:=473;
   vleVlastnosti.ColWidths[1]:=100;
