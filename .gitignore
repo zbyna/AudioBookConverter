@@ -1,3 +1,6 @@
+# debug file Lazarus
+*.dbg
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

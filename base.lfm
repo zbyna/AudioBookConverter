@@ -13,7 +13,6 @@ object frmBase: TfrmBase
   DesignTimePPI = 134
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '1.7'
   Visible = False
   object GroupBox1: TGroupBox
     AnchorSideRight.Control = Owner
