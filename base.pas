@@ -9,7 +9,9 @@ uses
   Classes, SysUtils, FileUtil, RTTICtrls, TATools, Forms, Controls, Graphics,
   Dialogs, ActnList, ComCtrls, StdCtrls, Buttons,
   EditBtn, ExtCtrls,windows,
-  ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils,localizedforms,DefaultTranslator;
+  ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils,localizedforms,DefaultTranslator,
+  strutils;
+
 
 const
   BUF_SIZE = 2048;
@@ -25,6 +27,7 @@ type
 
   end;
 
+
   { TfrmBase }
 
   TfrmBase = class(TLocalizedForm)
@@ -33,6 +36,7 @@ type
     btnAudioMP3: TButton;
     btnSmazLog: TButton;
     btnExit: TButton;
+    chcbPlaylist: TCheckBox;
     FileNameEdit1: TFileNameEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
@@ -40,10 +44,12 @@ type
     GroupBox4: TGroupBox;
     ImageList1: TImageList;
     Label1: TLabel;
+    lblPocetSouboruCislo: TLabel;
     lblPocetSouboru: TLabel;
     leVelikostSegmentu: TLabeledEdit;
     memLog: TMemo;
     prbUkazatel: TProgressBar;
+    radGrSegment: TRadioGroup;
     vleVlastnosti: TValueListEditor;
     procedure btnAudioMP3Click(Sender: TObject);
     procedure btnAudioPuvodniClick(Sender: TObject);
@@ -53,6 +59,7 @@ type
     procedure FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
     procedure FileNameEdit1Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure leVelikostSegmentuEditingDone(Sender: TObject);
     procedure runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);
   private
 
@@ -60,24 +67,82 @@ type
     procedure UpdateTranslation(ALang: String); override;
   end;
 
+ resourcestring
+  rsVelikost = 'Velikost';
+  rsZaTek = 'Začátek';
+  rsJmNo = 'Jméno';
+  rsKodek = 'Kodek';
+
 var
   frmBase: TfrmBase;
 
+
 implementation
+
+function pomSegment: String;
+begin
+  case frmBase.radGrSegment.ItemIndex of
+           0 : Result := '-segment_time ' ;
+           1 : Result := '-segment_times ';
+          end;
+end;
+
+function pomSegmentList(pomFile:String):String;
+begin
+ // ' , -segment_list out.m3u8'
+  if  not frmBase.chcbPlaylist.Checked then
+      Result := ''
+  else
+      Result:= ' , -segment_list ' + AnsiQuotedStr(ExtractFilePath(pomFile)+
+                                                    ExtractFileNameOnly(pomFile) + '.m3u8','"');
+end;
 
 {$R *.lfm}
 
 { TTLabeledEditHelper }
 
 function TTLabeledEditHelper.toHHMMSS: String;
+var
+  pomI, i: Integer;
+  pomS: String;
 begin
+  Result := '';
   if not(self.Text='') then
-       Result:=TimeToStr(incminute( 0,strtoint(self.Text)));
+     pomI := WordCount(self.Text,[',']);
+     begin
+       if pomI = 0 then
+          // ffmpeg option segment_time X  - cuts file to segments with the same length X
+          Result:=TimeToStr(incminute( 0,strtoint(self.Text)))
+       else
+           begin
+             // ffmpeg option segment_times X,Y,Z  - cuts file in time X, Y, Z  see: time vs times :-)
+             for i:=1 to pomI do
+               begin
+                 pomS := ExtractWord(i,self.Text,[',']);
+                 Result := Result + ',' + TimeToStr(incminute( 0,strtoint(pomS)));
+               end;
+             // must be used double quotes "00:10:00,00:30:00" due to command line parameters separated
+             // already with commas see:
+             // http://www.ffmpeg-archive.org/Alternative-options-for-comma-separated-filters-td4666298.html
+             // and https://stackoverflow.com/questions/5230166/how-can-i-launch-a-folder-whose-name-contains-a-comma-using-processstartinfo-in/5230195#5230195
+             Result:= TrimSet(Result,[',']);
+             Result:= '"' + Result +  '"';
+           end;
   // great document about TDateTime see:
   // https://www.freepascal.org/~michael/articles/datetime/datetime.pdf
+     end;
 end;
 
 { TfrmBase }
+
+procedure TfrmBase.leVelikostSegmentuEditingDone(Sender: TObject);
+begin
+   if (radGrSegment.ItemIndex = 0) and AnsiContainsStr(leVelikostSegmentu.text,',') then
+        begin
+           ShowMessage('Only first value is accepted!!!');
+           leVelikostSegmentu.Text:= ExtractWord(1,leVelikostSegmentu.Text,[',']);
+        end;
+end;
 
 procedure TfrmBase.FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
 // fired before property DialogFile filled
@@ -98,7 +163,7 @@ begin
 //  vleVlastnosti.Values['audio 1'] :='value 1';
   progressMax:=0;
   vleVlastnosti.Clear;
-  lblPocetSouboru.Caption:='Celkem vybráno souborů: ' + IntToStr(FileNameEdit1.DialogFiles.Count);
+  lblPocetSouboruCislo.Caption := IntToStr(FileNameEdit1.DialogFiles.Count);
   for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
     begin
       memLog.Clear;
@@ -143,11 +208,12 @@ begin
   for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
     begin
       try
+       // segment_time vs segment_times see:  leVelikostSegmentu.toHHMMSS
         pomFile:=FileNameEdit1.DialogFiles[i];
-
+        memLog.Append('velikost segmentu: ' + leVelikostSegmentu.toHHMMSS );
         runFFMPEG(ffmpeg,'-progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
-                         ' -c copy, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
-                         ', -f segment, -reset_timestamps 1,'+
+                         ' -c copy, -map 0, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
+                         pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
                          AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                        '_%03d.mp4','"'),prbUkazatel.Position);
       except
@@ -171,8 +237,8 @@ begin
     begin
       pomFile:=FileNameEdit1.DialogFiles[i];
       runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
-                       ' -vn, -c copy, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
-                       ', -f segment, -reset_timestamps 1,'+
+                       ' -vn, -c copy, -map 0, ' + pomSegment +leVelikostSegmentu.toHHMMSS +
+                       pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                      '_%03d.aac','"'),prbUkazatel.Position);
     end;
@@ -188,8 +254,8 @@ begin
     begin
       pomFile:=FileNameEdit1.DialogFiles[i];;
       runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
-                       ' -vn, -c mp3, -map 0, -segment_time '+leVelikostSegmentu.toHHMMSS +
-                       ', -f segment, -reset_timestamps 1,'+
+                       ' -vn, -c mp3, -map 0, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
+                       pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                      '_%03d.mp3','"'),prbUkazatel.Position);
     end;
@@ -260,10 +326,16 @@ begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
   //FileNameEdit1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
-  frmBase.Caption:=frmBase.Caption + ' v1.3';
+  radGrSegment.Items[0] := rsVelikost;
+  radGrSegment.Items[1] := rsZaTek;
+  vleVlastnosti.TitleCaptions[0]:=rsJmNo;
+  vleVlastnosti.TitleCaptions[1]:=rsKodek;
+
+  frmBase.Caption:=frmBase.Caption + ' v1.4';
   memLog.MaxLength:=0;
   vleVlastnosti.ColWidths[0]:=473;
   vleVlastnosti.ColWidths[1]:=100;
+  radGrSegment.ItemIndex:=0;
 end;
 
 procedure TfrmBase.btnSmazLogClick(Sender: TObject);
