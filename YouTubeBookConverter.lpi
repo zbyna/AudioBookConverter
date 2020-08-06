@@ -100,7 +100,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="-l EN"/>
+        <CommandLineParams Value="--lang en"/>
       </local>
     </RunParams>
     <RequiredPackages Count="3">

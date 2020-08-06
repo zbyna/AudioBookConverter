@@ -1,6 +1,22 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: base.rsjmno
+msgid "Jméno"
+msgstr ""
+
+#: base.rskodek
+msgid "Kodek"
+msgstr ""
+
+#: base.rsvelikost
+msgid "Velikost"
+msgstr ""
+
+#: base.rszatek
+msgid "Začátek"
+msgstr ""
+
 #: tfrmbase.btnaudiomp3.caption
 msgid "AUDIO MP3"
 msgstr ""
@@ -19,6 +35,11 @@ msgstr ""
 
 #: tfrmbase.btnvideo.caption
 msgid "VIDEO původni"
+msgstr ""
+
+#: tfrmbase.chcbplaylist.caption
+msgctxt "tfrmbase.chcbplaylist.caption"
+msgid "Generuj  playlist"
 msgstr ""
 
 #: tfrmbase.groupbox1.caption
@@ -46,14 +67,24 @@ msgid "Cesta k souborům:"
 msgstr ""
 
 #: tfrmbase.lblpocetsouboru.caption
+msgctxt "tfrmbase.lblpocetsouboru.caption"
 msgid "Celkem vybráno souborů: "
 msgstr ""
 
+#: tfrmbase.lblpocetsouborucislo.caption
+msgid "0"
+msgstr ""
+
 #: tfrmbase.levelikostsegmentu.editlabel.caption
-msgid "Velikost segmentu v minutách: "
+msgid "minuty:"
 msgstr ""
 
 #: tfrmbase.levelikostsegmentu.text
 msgid "30"
+msgstr ""
+
+#: tfrmbase.radgrsegment.caption
+msgctxt "tfrmbase.radgrsegment.caption"
+msgid "Segment"
 msgstr ""
 

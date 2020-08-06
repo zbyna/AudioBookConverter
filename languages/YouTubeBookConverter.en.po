@@ -9,7 +9,23 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.4\n"
+
+#: base.rsjmno
+msgid "Jméno"
+msgstr "Name"
+
+#: base.rskodek
+msgid "Kodek"
+msgstr "Codec"
+
+#: base.rsvelikost
+msgid "Velikost"
+msgstr "Size"
+
+#: base.rszatek
+msgid "Začátek"
+msgstr "Start"
 
 #: tfrmbase.btnaudiomp3.caption
 msgid "AUDIO MP3"
@@ -30,6 +46,11 @@ msgstr "Clean log"
 #: tfrmbase.btnvideo.caption
 msgid "VIDEO původni"
 msgstr "VIDEO original"
+
+#: tfrmbase.chcbplaylist.caption
+msgctxt "tfrmbase.chcbplaylist.caption"
+msgid "Generuj  playlist"
+msgstr "Generate playlist"
 
 #: tfrmbase.groupbox1.caption
 msgid "Vstup: "
@@ -56,14 +77,24 @@ msgid "Cesta k souborům:"
 msgstr "File path:"
 
 #: tfrmbase.lblpocetsouboru.caption
+msgctxt "tfrmbase.lblpocetsouboru.caption"
 msgid "Celkem vybráno souborů: "
 msgstr "Files selected:"
 
+#: tfrmbase.lblpocetsouborucislo.caption
+msgid "0"
+msgstr ""
+
 #: tfrmbase.levelikostsegmentu.editlabel.caption
-msgid "Velikost segmentu v minutách: "
-msgstr "Segment length (minutes):"
+msgid "minuty:"
+msgstr "minutes:"
 
 #: tfrmbase.levelikostsegmentu.text
 msgid "30"
 msgstr "30"
+
+#: tfrmbase.radgrsegment.caption
+msgctxt "tfrmbase.radgrsegment.caption"
+msgid "Segment"
+msgstr "Segment"
 
