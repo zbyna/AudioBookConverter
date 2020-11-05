@@ -63,4 +63,5 @@ Temporary Items
 lib/
 backup/
 *.local
+MPlayer/
 
