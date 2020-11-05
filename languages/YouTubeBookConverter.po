@@ -29,6 +29,10 @@ msgstr ""
 msgid "Ukonči program"
 msgstr ""
 
+#: tfrmbase.btnplay.caption
+msgid "Přehrávač"
+msgstr ""
+
 #: tfrmbase.btnsmazlog.caption
 msgid "Smaž log"
 msgstr ""
@@ -86,5 +90,45 @@ msgstr ""
 #: tfrmbase.radgrsegment.caption
 msgctxt "tfrmbase.radgrsegment.caption"
 msgid "Segment"
+msgstr ""
+
+#: tfrmplayer.acadd.caption
+msgid "Přidat"
+msgstr ""
+
+#: tfrmplayer.acclearlist.caption
+msgid "Vyčistit seznam"
+msgstr ""
+
+#: tfrmplayer.acdelete.caption
+msgid "Smazat"
+msgstr ""
+
+#: tfrmplayer.acpause.caption
+msgid "Pause"
+msgstr ""
+
+#: tfrmplayer.acplay.caption
+msgid "Přehrát"
+msgstr ""
+
+#: tfrmplayer.acstop.caption
+msgid "Stop"
+msgstr ""
+
+#: tfrmplayer.acupdate.caption
+msgid "Aktualizovat"
+msgstr ""
+
+#: tfrmplayer.btncancell.caption
+msgid "Zrušit"
+msgstr ""
+
+#: tfrmplayer.btnok.caption
+msgid "OK"
+msgstr ""
+
+#: tfrmplayer.lbltime.caption
+msgid "H:MM:SS / H:MM:SS"
 msgstr ""
 
