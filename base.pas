@@ -10,7 +10,7 @@ uses
   Dialogs, ActnList, ComCtrls, StdCtrls, Buttons,
   EditBtn, ExtCtrls,windows,
   ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils,localizedforms,DefaultTranslator,
-  strutils;
+  strutils, playerform;
 
 
 const

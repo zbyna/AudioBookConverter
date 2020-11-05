@@ -1,0 +1,248 @@
+object frmPlayer: TfrmPlayer
+  Left = 0
+  Height = 574
+  Top = 0
+  Width = 554
+  ActiveControl = trbProgress
+  Caption = 'frmPlayer'
+  ClientHeight = 574
+  ClientWidth = 554
+  DesignTimePPI = 101
+  OnCreate = FormCreate
+  Visible = False
+  object MPlayer: TMPlayerControl
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = trbAudio
+    Left = 25
+    Height = 311
+    Top = 25
+    Width = 495
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 25
+    BorderSpacing.Top = 25
+    Loop = 0
+    PopupMenu = pomAkce
+    Volume = 0
+    OnPlaying = MPlayerPlaying
+  end
+  object trbProgress: TTrackBar
+    AnchorSideTop.Control = MPlayer
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = lblTime
+    Left = 25
+    Height = 35
+    Top = 336
+    Width = 382
+    Max = 100
+    OnChange = trbProgressChange
+    Position = 0
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Right = 5
+    OnMouseDown = trbProgressMouseDown
+    OnMouseUp = trbProgressMouseUp
+    TabOrder = 1
+  end
+  object lblTime: TLabel
+    AnchorSideTop.Control = MPlayer
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 412
+    Height = 31
+    Top = 340
+    Width = 117
+    Anchors = [akTop, akRight]
+    AutoSize = False
+    BorderSpacing.Top = 4
+    BorderSpacing.Right = 25
+    Caption = 'H:MM:SS / H:MM:SS'
+    ParentColor = False
+  end
+  object btnPlay: TButton
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 25
+    Height = 43
+    Top = 376
+    Width = 99
+    Action = acPlay
+    BorderSpacing.Top = 5
+    TabOrder = 2
+  end
+  object btnStop: TButton
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 129
+    Height = 43
+    Top = 376
+    Width = 99
+    Action = acStop
+    BorderSpacing.Top = 5
+    TabOrder = 3
+  end
+  object btnPause: TButton
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 233
+    Height = 43
+    Top = 376
+    Width = 99
+    Action = acPause
+    BorderSpacing.Top = 5
+    TabOrder = 4
+  end
+  object btnAdd: TButton
+    AnchorSideTop.Control = btnPlay
+    AnchorSideTop.Side = asrBottom
+    Left = 25
+    Height = 43
+    Top = 440
+    Width = 99
+    Action = acAdd
+    BorderSpacing.Top = 21
+    TabOrder = 5
+  end
+  object btnUpdate: TButton
+    AnchorSideTop.Control = btnStop
+    AnchorSideTop.Side = asrBottom
+    Left = 129
+    Height = 43
+    Top = 440
+    Width = 99
+    Action = acUpdate
+    BorderSpacing.Top = 21
+    TabOrder = 6
+  end
+  object lbTimePoints: TListBox
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 376
+    Height = 173
+    Top = 376
+    Width = 144
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Top = 5
+    BorderSpacing.Bottom = 25
+    ItemHeight = 0
+    MultiSelect = True
+    TabOrder = 7
+  end
+  object btnDelete: TButton
+    AnchorSideTop.Control = btnPause
+    AnchorSideTop.Side = asrBottom
+    Left = 233
+    Height = 43
+    Top = 440
+    Width = 99
+    Action = acDelete
+    BorderSpacing.Top = 21
+    TabOrder = 8
+  end
+  object btnClearList: TButton
+    AnchorSideTop.Control = btnAdd
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 25
+    Height = 44
+    Top = 505
+    Width = 307
+    Action = acClearList
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Top = 22
+    BorderSpacing.Bottom = 25
+    TabOrder = 9
+  end
+  object trbAudio: TTITrackBar
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 520
+    Height = 311
+    Top = 25
+    Width = 34
+    Max = 100
+    OnChange = trbAudioChange
+    Orientation = trVertical
+    Position = 50
+    Reversed = True
+    Anchors = [akTop, akRight, akBottom]
+    TabOrder = 10
+  end
+  object aclAkce: TActionList
+    Left = 346
+    Top = 432
+    object acPlay: TAction
+      Category = 'Akce'
+      Caption = 'Play'
+      DisableIfNoHandler = False
+      OnExecute = acPlayExecute
+    end
+    object acStop: TAction
+      Category = 'Akce'
+      Caption = 'Stop'
+      DisableIfNoHandler = False
+      OnExecute = acStopExecute
+    end
+    object acPause: TAction
+      Category = 'Akce'
+      Caption = 'Pause'
+      DisableIfNoHandler = False
+      OnExecute = acPauseExecute
+    end
+    object acAdd: TAction
+      Category = 'Akce'
+      Caption = 'Add'
+      DisableIfNoHandler = False
+      OnExecute = acAddExecute
+    end
+    object acUpdate: TAction
+      Category = 'Akce'
+      Caption = 'Update'
+      DisableIfNoHandler = False
+      OnExecute = acUpdateExecute
+    end
+    object acDelete: TAction
+      Category = 'Akce'
+      Caption = 'Delete'
+      DisableIfNoHandler = False
+      OnExecute = acDeleteExecute
+    end
+    object acClearList: TAction
+      Category = 'Akce'
+      Caption = 'Clear List'
+      DisableIfNoHandler = False
+      OnExecute = acClearListExecute
+    end
+  end
+  object pomAkce: TPopupMenu
+    Left = 352
+    Top = 493
+    object poiPlay: TMenuItem
+      Action = acPlay
+    end
+    object poiStop: TMenuItem
+      Action = acStop
+    end
+    object poiPause: TMenuItem
+      Action = acPause
+    end
+    object poiSeparator: TMenuItem
+      Caption = '-'
+    end
+    object poiAdd: TMenuItem
+      Action = acAdd
+    end
+    object poiUpdate: TMenuItem
+      Action = acUpdate
+    end
+    object poiDelete: TMenuItem
+      Action = acDelete
+    end
+    object poiClearList: TMenuItem
+      Action = acClearList
+    end
+  end
+end
