@@ -6,13 +6,13 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ComCtrls, StdCtrls, ActnList, Menus, RTTICtrls,
-  MPlayerCtrl;
+  MPlayerCtrl,localizedforms,DefaultTranslator,LazUTF8;
 
 type
 
   { TfrmPlayer }
 
-  TfrmPlayer = class(TForm)
+  TfrmPlayer = class(TLocalizedForm)
     aclAkce: TActionList;
     acPlay: TAction;
     acStop: TAction;
@@ -60,7 +60,7 @@ type
   private
 
   public
-
+     procedure UpdateTranslation(ALang: String); override;
   end;
 
 var
@@ -136,6 +136,11 @@ procedure TfrmPlayer.trbProgressMouseUp(Sender: TObject; Button: TMouseButton; S
 begin
   if btnPause.Caption = 'Pause' then
      MPlayer.Paused:= false;
+end;
+
+procedure TfrmPlayer.UpdateTranslation(ALang: String);
+begin
+  inherited UpdateTranslation(ALang);
 end;
 
 procedure TfrmPlayer.acPlayExecute(Sender: TObject);
