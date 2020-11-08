@@ -28,6 +28,8 @@ type
     btnAdd: TButton;
     btnUpdate: TButton;
     btnDelete: TButton;
+    btnOK: TButton;
+    btnCancell: TButton;
     lblTime: TLabel;
     lbTimePoints: TListBox;
     poiPlay: TMenuItem;
@@ -70,6 +72,8 @@ implementation
 
 {$R *.lfm}
 
+uses
+    base;
 { TfrmPlayer }
 
 var
@@ -83,8 +87,7 @@ begin
   MPlayer.StartParam := '-vo direct3d -nofontconfig';
   {$ENDIF}
   MPlayer.Volume:= 50;
-  MPlayer.Filename := IncludeTrailingBackslash(ExtractFileDir(Application.ExeName)) +
-                      IncludeTrailingBackSlash('video_example') + 'sample-mp4-file.mp4';
+  MPlayer.Filename:= frmBase.FileNameEdit1.DialogFiles[0];
   lbTimePoints.Sorted:= True;
 end;
 
