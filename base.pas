@@ -36,6 +36,7 @@ type
     btnAudioMP3: TButton;
     btnSmazLog: TButton;
     btnExit: TButton;
+    btnPlay: TButton;
     chcbPlaylist: TCheckBox;
     FileNameEdit1: TFileNameEdit;
     GroupBox1: TGroupBox;
@@ -54,6 +55,7 @@ type
     procedure btnAudioMP3Click(Sender: TObject);
     procedure btnAudioPuvodniClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
+    procedure btnPlayClick(Sender: TObject);
     procedure btnSmazLogClick(Sender: TObject);
     procedure btnVideoClick(Sender: TObject);
     procedure FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
@@ -319,6 +321,25 @@ end;
 procedure TfrmBase.btnExitClick(Sender: TObject);
 begin
   frmBase.Close;
+end;
+
+procedure TfrmBase.btnPlayClick(Sender: TObject);
+var
+  modResultFrmPlayer: Integer;
+begin
+  Application.CreateForm(TfrmPlayer, frmPlayer);
+  //frmPlayer := TfrmPlayer.Create(Self);
+  modResultFrmPlayer := frmPlayer.ShowModal;
+  if modResultFrmPlayer = mrOK then
+       begin
+         ShowMessage(format('%s ..... %d',['mrOK',modResultFrmPlayer]));
+       end
+  else
+      begin
+        ShowMessage(format('%s ..... %d',['mrCancel',modResultFrmPlayer]));
+      end;
+  FreeAndNil(frmPlayer);
+
 end;
 
 procedure TfrmBase.FormCreate(Sender: TObject);
