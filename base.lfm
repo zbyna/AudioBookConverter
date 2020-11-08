@@ -1,18 +1,19 @@
 object frmBase: TfrmBase
   Left = 0
-  Height = 814
+  Height = 593
   Hint = 'Exit'
   Top = 0
-  Width = 649
+  Width = 679
   ActiveControl = memLog
   Caption = 'YouTube Audio book Convertor'
-  ClientHeight = 814
-  ClientWidth = 649
+  ClientHeight = 593
+  ClientWidth = 679
   Constraints.MinHeight = 828
-  Constraints.MinWidth = 649
+  Constraints.MinWidth = 665
   DesignTimePPI = 101
   OnCreate = FormCreate
   Position = poDesktopCenter
+  LCLVersion = '1.7'
   Visible = False
   object GroupBox1: TGroupBox
     AnchorSideRight.Control = Owner
@@ -20,12 +21,12 @@ object frmBase: TfrmBase
     Left = 12
     Height = 224
     Top = 20
-    Width = 627
+    Width = 657
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Right = 10
     Caption = 'Vstup: '
     ClientHeight = 204
-    ClientWidth = 623
+    ClientWidth = 653
     ParentFont = False
     TabOrder = 3
     object vleVlastnosti: TValueListEditor
@@ -34,7 +35,7 @@ object frmBase: TfrmBase
       Left = 10
       Height = 88
       Top = 88
-      Width = 603
+      Width = 633
       Anchors = [akTop, akLeft, akRight]
       AutoEdit = False
       BorderSpacing.Right = 10
@@ -105,14 +106,15 @@ object frmBase: TfrmBase
     end
     object leVelikostSegmentu: TLabeledEdit
       AnchorSideLeft.Side = asrBottom
-      AnchorSideRight.Control = GroupBox1
-      AnchorSideRight.Side = asrBottom
-      Left = 140
+      AnchorSideRight.Control = btnPlay
+      Left = 141
       Height = 23
       Top = 20
-      Width = 473
+      Width = 422
       Alignment = taCenter
-      BorderSpacing.Right = 10
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 4
+      BorderSpacing.Right = 5
       EditLabel.AnchorSideTop.Control = leVelikostSegmentu
       EditLabel.AnchorSideTop.Side = asrCenter
       EditLabel.AnchorSideRight.Control = leVelikostSegmentu
@@ -151,6 +153,19 @@ object frmBase: TfrmBase
       Caption = '0'
       ParentColor = False
     end
+    object btnPlay: TButton
+      AnchorSideRight.Control = GroupBox1
+      AnchorSideRight.Side = asrBottom
+      Left = 568
+      Height = 23
+      Top = 20
+      Width = 75
+      Anchors = [akTop, akRight]
+      BorderSpacing.Right = 10
+      Caption = 'Přehrávač'
+      OnClick = btnPlayClick
+      TabOrder = 4
+    end
   end
   object GroupBox3: TGroupBox
     AnchorSideRight.Control = Owner
@@ -158,7 +173,7 @@ object frmBase: TfrmBase
     Left = 12
     Height = 92
     Top = 252
-    Width = 627
+    Width = 657
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Right = 10
     Caption = 'Výstup: '
@@ -185,7 +200,7 @@ object frmBase: TfrmBase
     AnchorSideLeft.Control = btnVideo
     AnchorSideLeft.Side = asrBottom
     AnchorSideRight.Control = btnAudioMP3
-    Left = 239
+    Left = 254
     Height = 56
     Top = 272
     Width = 177
@@ -200,7 +215,7 @@ object frmBase: TfrmBase
     AnchorSideLeft.Side = asrBottom
     AnchorSideRight.Control = GroupBox3
     AnchorSideRight.Side = asrBottom
-    Left = 452
+    Left = 482
     Height = 56
     Top = 272
     Width = 177
@@ -218,12 +233,12 @@ object frmBase: TfrmBase
     Left = 12
     Height = 365
     Top = 428
-    Width = 627
+    Width = 657
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Right = 10
     Caption = 'Log: '
     ClientHeight = 345
-    ClientWidth = 623
+    ClientWidth = 653
     ParentFont = False
     TabOrder = 6
     object btnSmazLog: TButton
@@ -239,7 +254,7 @@ object frmBase: TfrmBase
     object btnExit: TButton
       AnchorSideRight.Control = GroupBox4
       AnchorSideRight.Side = asrBottom
-      Left = 436
+      Left = 466
       Height = 56
       Top = 280
       Width = 177
@@ -259,7 +274,7 @@ object frmBase: TfrmBase
     Left = 24
     Height = 256
     Top = 452
-    Width = 605
+    Width = 635
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Right = 10
     ParentFont = False
@@ -272,7 +287,7 @@ object frmBase: TfrmBase
     Left = 154
     Height = 23
     Top = 96
-    Width = 475
+    Width = 505
     OnAcceptFileName = FileNameEdit1AcceptFileName
     DialogOptions = [ofAllowMultiSelect, ofEnableSizing, ofViewDetail]
     FilterIndex = 0
@@ -292,12 +307,12 @@ object frmBase: TfrmBase
     Left = 12
     Height = 76
     Top = 348
-    Width = 627
+    Width = 657
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Right = 10
     Caption = 'Progress: '
     ClientHeight = 56
-    ClientWidth = 623
+    ClientWidth = 653
     ParentFont = False
     TabOrder = 8
     object prbUkazatel: TProgressBar
@@ -307,7 +322,7 @@ object frmBase: TfrmBase
       Left = 10
       Height = 45
       Top = 0
-      Width = 603
+      Width = 633
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 10
       BorderSpacing.Right = 10
