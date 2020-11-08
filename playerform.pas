@@ -74,10 +74,12 @@ implementation
 
 uses
     base;
+
 { TfrmPlayer }
 
 var
     changingPosition :Boolean = false;
+    buttonPausePressed : Boolean = false;
 
 procedure TfrmPlayer.FormCreate(Sender: TObject);
 begin
@@ -130,14 +132,14 @@ end;
 procedure TfrmPlayer.trbProgressMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 begin
-  if btnPause.Caption = 'Pause' then
+  if not buttonPausePressed then        //  Utf8RPos('Pau',acPause.Caption) > 0
      MPlayer.Paused:= true;
 end;
 
 procedure TfrmPlayer.trbProgressMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
 begin
-  if btnPause.Caption = 'Pause' then
+  if not buttonPausePressed then                         // Utf8RPos('Pau',acPause.Caption) > 0
      MPlayer.Paused:= false;
 end;
 
@@ -157,12 +159,14 @@ begin
   MPlayer.Paused:= not MPlayer.Paused;
   if MPlayer.Paused then
    begin
-      btnPause.Caption:= 'P A U S E D';
+      btnPause.Caption:= 'PAUSED';
+      buttonPausePressed:= True;
       acPlay.Enabled:= not acPlay.Enabled;
    end
   else
    begin
       btnPause.Caption:= 'Pause';
+      buttonPausePressed:= False;
       acPlay.Enabled:= not acPlay.Enabled;
    end;
 end;
