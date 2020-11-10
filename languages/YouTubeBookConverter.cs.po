@@ -93,6 +93,13 @@ msgstr ""
 msgid "minuty:"
 msgstr "minuty: "
 
+#: tfrmbase.levelikostsegmentu.hint
+msgid ""
+"HH:MM:SS\n"
+"MM\n"
+"HH:MM:SS,MM\n"
+msgstr ""
+
 #: tfrmbase.levelikostsegmentu.text
 msgid "30"
 msgstr "30"
