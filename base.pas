@@ -130,8 +130,8 @@ begin
                     end
                  else
                    begin
-                 Result := Result + ',' + TimeToStr(incminute( 0,strtoint(pomS)));
-               end;
+                     Result := Result + ',' + TimeToStr(incminute( 0,strtoint(pomS)));
+                   end;
                end;
              // must be used double quotes "00:10:00,00:30:00" due to command line parameters separated
              // already with commas see:
@@ -204,6 +204,8 @@ begin
       end;
     end;
    prbUkazatel.Max:=progressMax;
+   // enable button for player launching
+   btnPlay.Enabled:=True;
 end;
 
 procedure TfrmBase.btnVideoClick(Sender: TObject);
@@ -337,12 +339,16 @@ procedure TfrmBase.btnPlayClick(Sender: TObject);
 var
   modResultFrmPlayer: Integer;
 begin
-  Application.CreateForm(TfrmPlayer, frmPlayer);
-  //frmPlayer := TfrmPlayer.Create(Self);
+  frmPlayer := TfrmPlayer.Create(Self);
+  // file to play
+  frmPlayer.MPlayer.Filename:= FileNameEdit1.DialogFiles[0];
+  // values will be time points
+  radGrSegment.ItemIndex := 1;
   modResultFrmPlayer := frmPlayer.ShowModal;
   if modResultFrmPlayer = mrOK then
        begin
          ShowMessage(format('%s ..... %d',['mrOK',modResultFrmPlayer]));
+         leVelikostSegmentu.Caption:= frmPlayer.timePointsToString();
        end
   else
       begin
@@ -375,6 +381,7 @@ begin
   vleVlastnosti.ColWidths[0]:=473;
   vleVlastnosti.ColWidths[1]:=100;
   radGrSegment.ItemIndex:=0;
+  btnPlay.Enabled:=False;
 end;
 
 procedure TfrmBase.btnSmazLogClick(Sender: TObject);
