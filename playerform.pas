@@ -59,6 +59,7 @@ type
       Y: Integer);
     procedure trbProgressMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
       Y: Integer);
+    function timePointsToString():String;
   private
 
   public
@@ -72,8 +73,7 @@ implementation
 
 {$R *.lfm}
 
-uses
-    base;
+
 
 { TfrmPlayer }
 
@@ -89,7 +89,6 @@ begin
   MPlayer.StartParam := '-vo direct3d -nofontconfig';
   {$ENDIF}
   MPlayer.Volume:= 50;
-  MPlayer.Filename:= frmBase.FileNameEdit1.DialogFiles[0];
   lbTimePoints.Sorted:= True;
 end;
 
@@ -141,6 +140,12 @@ procedure TfrmPlayer.trbProgressMouseUp(Sender: TObject; Button: TMouseButton; S
 begin
   if not buttonPausePressed then                         // Utf8RPos('Pau',acPause.Caption) > 0
      MPlayer.Paused:= false;
+end;
+
+function TfrmPlayer.timePointsToString: String;
+begin
+  lbTimePoints.Items.Delimiter:=',';
+  Result:= lbTimePoints.Items.DelimitedText;
 end;
 
 procedure TfrmPlayer.UpdateTranslation(ALang: String);
