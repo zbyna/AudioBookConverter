@@ -347,12 +347,12 @@ begin
   modResultFrmPlayer := frmPlayer.ShowModal;
   if modResultFrmPlayer = mrOK then
        begin
-         ShowMessage(format('%s ..... %d',['mrOK',modResultFrmPlayer]));
          leVelikostSegmentu.Caption:= frmPlayer.timePointsToString();
+         memLog.Append('Added time points from player.');
        end
   else
       begin
-        ShowMessage(format('%s ..... %d',['mrCancel',modResultFrmPlayer]));
+         memLog.Append('Time points from player cancelled.');
       end;
   FreeAndNil(frmPlayer);
 
