@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en\n"
-"X-Generator: Poedit 2.4\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: base.rsjmno
 msgid "Jméno"
@@ -33,7 +33,7 @@ msgstr "AUDIO MP3"
 
 #: tfrmbase.btnaudiopuvodni.caption
 msgid "AUDIO původní"
-msgstr "AUDIO originalí"
+msgstr "AUDIO original"
 
 #: tfrmbase.btnexit.caption
 msgid "Ukonči program"
@@ -41,11 +41,11 @@ msgstr "Quit program"
 
 #: tfrmbase.btnplay.caption
 msgid "Přehrávač"
-msgstr ""
+msgstr "Player"
 
 #: tfrmbase.btnsmazlog.caption
 msgid "Smaž log"
-msgstr "Clean log"
+msgstr "Clear log"
 
 #: tfrmbase.btnvideo.caption
 msgid "VIDEO původni"
@@ -87,11 +87,21 @@ msgstr "Files selected:"
 
 #: tfrmbase.lblpocetsouborucislo.caption
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: tfrmbase.levelikostsegmentu.editlabel.caption
 msgid "minuty:"
 msgstr "minutes:"
+
+#: tfrmbase.levelikostsegmentu.hint
+msgid ""
+"HH:MM:SS\n"
+"MM\n"
+"HH:MM:SS,MM\n"
+msgstr ""
+"HH:MM:SS\n"
+"MM\n"
+"HH:MM:SS,MM\n"
 
 #: tfrmbase.levelikostsegmentu.text
 msgid "30"
@@ -104,41 +114,41 @@ msgstr "Segment"
 
 #: tfrmplayer.acadd.caption
 msgid "Přidat"
-msgstr ""
+msgstr "Add"
 
 #: tfrmplayer.acclearlist.caption
 msgid "Vyčistit seznam"
-msgstr ""
+msgstr "Clear list"
 
 #: tfrmplayer.acdelete.caption
 msgid "Smazat"
-msgstr ""
+msgstr "Delete"
 
 #: tfrmplayer.acpause.caption
 msgid "Pause"
-msgstr ""
+msgstr "Pauza"
 
 #: tfrmplayer.acplay.caption
 msgid "Přehrát"
-msgstr ""
+msgstr "Play"
 
 #: tfrmplayer.acstop.caption
 msgid "Stop"
-msgstr ""
+msgstr "Stop"
 
 #: tfrmplayer.acupdate.caption
 msgid "Aktualizovat"
-msgstr ""
+msgstr "Update"
 
 #: tfrmplayer.btncancell.caption
 msgid "Zrušit"
-msgstr ""
+msgstr "Cancel"
 
 #: tfrmplayer.btnok.caption
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
-msgstr ""
+msgstr "H:MM:SS / H:MM:SS"
 
