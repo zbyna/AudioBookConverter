@@ -124,7 +124,14 @@ begin
              for i:=1 to pomI do
                begin
                  pomS := ExtractWord(i,self.Text,[',']);
+                 if RPos(':', pomS) > 0 then
+                    begin
+                      Result := Result + ',' + pomS;
+                    end
+                 else
+                   begin
                  Result := Result + ',' + TimeToStr(incminute( 0,strtoint(pomS)));
+               end;
                end;
              // must be used double quotes "00:10:00,00:30:00" due to command line parameters separated
              // already with commas see:
