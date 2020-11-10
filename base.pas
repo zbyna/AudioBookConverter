@@ -10,7 +10,10 @@ uses
   Dialogs, ActnList, ComCtrls, StdCtrls, Buttons,
   EditBtn, ExtCtrls,windows,
   ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils,localizedforms,DefaultTranslator,
-  strutils, playerform;
+  strutils, playerform
+  // FPC 3.0 fileinfo reads exe resources as long as you register the appropriate units
+  , fileinfo
+  , winpeimagereader {need this for reading exe info};
 
 
 const
@@ -343,6 +346,8 @@ begin
 end;
 
 procedure TfrmBase.FormCreate(Sender: TObject);
+var
+  FileVerInfo: TFileVersionInfo;
 begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
@@ -351,8 +356,14 @@ begin
   radGrSegment.Items[1] := rsZaTek;
   vleVlastnosti.TitleCaptions[0]:=rsJmNo;
   vleVlastnosti.TitleCaptions[1]:=rsKodek;
-
-  frmBase.Caption:=frmBase.Caption + ' v1.4';
+  FileVerInfo:=TFileVersionInfo.Create(nil);
+  try
+    FileVerInfo.ReadFileInfo;
+    frmBase.Caption:=frmBase.Caption +
+         format(' %s',[FileVerInfo.VersionStrings.Values['FileVersion'].Substring(0,5)]);
+  finally
+    FileVerInfo.Free;
+  end;
   memLog.MaxLength:=0;
   vleVlastnosti.ColWidths[0]:=473;
   vleVlastnosti.ColWidths[1]:=100;
