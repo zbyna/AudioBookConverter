@@ -108,8 +108,10 @@ object frmBase: TfrmBase
       AnchorSideRight.Control = btnPlay
       Left = 141
       Height = 23
+      Hint = 'HH:MM:SS'#13#10'MM'#13#10'HH:MM:SS,MM'
       Top = 20
       Width = 422
+      HelpType = htKeyword
       Alignment = taCenter
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 4
@@ -127,6 +129,8 @@ object frmBase: TfrmBase
       EditLabel.ParentColor = False
       LabelPosition = lpLeft
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
       Text = '30'
       OnEditingDone = leVelikostSegmentuEditingDone
