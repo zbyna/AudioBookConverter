@@ -39,6 +39,10 @@ msgstr "AUDIO původní"
 msgid "Ukonči program"
 msgstr "Ukonči program"
 
+#: tfrmbase.btnplay.caption
+msgid "Přehrávač"
+msgstr ""
+
 #: tfrmbase.btnsmazlog.caption
 msgid "Smaž log"
 msgstr "Smaž log"
@@ -97,4 +101,44 @@ msgstr "30"
 msgctxt "tfrmbase.radgrsegment.caption"
 msgid "Segment"
 msgstr "Segment"
+
+#: tfrmplayer.acadd.caption
+msgid "Přidat"
+msgstr ""
+
+#: tfrmplayer.acclearlist.caption
+msgid "Vyčistit seznam"
+msgstr ""
+
+#: tfrmplayer.acdelete.caption
+msgid "Smazat"
+msgstr ""
+
+#: tfrmplayer.acpause.caption
+msgid "Pause"
+msgstr ""
+
+#: tfrmplayer.acplay.caption
+msgid "Přehrát"
+msgstr ""
+
+#: tfrmplayer.acstop.caption
+msgid "Stop"
+msgstr ""
+
+#: tfrmplayer.acupdate.caption
+msgid "Aktualizovat"
+msgstr ""
+
+#: tfrmplayer.btncancell.caption
+msgid "Zrušit"
+msgstr ""
+
+#: tfrmplayer.btnok.caption
+msgid "OK"
+msgstr ""
+
+#: tfrmplayer.lbltime.caption
+msgid "H:MM:SS / H:MM:SS"
+msgstr ""
 

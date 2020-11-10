@@ -10,7 +10,10 @@ uses
   Dialogs, ActnList, ComCtrls, StdCtrls, Buttons,
   EditBtn, ExtCtrls,windows,
   ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils,localizedforms,DefaultTranslator,
-  strutils;
+  strutils, playerform
+  // FPC 3.0 fileinfo reads exe resources as long as you register the appropriate units
+  , fileinfo
+  , winpeimagereader {need this for reading exe info};
 
 
 const
@@ -36,6 +39,7 @@ type
     btnAudioMP3: TButton;
     btnSmazLog: TButton;
     btnExit: TButton;
+    btnPlay: TButton;
     chcbPlaylist: TCheckBox;
     FileNameEdit1: TFileNameEdit;
     GroupBox1: TGroupBox;
@@ -54,6 +58,7 @@ type
     procedure btnAudioMP3Click(Sender: TObject);
     procedure btnAudioPuvodniClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
+    procedure btnPlayClick(Sender: TObject);
     procedure btnSmazLogClick(Sender: TObject);
     procedure btnVideoClick(Sender: TObject);
     procedure FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
@@ -119,7 +124,14 @@ begin
              for i:=1 to pomI do
                begin
                  pomS := ExtractWord(i,self.Text,[',']);
-                 Result := Result + ',' + TimeToStr(incminute( 0,strtoint(pomS)));
+                 if RPos(':', pomS) > 0 then
+                    begin
+                      Result := Result + ',' + pomS;
+                    end
+                 else
+                   begin
+                     Result := Result + ',' + TimeToStr(incminute( 0,strtoint(pomS)));
+                   end;
                end;
              // must be used double quotes "00:10:00,00:30:00" due to command line parameters separated
              // already with commas see:
@@ -192,6 +204,8 @@ begin
       end;
     end;
    prbUkazatel.Max:=progressMax;
+   // enable button for player launching
+   btnPlay.Enabled:=True;
 end;
 
 procedure TfrmBase.btnVideoClick(Sender: TObject);
@@ -321,7 +335,32 @@ begin
   frmBase.Close;
 end;
 
+procedure TfrmBase.btnPlayClick(Sender: TObject);
+var
+  modResultFrmPlayer: Integer;
+begin
+  frmPlayer := TfrmPlayer.Create(Self);
+  // file to play
+  frmPlayer.MPlayer.Filename:= FileNameEdit1.DialogFiles[0];
+  // values will be time points
+  radGrSegment.ItemIndex := 1;
+  modResultFrmPlayer := frmPlayer.ShowModal;
+  if modResultFrmPlayer = mrOK then
+       begin
+         ShowMessage(format('%s ..... %d',['mrOK',modResultFrmPlayer]));
+         leVelikostSegmentu.Caption:= frmPlayer.timePointsToString();
+       end
+  else
+      begin
+        ShowMessage(format('%s ..... %d',['mrCancel',modResultFrmPlayer]));
+      end;
+  FreeAndNil(frmPlayer);
+
+end;
+
 procedure TfrmBase.FormCreate(Sender: TObject);
+var
+  FileVerInfo: TFileVersionInfo;
 begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
@@ -330,12 +369,19 @@ begin
   radGrSegment.Items[1] := rsZaTek;
   vleVlastnosti.TitleCaptions[0]:=rsJmNo;
   vleVlastnosti.TitleCaptions[1]:=rsKodek;
-
-  frmBase.Caption:=frmBase.Caption + ' v1.4';
+  FileVerInfo:=TFileVersionInfo.Create(nil);
+  try
+    FileVerInfo.ReadFileInfo;
+    frmBase.Caption:=frmBase.Caption +
+         format(' %s',[FileVerInfo.VersionStrings.Values['FileVersion'].Substring(0,5)]);
+  finally
+    FileVerInfo.Free;
+  end;
   memLog.MaxLength:=0;
   vleVlastnosti.ColWidths[0]:=473;
   vleVlastnosti.ColWidths[1]:=100;
   radGrSegment.ItemIndex:=0;
+  btnPlay.Enabled:=False;
 end;
 
 procedure TfrmBase.btnSmazLogClick(Sender: TObject);
