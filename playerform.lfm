@@ -9,7 +9,6 @@ object frmPlayer: TfrmPlayer
   ClientWidth = 675
   DesignTimePPI = 101
   OnCreate = FormCreate
-  LCLVersion = '1.7'
   Visible = False
   object MPlayer: TMPlayerControl
     AnchorSideLeft.Control = Owner
