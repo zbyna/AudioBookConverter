@@ -64,4 +64,5 @@ lib/
 backup/
 *.local
 MPlayer/
+.vscode/
 
