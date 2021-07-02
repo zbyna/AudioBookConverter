@@ -1,167 +1,146 @@
 msgid ""
-msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
-"X-Generator: Poedit 2.4.2\n"
+msgstr "Content-Type: text/plain; charset=UTF-8"
 
 #: base.rsjmno
 msgid "Jméno"
-msgstr "Name"
+msgstr ""
 
 #: base.rskodek
 msgid "Kodek"
-msgstr "Codec"
+msgstr ""
 
 #: base.rsvelikost
 msgid "Velikost"
-msgstr "Size"
+msgstr ""
 
 #: base.rszatek
 msgid "Začátek"
-msgstr "Start"
+msgstr ""
 
 #: tfrmbase.btnaudiomp3.caption
 msgid "AUDIO MP3"
-msgstr "AUDIO MP3"
+msgstr ""
 
 #: tfrmbase.btnaudiopuvodni.caption
 msgid "AUDIO původní"
-msgstr "AUDIO original"
+msgstr ""
 
 #: tfrmbase.btnexit.caption
 msgid "Ukonči program"
-msgstr "Quit program"
+msgstr ""
 
 #: tfrmbase.btnplay.caption
 msgid "Přehrávač"
-msgstr "Player"
+msgstr ""
 
 #: tfrmbase.btnsmazlog.caption
 msgid "Smaž log"
-msgstr "Clear log"
+msgstr ""
 
 #: tfrmbase.btnvideo.caption
 msgid "VIDEO původni"
-msgstr "VIDEO original"
+msgstr ""
 
 #: tfrmbase.caption
 msgid "YouTube Audio book Convertor"
 msgstr ""
 
 #: tfrmbase.chcbplaylist.caption
-msgctxt "tfrmbase.chcbplaylist.caption"
 msgid "Generuj  playlist"
-msgstr "Generate playlist"
+msgstr ""
 
 #: tfrmbase.chcbwithoutsplit.caption
 msgid "Bez rozdělení"
-msgstr "Without splitting"
+msgstr ""
 
 #: tfrmbase.groupbox1.caption
 msgid "Vstup: "
-msgstr "Input:"
+msgstr ""
 
 #: tfrmbase.groupbox2.caption
 msgid "Progress: "
-msgstr "Progress:"
+msgstr ""
 
 #: tfrmbase.groupbox3.caption
 msgid "Výstup: "
-msgstr "Output:"
+msgstr ""
 
 #: tfrmbase.groupbox4.caption
 msgid "Log: "
-msgstr "Log:"
+msgstr ""
 
 #: tfrmbase.hint
 msgid "Exit"
-msgstr "Exit"
+msgstr ""
 
 #: tfrmbase.label1.caption
 msgid "Cesta k souborům:"
-msgstr "File path:"
+msgstr ""
 
 #: tfrmbase.lblpocetsouboru.caption
-msgctxt "tfrmbase.lblpocetsouboru.caption"
 msgid "Celkem vybráno souborů: "
-msgstr "Files selected:"
+msgstr ""
 
 #: tfrmbase.lblpocetsouborucislo.caption
 msgid "0"
-msgstr "0"
+msgstr ""
 
 #: tfrmbase.levelikostsegmentu.editlabel.caption
 msgid "minuty:"
-msgstr "minutes:"
+msgstr ""
 
 #: tfrmbase.levelikostsegmentu.hint
-#, fuzzy
-#| msgid ""
-#| "HH:MM:SS\n"
-#| "MM\n"
-#| "HH:MM:SS,MM\n"
 msgid ""
 "HH:MM:SS\n"
 "MM\n"
 "HH:MM:SS,MM"
 msgstr ""
-"HH:MM:SS\n"
-"MM\n"
-"HH:MM:SS,MM\n"
 
 #: tfrmbase.levelikostsegmentu.text
 msgid "30"
-msgstr "30"
+msgstr ""
 
 #: tfrmbase.radgrsegment.caption
-msgctxt "tfrmbase.radgrsegment.caption"
 msgid "Segment"
-msgstr "Segment"
+msgstr ""
 
 #: tfrmplayer.acadd.caption
 msgid "Přidat"
-msgstr "Add"
+msgstr ""
 
 #: tfrmplayer.acclearlist.caption
 msgid "Vyčistit seznam"
-msgstr "Clear list"
+msgstr ""
 
 #: tfrmplayer.acdelete.caption
 msgid "Smazat"
-msgstr "Delete"
+msgstr ""
 
 #: tfrmplayer.acpause.caption
 msgid "Pause"
-msgstr "Pauza"
+msgstr ""
 
 #: tfrmplayer.acplay.caption
 msgid "Přehrát"
-msgstr "Play"
+msgstr ""
 
 #: tfrmplayer.acstop.caption
 msgid "Stop"
-msgstr "Stop"
+msgstr ""
 
 #: tfrmplayer.acupdate.caption
 msgid "Aktualizovat"
-msgstr "Update"
+msgstr ""
 
 #: tfrmplayer.btncancell.caption
 msgid "Zrušit"
-msgstr "Cancel"
+msgstr ""
 
 #: tfrmplayer.btnok.caption
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
-msgstr "H:MM:SS / H:MM:SS"
+msgstr ""
 

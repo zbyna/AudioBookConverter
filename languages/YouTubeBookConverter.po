@@ -46,6 +46,10 @@ msgctxt "tfrmbase.chcbplaylist.caption"
 msgid "Generuj  playlist"
 msgstr ""
 
+#: tfrmbase.chcbwithoutsplit.caption
+msgid "Bez rozdělení"
+msgstr ""
+
 #: tfrmbase.groupbox1.caption
 msgid "Vstup: "
 msgstr ""

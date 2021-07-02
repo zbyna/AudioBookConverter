@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs\n"
-"X-Generator: Poedit 2.4\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: base.rsjmno
 msgid "Jméno"
@@ -51,10 +51,18 @@ msgstr "Smaž log"
 msgid "VIDEO původni"
 msgstr "VIDEO původni"
 
+#: tfrmbase.caption
+msgid "YouTube Audio book Convertor"
+msgstr ""
+
 #: tfrmbase.chcbplaylist.caption
 msgctxt "tfrmbase.chcbplaylist.caption"
 msgid "Generuj  playlist"
 msgstr "Generuj playlist"
+
+#: tfrmbase.chcbwithoutsplit.caption
+msgid "Bez rozdělení"
+msgstr "Without splitting"
 
 #: tfrmbase.groupbox1.caption
 msgid "Vstup: "
@@ -97,7 +105,7 @@ msgstr "minuty: "
 msgid ""
 "HH:MM:SS\n"
 "MM\n"
-"HH:MM:SS,MM\n"
+"HH:MM:SS,MM"
 msgstr ""
 
 #: tfrmbase.levelikostsegmentu.text
