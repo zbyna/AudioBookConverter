@@ -41,6 +41,7 @@ type
     btnExit: TButton;
     btnPlay: TButton;
     chcbPlaylist: TCheckBox;
+    chcbWithoutSplit: TCheckBox;
     FileNameEdit1: TFileNameEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
@@ -61,6 +62,7 @@ type
     procedure btnPlayClick(Sender: TObject);
     procedure btnSmazLogClick(Sender: TObject);
     procedure btnVideoClick(Sender: TObject);
+    procedure chcbWithoutSplitChange(Sender: TObject);
     procedure FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
     procedure FileNameEdit1Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -84,7 +86,7 @@ var
 
 implementation
 
-function pomSegment: String;
+function  pomSegment: String;
 begin
   case frmBase.radGrSegment.ItemIndex of
            0 : Result := '-segment_time ' ;
@@ -112,6 +114,7 @@ var
   pomS: String;
 begin
   Result := '';
+  pomI:= 0;
   if not(self.Text='') then
      pomI := WordCount(self.Text,[',']);
      begin
@@ -241,6 +244,18 @@ begin
   memLog.Append('HOTOVO :-)');
 end;
 
+procedure TfrmBase.chcbWithoutSplitChange(Sender: TObject);
+begin
+   radGrSegment.Enabled:= not radGrSegment.Enabled;
+   leVelikostSegmentu.Enabled := not leVelikostSegmentu.Enabled;
+   chcbPlaylist.Enabled :=  not chcbPlaylist.Enabled;
+   // btnPlay can be enabled outside this procedure
+   if (sender as TCheckBox).Checked or (vleVlastnosti.IsEmptyRow(1))  then
+      btnPlay.Enabled:= False
+   else
+       btnPlay.Enabled:= True;
+end;
+
 procedure TfrmBase.btnAudioPuvodniClick(Sender: TObject);
 var
   pomFile: String;
@@ -250,11 +265,22 @@ begin
   for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
     begin
       pomFile:=FileNameEdit1.DialogFiles[i];
-      runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
+      if not chcbWithoutSplit.Checked then
+         begin
+            runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                        ' -vn, -c copy, -map 0, ' + pomSegment +leVelikostSegmentu.toHHMMSS +
                        pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                      '_%03d.aac','"'),prbUkazatel.Position);
+         end
+      else
+          begin
+             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
+                       ' -vn, -c copy, -map 0, '+
+                       AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
+                                     '.aac','"'),prbUkazatel.Position);
+          end;
+
     end;
 end;
 
@@ -266,12 +292,22 @@ begin
   prbUkazatel.Position:=0;
   for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
     begin
-      pomFile:=FileNameEdit1.DialogFiles[i];;
-      runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
-                       ' -vn, -c mp3, -map 0, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
-                       pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
-                       AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                     '_%03d.mp3','"'),prbUkazatel.Position);
+      pomFile:=FileNameEdit1.DialogFiles[i];
+      if not chcbWithoutSplit.Checked then
+         begin
+            runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
+                             ' -vn, -c mp3, -map 0, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
+                             pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
+                             AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
+                                           '_%03d.mp3','"'),prbUkazatel.Position);
+         end
+      else
+          begin
+            runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
+                             ' -vn, -c mp3, -map 0, ' +
+                             AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
+                                           '.mp3','"'),prbUkazatel.Position);
+          end;
     end;
 end;
 
