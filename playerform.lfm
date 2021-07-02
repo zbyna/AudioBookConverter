@@ -7,7 +7,6 @@ object frmPlayer: TfrmPlayer
   Caption = 'frmPlayer'
   ClientHeight = 574
   ClientWidth = 675
-  DesignTimePPI = 101
   OnCreate = FormCreate
   Visible = False
   object MPlayer: TMPlayerControl
@@ -41,6 +40,7 @@ object frmPlayer: TfrmPlayer
     BorderSpacing.Right = 5
     OnMouseDown = trbProgressMouseDown
     OnMouseUp = trbProgressMouseUp
+    ParentFont = False
     TabOrder = 1
   end
   object lblTime: TLabel
@@ -58,6 +58,7 @@ object frmPlayer: TfrmPlayer
     BorderSpacing.Right = 25
     Caption = 'H:MM:SS / H:MM:SS'
     ParentColor = False
+    ParentFont = False
   end
   object btnPlay: TButton
     AnchorSideTop.Control = trbProgress
@@ -68,6 +69,7 @@ object frmPlayer: TfrmPlayer
     Width = 99
     Action = acPlay
     BorderSpacing.Top = 5
+    ParentFont = False
     TabOrder = 2
   end
   object btnStop: TButton
@@ -79,6 +81,7 @@ object frmPlayer: TfrmPlayer
     Width = 99
     Action = acStop
     BorderSpacing.Top = 5
+    ParentFont = False
     TabOrder = 3
   end
   object btnPause: TButton
@@ -90,6 +93,7 @@ object frmPlayer: TfrmPlayer
     Width = 99
     Action = acPause
     BorderSpacing.Top = 5
+    ParentFont = False
     TabOrder = 4
   end
   object btnAdd: TButton
@@ -101,6 +105,7 @@ object frmPlayer: TfrmPlayer
     Width = 99
     Action = acAdd
     BorderSpacing.Top = 21
+    ParentFont = False
     TabOrder = 5
   end
   object btnUpdate: TButton
@@ -112,6 +117,7 @@ object frmPlayer: TfrmPlayer
     Width = 99
     Action = acUpdate
     BorderSpacing.Top = 21
+    ParentFont = False
     TabOrder = 6
   end
   object lbTimePoints: TListBox
@@ -128,6 +134,7 @@ object frmPlayer: TfrmPlayer
     BorderSpacing.Bottom = 25
     ItemHeight = 0
     MultiSelect = True
+    ParentFont = False
     TabOrder = 7
   end
   object btnDelete: TButton
@@ -139,6 +146,7 @@ object frmPlayer: TfrmPlayer
     Width = 99
     Action = acDelete
     BorderSpacing.Top = 21
+    ParentFont = False
     TabOrder = 8
   end
   object btnClearList: TButton
@@ -154,6 +162,7 @@ object frmPlayer: TfrmPlayer
     Anchors = [akTop, akLeft, akBottom]
     BorderSpacing.Top = 22
     BorderSpacing.Bottom = 25
+    ParentFont = False
     TabOrder = 9
   end
   object trbAudio: TTITrackBar
@@ -178,6 +187,7 @@ object frmPlayer: TfrmPlayer
     Width = 99
     Caption = 'OK'
     ModalResult = 1
+    ParentFont = False
     TabOrder = 11
   end
   object btnCancell: TButton
@@ -187,11 +197,12 @@ object frmPlayer: TfrmPlayer
     Width = 99
     Caption = 'Zrušit'
     ModalResult = 2
+    ParentFont = False
     TabOrder = 12
   end
   object aclAkce: TActionList
-    Left = 346
-    Top = 432
+    Left = 352
+    Top = 416
     object acPlay: TAction
       Category = 'Akce'
       Caption = 'Přehrát'
