@@ -1,6 +1,6 @@
-Simple ffmpeg based application for splitting audio files or video files.
-It provides the possibility to add, delete and update time point(s) using the built-in media player.
-Audio extraction or transcoding and playlist generation (m3u8) is possible too.
+Simple ffmpeg based application for transcoding, audio extraction and splitting of media files.
+It provides the possibility to add, delete and update time point(s) where to split using the built-in media player.
+Playlist generation (m3u8) is possible too.
 
 ## Input:
 - one or more audio or video files
@@ -15,4 +15,4 @@ Audio extraction or transcoding and playlist generation (m3u8) is possible too.
 ## Output:
 - media file segments with the needed time length and required format
 
-![](https://i.imgur.com/1s8P0jN.png)
+![](https://i.imgur.com/QbO3Ha6.png)
