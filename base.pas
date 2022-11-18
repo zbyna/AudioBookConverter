@@ -182,7 +182,7 @@ begin
   for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
     begin
       memLog.Clear;
-      runFFMPEG(ffprobe,'-v quiet, -print_format json, -show_format, -show_streams, '+
+      runFFMPEG(ffprobe,'-v quiet, -print_format json, -show_format, -show_streams, -show_chapters '+
                          AnsiQuotedStr(FileNameEdit1.DialogFiles[i],'"'),0);
       // capture json ffmpeg output from memLog component
       jData:=GetJSON(memLog.Text);  // !!! object created it needs to be freed in the end :-)
@@ -296,7 +296,7 @@ begin
       if not chcbWithoutSplit.Checked then
          begin
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
-                             ' -vn, -c mp3, -map 0, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
+                             ' -vn, -c mp3, -map a, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
                              pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
                              AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                            '_%03d.mp3','"'),prbUkazatel.Position);
@@ -304,7 +304,7 @@ begin
       else
           begin
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
-                             ' -vn, -c mp3, -map 0, ' +
+                             ' -vn, -c mp3, -map a, ' +
                              AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                            '.mp3','"'),prbUkazatel.Position);
           end;
