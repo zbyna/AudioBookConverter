@@ -30,6 +30,11 @@ type
 
   end;
 
+  { TTJSONDataHelper }
+
+  TTJSONDataHelper = class helper for TJSONData
+    function FindPathDef(const APath: TJSONStringType; defaultValue:String = '"None"'):TJSONData;
+  end;
 
   { TfrmBase }
 
@@ -106,6 +111,20 @@ end;
 
 {$R *.lfm}
 
+{ TTJSONDataHelper }
+
+function TTJSONDataHelper.FindPathDef(const APath: TJSONStringType;
+                                      defaultValue: String = '"None"' ): TJSONData;
+var
+  pomData: TJSONData;
+begin
+  pomData := self.FindPath(APath);
+  if pomData = Nil then
+      Result := GetJSON(defaultValue)
+  else
+      Result := pomData;
+end;
+
 { TTLabeledEditHelper }
 
 function TTLabeledEditHelper.toHHMMSS: String;
@@ -170,12 +189,14 @@ procedure TfrmBase.FileNameEdit1Change(Sender: TObject);
 var
   jData:TJSONData;
   jObject:TJSONObject;
-  i: Integer;
+  i,j: Integer;
   progressMax:Integer;
+  streamsInf : String;
 begin
 //  vleVlastnosti.Rows[0].Text:='aaaaa'+LineEnding+'bbbbb';
 //  vleVlastnosti.Keys[2]:='audio 1';
 //  vleVlastnosti.Values['audio 1'] :='value 1';
+  FileNameEdit1.Clear;
   progressMax:=0;
   vleVlastnosti.Clear;
   lblPocetSouboruCislo.Caption := IntToStr(FileNameEdit1.DialogFiles.Count);
@@ -188,25 +209,28 @@ begin
       jData:=GetJSON(memLog.Text);  // !!! object created it needs to be freed in the end :-)
       jObject:=TJSONObject(jData);
 
-      try
-       try
-         progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
-         vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
-                                 jObject.FindPath('streams[0].codec_type').AsString +': ' +
-                                 jObject.FindPath('streams[0].codec_name').AsString,
-                                 True);
-         vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
-                                 jObject.FindPath('streams[1].codec_type').AsString+': '+
-                                 jObject.FindPath('streams[1].codec_name').AsString,
-                                 True);
-       except
-         Continue;
-       end;
-      finally
-        jData.Free;                  // Object cleaned after 5 min debugging :-)
+      memLog.Append('Počet položek' +IntToStr(jObject.Count));
+      for j:=0 to jObject.Count-1 do
+      begin
+        memLog.Append(jObject.Items[j].Count.ToString());
       end;
+
+      streamsInf:= '';
+      for j:=0 to jObject.FindPath('streams').Count-1 do
+      begin
+        streamsInf:= streamsInf + (jObject.FindPath('streams').Items[j].FindPathDef('codec_type').AsString +
+                     ':'+ jObject.FindPath('streams').Items[j].FindPathDef('codec_name').AsString + ' ');
+      end;
+
+      progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
+      vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
+                                 streamsInf,True);
+
+      jData.Free;                  // Object cleaned after 5 min debugging :-)
+
     end;
    prbUkazatel.Max:=progressMax;
+   vleVlastnosti.AutoSizeColumns();
    // enable button for player launching
    btnPlay.Enabled:=True;
 end;
