@@ -94,7 +94,7 @@ end;
 
 procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: single);
 begin
-  if (MPlayer.Duration <> 0) then
+  if (MPlayer.Duration > 0) and (APosition > 0) then
       begin
         changingPosition:= true;
         lblTime.Caption :=  FormatDateTime('h:nnn:ss', APosition / (24 * 60 * 60)) + ' / ' +
@@ -103,7 +103,11 @@ begin
         Application.ProcessMessages;
         //ShowMessage(Format('%f',[APosition / MPlayer.Duration]));
         changingPosition:= false;
-      end;
+      end
+                                                else
+      lblTime.Caption := 'timescale not set';
+      //lblTime.Caption := Format('%f',[MPlayer.Duration]) ;
+      //lblTime.Caption :=  FormatDateTime('h:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
 end;
 
 procedure TfrmPlayer.trbAudioChange(Sender: TObject);
