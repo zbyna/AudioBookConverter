@@ -418,6 +418,8 @@ begin
   vleVlastnosti.ColWidths[1]:=100;
   radGrSegment.ItemIndex:=0;
   btnPlay.Enabled:=False;
+//  vleVlastnosti.SelectedColor:= clDefault;
+  vleVlastnosti.FocusColor:= clDefault;
 end;
 
 procedure TfrmBase.btnSmazLogClick(Sender: TObject);
