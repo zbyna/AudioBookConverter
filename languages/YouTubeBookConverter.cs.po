@@ -153,6 +153,10 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
+#: tfrmplayer.caption
+msgid "frmPlayer"
+msgstr ""
+
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
 msgstr ""

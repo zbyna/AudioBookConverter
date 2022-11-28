@@ -376,8 +376,9 @@ var
   modResultFrmPlayer: Integer;
 begin
   frmPlayer := TfrmPlayer.Create(Self);
+  frmPlayer.Caption:= vleVlastnosti.Cells[0,vleVlastnosti.Row];
   // file to play
-  frmPlayer.MPlayer.Filename:= FileNameEdit1.DialogFiles[0];
+  frmPlayer.MPlayer.Filename:= FileNameEdit1.DialogFiles[vleVlastnosti.Row-1];
   // values will be time points
   radGrSegment.ItemIndex := 1;
   modResultFrmPlayer := frmPlayer.ShowModal;

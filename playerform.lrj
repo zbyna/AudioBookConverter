@@ -1,4 +1,5 @@
 {"version":1,"strings":[
+{"hash":41083474,"name":"tfrmplayer.caption","sourcebytes":[102,114,109,80,108,97,121,101,114],"value":"frmPlayer"},
 {"hash":71363779,"name":"tfrmplayer.lbltime.caption","sourcebytes":[72,58,77,77,58,83,83,32,47,32,72,58,77,77,58,83,83],"value":"H:MM:SS / H:MM:SS"},
 {"hash":1339,"name":"tfrmplayer.btnok.caption","sourcebytes":[79,75],"value":"OK"},
 {"hash":27392100,"name":"tfrmplayer.btncancell.caption","sourcebytes":[90,114,117,197,161,105,116],"value":"Zru\u0161it"},
