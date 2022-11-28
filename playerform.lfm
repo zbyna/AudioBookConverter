@@ -1,25 +1,26 @@
 object frmPlayer: TfrmPlayer
   Left = 0
-  Height = 574
+  Height = 616
   Top = 0
-  Width = 675
+  Width = 724
   ActiveControl = trbProgress
   Caption = 'frmPlayer'
-  ClientHeight = 574
-  ClientWidth = 675
+  ClientHeight = 616
+  ClientWidth = 724
+  DesignTimePPI = 103
   OnCreate = FormCreate
-  Visible = False
+  LCLVersion = '2.3.0.0'
   object MPlayer: TMPlayerControl
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = trbAudio
-    Left = 25
-    Height = 311
-    Top = 25
-    Width = 616
+    Left = 27
+    Height = 334
+    Top = 27
+    Width = 661
     Anchors = [akTop, akLeft, akRight, akBottom]
-    BorderSpacing.Left = 25
-    BorderSpacing.Top = 25
+    BorderSpacing.Left = 27
+    BorderSpacing.Top = 27
     Loop = 0
     PopupMenu = pomAkce
     Volume = 0
@@ -29,10 +30,10 @@ object frmPlayer: TfrmPlayer
     AnchorSideTop.Control = MPlayer
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Control = lblTime
-    Left = 25
-    Height = 35
-    Top = 336
-    Width = 503
+    Left = 27
+    Height = 38
+    Top = 361
+    Width = 539
     Max = 100
     OnChange = trbProgressChange
     Position = 0
@@ -48,25 +49,26 @@ object frmPlayer: TfrmPlayer
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 533
-    Height = 31
-    Top = 340
-    Width = 117
+    Left = 571
+    Height = 33
+    Top = 365
+    Width = 126
     Anchors = [akTop, akRight]
     AutoSize = False
     BorderSpacing.Top = 4
-    BorderSpacing.Right = 25
+    BorderSpacing.Right = 27
     Caption = 'H:MM:SS / H:MM:SS'
+    Color = clDefault
     ParentColor = False
     ParentFont = False
   end
   object btnPlay: TButton
     AnchorSideTop.Control = trbProgress
     AnchorSideTop.Side = asrBottom
-    Left = 25
-    Height = 43
-    Top = 376
-    Width = 99
+    Left = 27
+    Height = 46
+    Top = 404
+    Width = 106
     Action = acPlay
     BorderSpacing.Top = 5
     ParentFont = False
@@ -75,10 +77,10 @@ object frmPlayer: TfrmPlayer
   object btnStop: TButton
     AnchorSideTop.Control = trbProgress
     AnchorSideTop.Side = asrBottom
-    Left = 129
-    Height = 43
-    Top = 376
-    Width = 99
+    Left = 138
+    Height = 46
+    Top = 404
+    Width = 106
     Action = acStop
     BorderSpacing.Top = 5
     ParentFont = False
@@ -87,10 +89,10 @@ object frmPlayer: TfrmPlayer
   object btnPause: TButton
     AnchorSideTop.Control = trbProgress
     AnchorSideTop.Side = asrBottom
-    Left = 233
-    Height = 43
-    Top = 376
-    Width = 99
+    Left = 250
+    Height = 46
+    Top = 404
+    Width = 106
     Action = acPause
     BorderSpacing.Top = 5
     ParentFont = False
@@ -99,24 +101,24 @@ object frmPlayer: TfrmPlayer
   object btnAdd: TButton
     AnchorSideTop.Control = btnPlay
     AnchorSideTop.Side = asrBottom
-    Left = 25
-    Height = 43
-    Top = 440
-    Width = 99
+    Left = 27
+    Height = 46
+    Top = 473
+    Width = 106
     Action = acAdd
-    BorderSpacing.Top = 21
+    BorderSpacing.Top = 23
     ParentFont = False
     TabOrder = 5
   end
   object btnUpdate: TButton
     AnchorSideTop.Control = btnStop
     AnchorSideTop.Side = asrBottom
-    Left = 129
-    Height = 43
-    Top = 440
-    Width = 99
+    Left = 138
+    Height = 46
+    Top = 473
+    Width = 106
     Action = acUpdate
-    BorderSpacing.Top = 21
+    BorderSpacing.Top = 23
     ParentFont = False
     TabOrder = 6
   end
@@ -125,13 +127,13 @@ object frmPlayer: TfrmPlayer
     AnchorSideTop.Side = asrBottom
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
-    Left = 364
-    Height = 173
-    Top = 376
-    Width = 144
+    Left = 391
+    Height = 185
+    Top = 404
+    Width = 154
     Anchors = [akTop, akLeft, akBottom]
     BorderSpacing.Top = 5
-    BorderSpacing.Bottom = 25
+    BorderSpacing.Bottom = 27
     ItemHeight = 0
     MultiSelect = True
     ParentFont = False
@@ -140,12 +142,12 @@ object frmPlayer: TfrmPlayer
   object btnDelete: TButton
     AnchorSideTop.Control = btnPause
     AnchorSideTop.Side = asrBottom
-    Left = 233
-    Height = 43
-    Top = 440
-    Width = 99
+    Left = 250
+    Height = 46
+    Top = 473
+    Width = 106
     Action = acDelete
-    BorderSpacing.Top = 21
+    BorderSpacing.Top = 23
     ParentFont = False
     TabOrder = 8
   end
@@ -154,24 +156,24 @@ object frmPlayer: TfrmPlayer
     AnchorSideTop.Side = asrBottom
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
-    Left = 25
-    Height = 44
-    Top = 505
-    Width = 307
+    Left = 27
+    Height = 46
+    Top = 543
+    Width = 329
     Action = acClearList
     Anchors = [akTop, akLeft, akBottom]
-    BorderSpacing.Top = 22
-    BorderSpacing.Bottom = 25
+    BorderSpacing.Top = 24
+    BorderSpacing.Bottom = 27
     ParentFont = False
     TabOrder = 9
   end
   object trbAudio: TTITrackBar
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 641
-    Height = 311
-    Top = 25
-    Width = 34
+    Left = 688
+    Height = 334
+    Top = 27
+    Width = 36
     Max = 100
     OnChange = trbAudioChange
     Orientation = trVertical
@@ -181,28 +183,28 @@ object frmPlayer: TfrmPlayer
     TabOrder = 10
   end
   object btnOK: TButton
-    Left = 542
-    Height = 107
-    Top = 376
-    Width = 99
+    Left = 582
+    Height = 115
+    Top = 403
+    Width = 106
     Caption = 'OK'
     ModalResult = 1
     ParentFont = False
     TabOrder = 11
   end
   object btnCancell: TButton
-    Left = 542
-    Height = 43
-    Top = 505
-    Width = 99
+    Left = 582
+    Height = 46
+    Top = 542
+    Width = 106
     Caption = 'Zrušit'
     ModalResult = 2
     ParentFont = False
     TabOrder = 12
   end
   object aclAkce: TActionList
-    Left = 352
-    Top = 416
+    Left = 378
+    Top = 446
     object acPlay: TAction
       Category = 'Akce'
       Caption = 'Přehrát'
@@ -247,8 +249,8 @@ object frmPlayer: TfrmPlayer
     end
   end
   object pomAkce: TPopupMenu
-    Left = 352
-    Top = 493
+    Left = 378
+    Top = 529
     object poiPlay: TMenuItem
       Action = acPlay
     end
