@@ -5,13 +5,15 @@ object frmBase: TfrmBase
   Top = 0
   Width = 729
   ActiveControl = memLog
-  Caption = 'YouTube Audio book Convertor'
+  Caption = 'Audio Book Converter'
   ClientHeight = 888
   ClientWidth = 729
   Constraints.MinHeight = 888
   Constraints.MinWidth = 713
   DesignTimePPI = 103
+  Font.Height = -12
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   Position = poDesktopCenter
   LCLVersion = '2.3.0.0'
   object GroupBox1: TGroupBox
@@ -214,7 +216,7 @@ object frmBase: TfrmBase
     AnchorSideLeft.Control = btnVideo
     AnchorSideLeft.Side = asrBottom
     AnchorSideRight.Control = btnAudioMP3
-    Left = 280
+    Left = 285
     Height = 60
     Top = 292
     Width = 190
