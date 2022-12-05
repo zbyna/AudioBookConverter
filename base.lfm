@@ -15,7 +15,6 @@ object frmBase: TfrmBase
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poDesktopCenter
-  LCLVersion = '2.3.0.0'
   object GroupBox1: TGroupBox
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
@@ -216,7 +215,7 @@ object frmBase: TfrmBase
     AnchorSideLeft.Control = btnVideo
     AnchorSideLeft.Side = asrBottom
     AnchorSideRight.Control = btnAudioMP3
-    Left = 285
+    Left = 290
     Height = 60
     Top = 292
     Width = 190
