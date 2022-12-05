@@ -13,7 +13,8 @@ uses
   strutils, playerform
   // FPC 3.0 fileinfo reads exe resources as long as you register the appropriate units
   , fileinfo
-  , winpeimagereader {need this for reading exe info};
+  , winpeimagereader {need this for reading exe info}
+  , Generics.Collections;
 
 
 const
@@ -35,6 +36,15 @@ type
   TTJSONDataHelper = class helper for TJSONData
     function FindPathDef(const APath: TJSONStringType; defaultValue:String = '"None"'):TJSONData;
   end;
+
+  { TFileChaptersItem}
+
+  TFileChaptersItem = specialize TObjectDictionary <String, TStringList >;  
+
+  { TFilesChapters}
+
+  TFilesChapters = specialize TObjectList<TFileChaptersItem>;
+
 
   { TfrmBase }
 
@@ -71,11 +81,13 @@ type
     procedure FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
     procedure FileNameEdit1Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure leVelikostSegmentuEditingDone(Sender: TObject);
     procedure runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);
   private
 
   public
+    filesChapters : TFilesChapters;
     procedure UpdateTranslation(ALang: String); override;
   end;
 
@@ -192,6 +204,10 @@ var
   i,j: Integer;
   progressMax:Integer;
   streamsInf : String;
+  internalChapters: TStringList;
+  fileChaptersItem : TFileChaptersItem;
+  userChapters :TStringList;
+  chaptersCount : Word;
 begin
 //  vleVlastnosti.Rows[0].Text:='aaaaa'+LineEnding+'bbbbb';
 //  vleVlastnosti.Keys[2]:='audio 1';
@@ -200,6 +216,7 @@ begin
   progressMax:=0;
   vleVlastnosti.Clear;
   lblPocetSouboruCislo.Caption := IntToStr(FileNameEdit1.DialogFiles.Count);
+  filesChapters.Clear;
   for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
     begin
       memLog.Clear;
@@ -214,6 +231,35 @@ begin
       begin
         memLog.Append(jObject.Items[j].Count.ToString());
       end;
+
+    userChapters := TStringList.Create(True);
+    internalChapters := TStringList.Create(True);
+    chaptersCount := jObject.FindPath('chapters').Count;
+    if  chaptersCount <> 0 then
+      // file has internal chapters
+      begin
+        chaptersCount := jObject.FindPath('chapters').Count;
+        // starting from 1 not 0 b/c starting time of 1st chapter is zero
+        for j:=1 to chaptersCount-1 do
+        begin
+          internalChapters.Add(
+             FormatDateTime('h:nnn:ss',
+                jObject.FindPath('chapters').Items[j].FindPathDef('start_time').AsFloat / (24 * 60 * 60)) )
+        end;
+        internalChapters.Delimiter:= ',';
+        memLog.Append(internalChapters.DelimitedText);
+        leVelikostSegmentu.Caption:= internalChapters.DelimitedText;
+      end;
+      fileChaptersItem := TFileChaptersItem.Create([doOwnsValues]);
+      fileChaptersItem.add('internal',internalChapters);
+      fileChaptersItem.add('user',userChapters);
+      filesChapters.Add(fileChaptersItem);
+      memLog.Append('User chapters count: '+IntToStr(userChapters.Count));
+      memLog.Append('Internal chapters count: '+IntToStr(internalChapters.Count));
+      //internalChapters.Free;  - it is needed later in code :-) and TObjectList manages memory of its items
+      //                       automatically
+
+
 
       streamsInf:= '';
       for j:=0 to jObject.FindPath('streams').Count-1 do
@@ -445,6 +491,12 @@ begin
   btnPlay.Enabled:=False;
 //  vleVlastnosti.SelectedColor:= clDefault;
   vleVlastnosti.FocusColor:= clDefault;
+  filesChapters := TFilesChapters.Create(True);
+end;
+
+procedure TfrmBase.FormDestroy(Sender: TObject);
+begin
+  filesChapters.Free;
 end;
 
 procedure TfrmBase.btnSmazLogClick(Sender: TObject);
