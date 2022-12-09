@@ -29,51 +29,6 @@ object frmBase: TfrmBase
     ClientWidth = 701
     ParentFont = False
     TabOrder = 3
-    object vleVlastnosti: TValueListEditor
-      AnchorSideRight.Control = GroupBox1
-      AnchorSideRight.Side = asrBottom
-      Left = 11
-      Height = 94
-      Top = 94
-      Width = 679
-      Anchors = [akTop, akLeft, akRight]
-      AutoEdit = False
-      BorderSpacing.Right = 11
-      Color = clDefault
-      DefaultColWidth = 54
-      ExtendedSelect = False
-      FixedCols = 0
-      HeaderHotZones = []
-      HeaderPushZones = []
-      ParentFont = False
-      RowCount = 3
-      ScrollBars = ssAutoVertical
-      TabOrder = 0
-      DisplayOptions = [doColumnTitles]
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goColSizing, goRowSelect, goThumbTracking, goSmoothScroll, goRowHighlight]
-      Strings.Strings = (
-        ''
-        ''
-      )
-      TitleCaptions.Strings = (
-        'Jméno'
-        'Kodek'
-      )
-      ColWidths = (
-        338
-        337
-      )
-    end
-    object Label1: TLabel
-      Left = 13
-      Height = 15
-      Top = 69
-      Width = 99
-      Caption = 'Cesta k souborům:'
-      Color = clDefault
-      ParentColor = False
-      ParentFont = False
-    end
     object lblPocetSouboru: TLabel
       Left = 13
       Height = 18
@@ -106,7 +61,7 @@ object frmBase: TfrmBase
         'Začátek'
       )
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 1
     end
     object leVelikostSegmentu: TLabeledEdit
       AnchorSideLeft.Side = asrBottom
@@ -130,20 +85,20 @@ object frmBase: TfrmBase
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 1
+      TabOrder = 0
       Text = '30'
       OnEditingDone = leVelikostSegmentuEditingDone
     end
     object chcbPlaylist: TCheckBox
-      Left = 519
+      Left = 456
       Height = 19
-      Top = 197
+      Top = 196
       Width = 103
       Caption = 'Generuj  playlist'
       Checked = True
       ParentFont = False
       State = cbChecked
-      TabOrder = 3
+      TabOrder = 2
     end
     object lblPocetSouboruCislo: TLabel
       AnchorSideLeft.Control = lblPocetSouboru
@@ -170,16 +125,54 @@ object frmBase: TfrmBase
       Caption = 'Přehrávač'
       OnClick = btnPlayClick
       ParentFont = False
-      TabOrder = 4
+      TabOrder = 3
     end
     object chcbWithoutSplit: TCheckBox
-      Left = 283
+      Left = 272
       Height = 19
-      Top = 197
+      Top = 196
       Width = 88
       Caption = 'Bez rozdělení'
       OnChange = chcbWithoutSplitChange
+      TabOrder = 4
+    end
+    object stgVlastnosti: TStringGrid
+      AnchorSideRight.Control = GroupBox1
+      AnchorSideRight.Side = asrBottom
+      Left = 2
+      Height = 116
+      Top = 64
+      Width = 688
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Right = 11
+      ColCount = 4
+      Columns = <      
+        item
+          Title.Caption = 'Title'
+        end      
+        item
+          Title.Caption = 'Title'
+        end      
+        item
+          Title.Caption = 'Title'
+        end      
+        item
+          Title.Caption = 'Title'
+        end>
+      FixedCols = 0
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goRowHighlight]
+      RowCount = 1
       TabOrder = 5
+    end
+    object SpeedButton1: TSpeedButton
+      Left = 610
+      Height = 34
+      Top = 184
+      Width = 80
+      Images = ImageList1
+      ImageIndex = 0
+      ImageWidth = 32
+      OnClick = SpeedButton1Click
     end
   end
   object GroupBox3: TGroupBox
@@ -187,7 +180,7 @@ object frmBase: TfrmBase
     AnchorSideRight.Side = asrBottom
     Left = 13
     Height = 99
-    Top = 270
+    Top = 272
     Width = 705
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Right = 11
@@ -296,26 +289,6 @@ object frmBase: TfrmBase
     ScrollBars = ssAutoBoth
     TabOrder = 0
   end
-  object FileNameEdit1: TFileNameEdit
-    AnchorSideRight.Control = GroupBox1
-    AnchorSideRight.Side = asrBottom
-    Left = 165
-    Height = 23
-    Top = 103
-    Width = 542
-    OnAcceptFileName = FileNameEdit1AcceptFileName
-    DialogOptions = [ofAllowMultiSelect, ofEnableSizing, ofViewDetail]
-    FilterIndex = 0
-    HideDirectories = False
-    ButtonWidth = 49
-    NumGlyphs = 1
-    Anchors = [akTop, akLeft, akRight]
-    BorderSpacing.Right = 11
-    MaxLength = 0
-    ParentFont = False
-    TabOrder = 7
-    OnChange = FileNameEdit1Change
-  end
   object GroupBox2: TGroupBox
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
@@ -329,7 +302,7 @@ object frmBase: TfrmBase
     ClientHeight = 62
     ClientWidth = 701
     ParentFont = False
-    TabOrder = 8
+    TabOrder = 7
     object prbUkazatel: TProgressBar
       AnchorSideLeft.Control = GroupBox2
       AnchorSideRight.Control = GroupBox2
@@ -575,5 +548,10 @@ object frmBase: TfrmBase
       5E4659E3B9B461C312B9EC07E2AAF4D62868C4C8FF02F27B82E43FEC3EFE1FF6
       B06BB0
     }
+  end
+  object OpenDialog1: TOpenDialog
+    Options = [ofAllowMultiSelect, ofEnableSizing, ofViewDetail]
+    Left = 464
+    Top = 543
   end
 end

@@ -7,10 +7,9 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, RTTICtrls, TATools, Forms, Controls, Graphics,
-  Dialogs, ActnList, ComCtrls, StdCtrls, Buttons,
-  EditBtn, ExtCtrls,windows,
-  ValEdit,process,LazFileUtils,fpjson,jsonparser,dateutils,localizedforms,DefaultTranslator,
-  strutils, playerform
+  Dialogs, ActnList, ComCtrls, StdCtrls, Buttons, EditBtn, ExtCtrls, windows,
+  ValEdit, process, LazFileUtils, fpjson, jsonparser, dateutils, localizedforms,
+  DefaultTranslator, Grids, strutils, playerform
   // FPC 3.0 fileinfo reads exe resources as long as you register the appropriate units
   , fileinfo
   , winpeimagereader {need this for reading exe info}
@@ -57,20 +56,20 @@ type
     btnPlay: TButton;
     chcbPlaylist: TCheckBox;
     chcbWithoutSplit: TCheckBox;
-    FileNameEdit1: TFileNameEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
     ImageList1: TImageList;
-    Label1: TLabel;
     lblPocetSouboruCislo: TLabel;
     lblPocetSouboru: TLabel;
     leVelikostSegmentu: TLabeledEdit;
     memLog: TMemo;
+    OpenDialog1: TOpenDialog;
     prbUkazatel: TProgressBar;
     radGrSegment: TRadioGroup;
-    vleVlastnosti: TValueListEditor;
+    SpeedButton1: TSpeedButton;
+    stgVlastnosti: TStringGrid;
     procedure btnAudioMP3Click(Sender: TObject);
     procedure btnAudioPuvodniClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
@@ -78,12 +77,12 @@ type
     procedure btnSmazLogClick(Sender: TObject);
     procedure btnVideoClick(Sender: TObject);
     procedure chcbWithoutSplitChange(Sender: TObject);
-    procedure FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
-    procedure FileNameEdit1Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure leVelikostSegmentuEditingDone(Sender: TObject);
     procedure runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);
+    procedure FillGridFromFiles;
+    procedure SpeedButton1Click(Sender: TObject);
   private
 
   public
@@ -96,6 +95,8 @@ type
   rsZaTek = 'Začátek';
   rsJmNo = 'Jméno';
   rsKodek = 'Kodek';
+  rsChapters = 'Kapitoly';
+  rsUseChapters = 'Použít kapitoly';
 
 var
   frmBase: TfrmBase;
@@ -190,14 +191,7 @@ begin
         end;
 end;
 
-procedure TfrmBase.FileNameEdit1AcceptFileName(Sender: TObject; var Value: String);
-// fired before property DialogFile filled
-// intend as validation of user input but uncount more files could be selected
-begin
-end;
-
-procedure TfrmBase.FileNameEdit1Change(Sender: TObject);
-// only here is possible to use property DialogFile
+procedure TfrmBase.FillGridFromFiles;
 var
   jData:TJSONData;
   jObject:TJSONObject;
@@ -209,33 +203,24 @@ var
   userChapters :TStringList;
   chaptersCount : Word;
 begin
-//  vleVlastnosti.Rows[0].Text:='aaaaa'+LineEnding+'bbbbb';
-//  vleVlastnosti.Keys[2]:='audio 1';
-//  vleVlastnosti.Values['audio 1'] :='value 1';
-  FileNameEdit1.Clear;
   progressMax:=0;
-  vleVlastnosti.Clear;
-  lblPocetSouboruCislo.Caption := IntToStr(FileNameEdit1.DialogFiles.Count);
+  stgVlastnosti.ClearRows; // clear all rows (fixed too)
+  stgVlastnosti.RowCount:=1; // rows are counted from 0
+  stgVlastnosti.FixedRows:=1;
+  lblPocetSouboruCislo.Caption := IntToStr(OpenDialog1.Files.Count);
   filesChapters.Clear;
-  for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
+  for i:=0 to OpenDialog1.Files.Count-1 do
     begin
       memLog.Clear;
       runFFMPEG(ffprobe,'-v quiet, -print_format json, -show_format, -show_streams, -show_chapters '+
-                         AnsiQuotedStr(FileNameEdit1.DialogFiles[i],'"'),0);
+                         AnsiQuotedStr(OpenDialog1.Files[i],'"'),0);
       // capture json ffmpeg output from memLog component
       jData:=GetJSON(memLog.Text);  // !!! object created it needs to be freed in the end :-)
       jObject:=TJSONObject(jData);
-
-      memLog.Append('Počet položek' +IntToStr(jObject.Count));
-      for j:=0 to jObject.Count-1 do
-      begin
-        memLog.Append(jObject.Items[j].Count.ToString());
-      end;
-
-    userChapters := TStringList.Create(True);
-    internalChapters := TStringList.Create(True);
-    chaptersCount := jObject.FindPath('chapters').Count;
-    if  chaptersCount <> 0 then
+      userChapters := TStringList.Create(True);
+      internalChapters := TStringList.Create(True);
+      chaptersCount := jObject.FindPath('chapters').Count;
+      if  chaptersCount <> 0 then
       // file has internal chapters
       begin
         chaptersCount := jObject.FindPath('chapters').Count;
@@ -256,29 +241,28 @@ begin
       filesChapters.Add(fileChaptersItem);
       memLog.Append('User chapters count: '+IntToStr(userChapters.Count));
       memLog.Append('Internal chapters count: '+IntToStr(internalChapters.Count));
-      //internalChapters.Free;  - it is needed later in code :-) and TObjectList manages memory of its items
-      //                       automatically
-
-
-
+      //internalChapters.Free; - TObjectDictionary manages memory of its items automatically
       streamsInf:= '';
       for j:=0 to jObject.FindPath('streams').Count-1 do
       begin
         streamsInf:= streamsInf + (jObject.FindPath('streams').Items[j].FindPathDef('codec_type').AsString +
                      ':'+ jObject.FindPath('streams').Items[j].FindPathDef('codec_name').AsString + ' ');
       end;
-
       progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
-      vleVlastnosti.InsertRow(ExtractFileName(jObject.FindPath('format.filename').AsString),
-                                 streamsInf,True);
-
+      stgVlastnosti.InsertRowWithValues( i+1,
+                                 [ ExtractFileName(jObject.FindPath('format.filename').AsString),
+                                   streamsInf,IntToStr(chaptersCount),'false' ] );
       jData.Free;                  // Object cleaned after 5 min debugging :-)
-
     end;
    prbUkazatel.Max:=progressMax;
-   vleVlastnosti.AutoSizeColumns();
+   stgVlastnosti.AutoSizeColumns();
    // enable button for player launching
    btnPlay.Enabled:=True;
+end;
+
+procedure TfrmBase.SpeedButton1Click(Sender: TObject);
+begin
+  if OpenDialog1.Execute then FillGridFromFiles;
 end;
 
 procedure TfrmBase.btnVideoClick(Sender: TObject);
@@ -292,11 +276,11 @@ var
   i: Integer;
 begin
   prbUkazatel.Position:=0;
-  for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
+  for i:=0 to OpenDialog1.Files.Count-1 do
     begin
       try
        // segment_time vs segment_times see:  leVelikostSegmentu.toHHMMSS
-        pomFile:=FileNameEdit1.DialogFiles[i];
+        pomFile:=OpenDialog1.Files[i];
         memLog.Append('velikost segmentu: ' + leVelikostSegmentu.toHHMMSS );
         runFFMPEG(ffmpeg,'-progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                          ' -c copy, -map 0, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
@@ -320,7 +304,7 @@ begin
    leVelikostSegmentu.Enabled := not leVelikostSegmentu.Enabled;
    chcbPlaylist.Enabled :=  not chcbPlaylist.Enabled;
    // btnPlay can be enabled outside this procedure
-   if (sender as TCheckBox).Checked or (vleVlastnosti.IsEmptyRow(1))  then
+   if (sender as TCheckBox).Checked or (stgVlastnosti.Cells[0,1].IsEmpty)  then
       btnPlay.Enabled:= False
    else
        btnPlay.Enabled:= True;
@@ -332,9 +316,9 @@ var
   i: Integer;
 begin
   prbUkazatel.Position:=0;
-  for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
+  for i:=0 to OpenDialog1.Files.Count-1 do
     begin
-      pomFile:=FileNameEdit1.DialogFiles[i];
+      pomFile:=OpenDialog1.Files[i];
       if not chcbWithoutSplit.Checked then
          begin
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
@@ -360,9 +344,9 @@ var
   i: Integer;
 begin
   prbUkazatel.Position:=0;
-  for i:=0 to FileNameEdit1.DialogFiles.Count-1 do
+  for i:=0 to OpenDialog1.Files.Count-1 do
     begin
-      pomFile:=FileNameEdit1.DialogFiles[i];
+      pomFile:=OpenDialog1.Files[i];
       if not chcbWithoutSplit.Checked then
          begin
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
@@ -446,9 +430,9 @@ var
   modResultFrmPlayer: Integer;
 begin
   frmPlayer := TfrmPlayer.Create(Self);
-  frmPlayer.Caption:= vleVlastnosti.Cells[0,vleVlastnosti.Row];
+  frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
   // file to play
-  frmPlayer.MPlayer.Filename:= FileNameEdit1.DialogFiles[vleVlastnosti.Row-1];
+  frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
   // values will be time points
   radGrSegment.ItemIndex := 1;
   modResultFrmPlayer := frmPlayer.ShowModal;
@@ -471,11 +455,13 @@ var
 begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
-  //FileNameEdit1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
+  //OpenDialog1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
   radGrSegment.Items[0] := rsVelikost;
   radGrSegment.Items[1] := rsZaTek;
-  vleVlastnosti.TitleCaptions[0]:=rsJmNo;
-  vleVlastnosti.TitleCaptions[1]:=rsKodek;
+  stgVlastnosti.Columns.Items[0].Title.Caption := rsJmNo ;
+  stgVlastnosti.Columns.Items[1].Title.Caption := rsKodek;
+  stgVlastnosti.Columns.Items[2].Title.Caption := rsChapters ;
+  stgVlastnosti.Columns.Items[3].Title.Caption := rsUseChapters;
   FileVerInfo:=TFileVersionInfo.Create(nil);
   try
     FileVerInfo.ReadFileInfo;
@@ -485,12 +471,12 @@ begin
     FileVerInfo.Free;
   end;
   memLog.MaxLength:=0;
-  vleVlastnosti.ColWidths[0]:=473;
-  vleVlastnosti.ColWidths[1]:=100;
+  stgVlastnosti.ColWidths[0]:=473;
+  stgVlastnosti.ColWidths[1]:=100;
   radGrSegment.ItemIndex:=0;
   btnPlay.Enabled:=False;
-//  vleVlastnosti.SelectedColor:= clDefault;
-  vleVlastnosti.FocusColor:= clDefault;
+  stgVlastnosti.SelectedColor:= clHighlight;
+  stgVlastnosti.FocusColor:= clDefault;
   filesChapters := TFilesChapters.Create(True);
 end;
 

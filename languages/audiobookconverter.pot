@@ -1,12 +1,20 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: base.rschapters
+msgid "Kapitoly"
+msgstr ""
+
 #: base.rsjmno
 msgid "Jméno"
 msgstr ""
 
 #: base.rskodek
 msgid "Kodek"
+msgstr ""
+
+#: base.rsusechapters
+msgid "Použít kapitoly"
 msgstr ""
 
 #: base.rsvelikost
@@ -73,10 +81,6 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: tfrmbase.label1.caption
-msgid "Cesta k souborům:"
-msgstr ""
-
 #: tfrmbase.lblpocetsouboru.caption
 msgid "Celkem vybráno souborů: "
 msgstr ""
@@ -102,6 +106,26 @@ msgstr ""
 
 #: tfrmbase.radgrsegment.caption
 msgid "Segment"
+msgstr ""
+
+#: tfrmbase.stgvlastnosti.columns[0].title.caption
+msgctxt "tfrmbase.stgvlastnosti.columns[0].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfrmbase.stgvlastnosti.columns[1].title.caption
+msgctxt "tfrmbase.stgvlastnosti.columns[1].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfrmbase.stgvlastnosti.columns[2].title.caption
+msgctxt "tfrmbase.stgvlastnosti.columns[2].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfrmbase.stgvlastnosti.columns[3].title.caption
+msgctxt "tfrmbase.stgvlastnosti.columns[3].title.caption"
+msgid "Title"
 msgstr ""
 
 #: tfrmplayer.acadd.caption
