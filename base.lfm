@@ -148,19 +148,23 @@ object frmBase: TfrmBase
       ColCount = 4
       Columns = <      
         item
+          ReadOnly = True
           Title.Caption = 'Title'
         end      
         item
+          ReadOnly = True
           Title.Caption = 'Title'
         end      
         item
+          ReadOnly = True
           Title.Caption = 'Title'
         end      
         item
+          ButtonStyle = cbsCheckboxColumn
           Title.Caption = 'Title'
         end>
       FixedCols = 0
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goRowHighlight]
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goRowSelect, goSmoothScroll, goRowHighlight]
       RowCount = 1
       TabOrder = 5
     end
