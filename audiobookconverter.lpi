@@ -104,12 +104,17 @@
         <CommandLineParams Value="--lang en"/>
       </local>
       <FormatVersion Value="2"/>
-      <Modes Count="1">
+      <Modes Count="2">
         <Mode0 Name="default">
           <local>
             <CommandLineParams Value="--lang en"/>
           </local>
         </Mode0>
+        <Mode1 Name="cs">
+          <local>
+            <CommandLineParams Value="--lang cs"/>
+          </local>
+        </Mode1>
       </Modes>
     </RunParams>
     <RequiredPackages Count="5">

@@ -4,28 +4,38 @@ msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
 "X-Generator: Poedit 2.4.2\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"Language: cs\n"
+
+#: base.rschapters
+msgid "Kapitoly"
+msgstr "Kapitoly"
 
 #: base.rsjmno
 msgid "Jméno"
-msgstr "Name"
+msgstr "Jméno"
 
 #: base.rskodek
 msgid "Kodek"
-msgstr "Codec"
+msgstr "Kodek"
+
+#: base.rsusechapters
+msgid "Použít kapitoly"
+msgstr "Použít kapitoly"
 
 #: base.rsvelikost
 msgid "Velikost"
-msgstr "Size"
+msgstr "Velikost"
 
 #: base.rszatek
 msgid "Začátek"
-msgstr "Start"
+msgstr "Začátek"
 
 #: tfrmbase.btnaudiomp3.caption
 msgid "AUDIO MP3"
@@ -33,65 +43,59 @@ msgstr "AUDIO MP3"
 
 #: tfrmbase.btnaudiopuvodni.caption
 msgid "AUDIO původní"
-msgstr "AUDIO original"
+msgstr "AUDIO původní"
 
 #: tfrmbase.btnexit.caption
 msgid "Ukonči program"
-msgstr "Quit program"
+msgstr "Ukonči program"
 
 #: tfrmbase.btnplay.caption
 msgid "Přehrávač"
-msgstr "Player"
+msgstr "Přehrávač"
 
 #: tfrmbase.btnsmazlog.caption
 msgid "Smaž log"
-msgstr "Clear log"
+msgstr "Smaž log"
 
 #: tfrmbase.btnvideo.caption
 msgid "VIDEO původni"
-msgstr "VIDEO original"
+msgstr "VIDEO původni"
 
 #: tfrmbase.caption
-msgid "YouTube Audio book Convertor"
-msgstr ""
+msgid "Audio Book Converter"
+msgstr "Audio Book Converter"
 
 #: tfrmbase.chcbplaylist.caption
-msgctxt "tfrmbase.chcbplaylist.caption"
 msgid "Generuj  playlist"
-msgstr "Generate playlist"
+msgstr "Generuj  playlist"
 
 #: tfrmbase.chcbwithoutsplit.caption
 msgid "Bez rozdělení"
-msgstr "Without splitting"
+msgstr "Bez rozdělení"
 
 #: tfrmbase.groupbox1.caption
 msgid "Vstup: "
-msgstr "Input:"
+msgstr "Vstup: "
 
 #: tfrmbase.groupbox2.caption
 msgid "Progress: "
-msgstr "Progress:"
+msgstr "Progress: "
 
 #: tfrmbase.groupbox3.caption
 msgid "Výstup: "
-msgstr "Output:"
+msgstr "Výstup: "
 
 #: tfrmbase.groupbox4.caption
 msgid "Log: "
-msgstr "Log:"
+msgstr "Log: "
 
 #: tfrmbase.hint
 msgid "Exit"
 msgstr "Exit"
 
-#: tfrmbase.label1.caption
-msgid "Cesta k souborům:"
-msgstr "File path:"
-
 #: tfrmbase.lblpocetsouboru.caption
-msgctxt "tfrmbase.lblpocetsouboru.caption"
 msgid "Celkem vybráno souborů: "
-msgstr "Files selected:"
+msgstr "Celkem vybráno souborů: "
 
 #: tfrmbase.lblpocetsouborucislo.caption
 msgid "0"
@@ -99,14 +103,9 @@ msgstr "0"
 
 #: tfrmbase.levelikostsegmentu.editlabel.caption
 msgid "minuty:"
-msgstr "minutes:"
+msgstr "minuty:"
 
 #: tfrmbase.levelikostsegmentu.hint
-#, fuzzy
-#| msgid ""
-#| "HH:MM:SS\n"
-#| "MM\n"
-#| "HH:MM:SS,MM\n"
 msgid ""
 "HH:MM:SS\n"
 "MM\n"
@@ -114,36 +113,55 @@ msgid ""
 msgstr ""
 "HH:MM:SS\n"
 "MM\n"
-"HH:MM:SS,MM\n"
+"HH:MM:SS,MM"
 
 #: tfrmbase.levelikostsegmentu.text
 msgid "30"
 msgstr "30"
 
 #: tfrmbase.radgrsegment.caption
-msgctxt "tfrmbase.radgrsegment.caption"
 msgid "Segment"
 msgstr "Segment"
 
+#: tfrmbase.stgvlastnosti.columns[0].title.caption
+msgctxt "tfrmbase.stgvlastnosti.columns[0].title.caption"
+msgid "Title"
+msgstr "Title"
+
+#: tfrmbase.stgvlastnosti.columns[1].title.caption
+msgctxt "tfrmbase.stgvlastnosti.columns[1].title.caption"
+msgid "Title"
+msgstr "Title"
+
+#: tfrmbase.stgvlastnosti.columns[2].title.caption
+msgctxt "tfrmbase.stgvlastnosti.columns[2].title.caption"
+msgid "Title"
+msgstr "Title"
+
+#: tfrmbase.stgvlastnosti.columns[3].title.caption
+msgctxt "tfrmbase.stgvlastnosti.columns[3].title.caption"
+msgid "Title"
+msgstr "Title"
+
 #: tfrmplayer.acadd.caption
 msgid "Přidat"
-msgstr "Add"
+msgstr "Přidat"
 
 #: tfrmplayer.acclearlist.caption
 msgid "Vyčistit seznam"
-msgstr "Clear list"
+msgstr "Vyčistit seznam"
 
 #: tfrmplayer.acdelete.caption
 msgid "Smazat"
-msgstr "Delete"
+msgstr "Smazat"
 
 #: tfrmplayer.acpause.caption
 msgid "Pause"
-msgstr "Pauza"
+msgstr "Pause"
 
 #: tfrmplayer.acplay.caption
 msgid "Přehrát"
-msgstr "Play"
+msgstr "Přehrát"
 
 #: tfrmplayer.acstop.caption
 msgid "Stop"
@@ -151,11 +169,11 @@ msgstr "Stop"
 
 #: tfrmplayer.acupdate.caption
 msgid "Aktualizovat"
-msgstr "Update"
+msgstr "Aktualizovat"
 
 #: tfrmplayer.btncancell.caption
 msgid "Zrušit"
-msgstr "Cancel"
+msgstr "Zrušit"
 
 #: tfrmplayer.btnok.caption
 msgid "OK"
@@ -163,9 +181,8 @@ msgstr "OK"
 
 #: tfrmplayer.caption
 msgid "frmPlayer"
-msgstr ""
+msgstr "frmPlayer"
 
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
 msgstr "H:MM:SS / H:MM:SS"
-
