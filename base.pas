@@ -45,6 +45,17 @@ type
   TFilesChapters = specialize TObjectList<TFileChaptersItem>;
 
 
+  { TSegmentInfoBackup }
+
+  TSegmentInfoBackup = class(TComponent) // backup leVelikostSegmentu and radGrSegment
+    public
+    segRadioGr : Byte;
+    segSize: String;
+    procedure BackupSegmentInfo();
+    procedure ClearBackup();
+    procedure RestoreBackup();
+  end;
+  
   { TfrmBase }
 
   TfrmBase = class(TLocalizedForm)
@@ -87,6 +98,7 @@ type
 
   public
     filesChapters : TFilesChapters;
+    segInfoBck :TSegmentInfoBackup;
     procedure UpdateTranslation(ALang: String); override;
   end;
 
@@ -123,6 +135,28 @@ begin
 end;
 
 {$R *.lfm}
+
+{ TSegmentInfoBackup }
+
+procedure TSegmentInfoBackup.BackupSegmentInfo();
+begin
+  self.segRadioGr:= frmBase.radGrSegment.ItemIndex ;
+  //frmBase.memLog.Append(frmBase.radGrSegment.Items[frmBase.radGrSegment.ItemIndex]);
+  self.segSize:= frmBase.leVelikostSegmentu.Caption;
+  //frmBase.memLog.Append(self.segSize);
+end;
+
+procedure TSegmentInfoBackup.ClearBackup();
+begin
+  self.segRadioGr:=0;
+  self.segSize:='';
+end;
+
+procedure TSegmentInfoBackup.RestoreBackup;
+begin
+  frmBase.radGrSegment.ItemIndex := self.segRadioGr;
+  frmBase.leVelikostSegmentu.Caption := self.segSize;
+end;
 
 { TTJSONDataHelper }
 
@@ -478,6 +512,8 @@ begin
   stgVlastnosti.SelectedColor:= clHighlight;
   stgVlastnosti.FocusColor:= clDefault;
   filesChapters := TFilesChapters.Create(True);
+  segInfoBck := TSegmentInfoBackup.Create(Self);
+  segInfoBck.BackupSegmentInfo();
 end;
 
 procedure TfrmBase.FormDestroy(Sender: TObject);
