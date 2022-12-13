@@ -99,6 +99,7 @@ type
   public
     filesChapters : TFilesChapters;
     segInfoBck :TSegmentInfoBackup;
+    procedure HowToSplit(i:integer);
     procedure UpdateTranslation(ALang: String); override;
   end;
 
@@ -266,15 +267,18 @@ begin
                 jObject.FindPath('chapters').Items[j].FindPathDef('start_time').AsFloat / (24 * 60 * 60)) )
         end;
         internalChapters.Delimiter:= ',';
-        memLog.Append(internalChapters.DelimitedText);
-        leVelikostSegmentu.Caption:= internalChapters.DelimitedText;
+        //memLog.Append(internalChapters.DelimitedText);
+        //leVelikostSegmentu.Caption:= internalChapters.DelimitedText;
       end;
+      userChapters.Delimiter:= ',';
       fileChaptersItem := TFileChaptersItem.Create([doOwnsValues]);
       fileChaptersItem.add('internal',internalChapters);
       fileChaptersItem.add('user',userChapters);
       filesChapters.Add(fileChaptersItem);
-      memLog.Append('User chapters count: '+IntToStr(userChapters.Count));
-      memLog.Append('Internal chapters count: '+IntToStr(internalChapters.Count));
+      //memLog.Append('User chapters count: '+IntToStr(userChapters.Count));
+      //memLog.Append('Internal chapters count: '+IntToStr(internalChapters.Count));
+      //memLog.Append(IntToStr(filesChapters[i]['internal'].Count));
+      //memlog.Append(intTostr(filesChapters.Items[i]['user'].Count)) ;
       //internalChapters.Free; - TObjectDictionary manages memory of its items automatically
       streamsInf:= '';
       for j:=0 to jObject.FindPath('streams').Count-1 do
@@ -292,6 +296,27 @@ begin
    stgVlastnosti.AutoSizeColumns();
    // enable button for player launching
    btnPlay.Enabled:=True;
+end;
+
+procedure TfrmBase.HowToSplit(i: integer);
+begin
+  // file has user defined chapters - by movie player
+  if filesChapters.Items[i]['user'].Count > 0 then
+     begin
+       leVelikostSegmentu.Caption:= filesChapters.Items[i]['user'].DelimitedText;
+       radGrSegment.ItemIndex := 1 ;
+     end
+  // file has internal chapters and  using them is checked in 4th grid column
+  else if (filesChapters.Items[i]['internal'].count > 0) and (stgVlastnosti.Cells[3,i+1] = '1')   then
+     begin
+       leVelikostSegmentu.Caption:= filesChapters.Items[i]['internal'].DelimitedText;
+       radGrSegment.ItemIndex := 1 ;
+     end
+  else
+  // use no chapter but split setting from leVelikostSegmentu and radGrSegment
+    begin
+      segInfoBck.RestoreBackup();
+    end;
 end;
 
 procedure TfrmBase.SpeedButton1Click(Sender: TObject);
@@ -350,16 +375,19 @@ var
   i: Integer;
 begin
   prbUkazatel.Position:=0;
+  segInfoBck.BackupSegmentInfo(); // backup leVelikostSegmentu and radGrSegment;
   for i:=0 to OpenDialog1.Files.Count-1 do
     begin
       pomFile:=OpenDialog1.Files[i];
       if not chcbWithoutSplit.Checked then
          begin
+            HowToSplit(i); // decide what to use for splitting
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                        ' -vn, -c copy, -map 0, ' + pomSegment +leVelikostSegmentu.toHHMMSS +
                        pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                      '_%03d.aac','"'),prbUkazatel.Position);
+           segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
          end
       else
           begin
@@ -378,16 +406,19 @@ var
   i: Integer;
 begin
   prbUkazatel.Position:=0;
+  segInfoBck.BackupSegmentInfo(); // backup leVelikostSegmentu and radGrSegment;
   for i:=0 to OpenDialog1.Files.Count-1 do
     begin
       pomFile:=OpenDialog1.Files[i];
       if not chcbWithoutSplit.Checked then
          begin
+            HowToSplit(i); // decide what to use for splitting
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                              ' -vn, -c mp3, -map a, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
                              pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
                              AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                            '_%03d.mp3','"'),prbUkazatel.Position);
+           segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
          end
       else
           begin
