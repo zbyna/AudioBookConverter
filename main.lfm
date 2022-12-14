@@ -1,0 +1,10 @@
+object frmMain: TfrmMain
+  Left = 452
+  Height = 21
+  Top = 21
+  Width = 320
+  Caption = 'frmMain'
+  DesignTimePPI = 103
+  OnClose = FormClose
+  OnCreate = FormCreate
+end

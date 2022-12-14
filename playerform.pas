@@ -7,6 +7,8 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, ComCtrls, StdCtrls, ActnList, Menus, RTTICtrls,
   MPlayerCtrl,localizedforms,DefaultTranslator,LazUTF8;
+  ,AnchorDocking
+  ,main;
 
 type
 
@@ -90,6 +92,8 @@ begin
   {$ENDIF}
   MPlayer.Volume:= 50;
   lbTimePoints.Sorted:= True;
+  DockMaster.MakeDockable(Self);
+  DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alRight,nil);
 end;
 
 procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: single);

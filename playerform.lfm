@@ -10,6 +10,7 @@ object frmPlayer: TfrmPlayer
   DesignTimePPI = 103
   OnCreate = FormCreate
   Position = poDesktopCenter
+  LCLVersion = '2.3.0.0'
   object MPlayer: TMPlayerControl
     AnchorSideLeft.Control = Owner
     AnchorSideRight.Control = trbAudio

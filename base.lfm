@@ -15,6 +15,7 @@ object frmBase: TfrmBase
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poDesktopCenter
+  LCLVersion = '2.3.0.0'
   object GroupBox1: TGroupBox
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom

@@ -13,7 +13,9 @@ uses
   // FPC 3.0 fileinfo reads exe resources as long as you register the appropriate units
   , fileinfo
   , winpeimagereader {need this for reading exe info}
-  , Generics.Collections;
+  , Generics.Collections
+  , AnchorDocking
+  , main;
 
 
 const
@@ -503,8 +505,10 @@ begin
   modResultFrmPlayer := frmPlayer.ShowModal;
   if modResultFrmPlayer = mrOK then
        begin
-         leVelikostSegmentu.Caption:= frmPlayer.timePointsToString();
+         filesChapters.Items[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
          memLog.Append('Added time points from player.');
+         memLog.Append(filesChapters.Items[stgVlastnosti.Row-1]['user'].DelimitedText);
+         memLog.Append(IntToStr(stgVlastnosti.Row));
        end
   else
       begin
@@ -512,6 +516,7 @@ begin
       end;
   FreeAndNil(frmPlayer);
 
+  frmMain.Close;
 end;
 
 procedure TfrmBase.FormCreate(Sender: TObject);
@@ -545,6 +550,9 @@ begin
   filesChapters := TFilesChapters.Create(True);
   segInfoBck := TSegmentInfoBackup.Create(Self);
   segInfoBck.BackupSegmentInfo();
+  DockMaster.MakeDockable(Self);
+  DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alBottom,nil);
+  //DockMaster.ManualEnlarge(DockMaster.GetAnchorSite(frmMain),akRight,false);
 end;
 
 procedure TfrmBase.FormDestroy(Sender: TObject);
