@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ComCtrls, StdCtrls, ActnList, Menus, RTTICtrls,
-  MPlayerCtrl,localizedforms,DefaultTranslator,LazUTF8;
+  MPlayerCtrl,localizedforms,DefaultTranslator, Buttons,LazUTF8
   ,AnchorDocking
   ,main;
 
@@ -23,15 +23,14 @@ type
     acClearList: TAction;
     acUpdate: TAction;
     acDelete: TAction;
-    btnClearList: TButton;
-    btnPlay: TButton;
-    btnStop: TButton;
-    btnPause: TButton;
-    btnAdd: TButton;
-    btnUpdate: TButton;
-    btnDelete: TButton;
-    btnOK: TButton;
-    btnCancell: TButton;
+    btnAdd: TSpeedButton;
+    btnClearList: TSpeedButton;
+    btnDelete: TSpeedButton;
+    btnPause: TSpeedButton;
+    btnPlay: TSpeedButton;
+    btnStop: TSpeedButton;
+    btnUpdate: TSpeedButton;
+    ImageList1: TImageList;
     lblTime: TLabel;
     lbTimePoints: TListBox;
     poiPlay: TMenuItem;
@@ -53,6 +52,13 @@ type
     procedure acPlayExecute(Sender: TObject);
     procedure acStopExecute(Sender: TObject);
     procedure acUpdateExecute(Sender: TObject);
+    procedure btnAddClick(Sender: TObject);
+    procedure btnClearListClick(Sender: TObject);
+    procedure btnDeleteClick(Sender: TObject);
+    procedure btnPauseClick(Sender: TObject);
+    procedure btnPlayClick(Sender: TObject);
+    procedure btnStopClick(Sender: TObject);
+    procedure btnUpdateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure MPlayerPlaying(ASender: TObject; APosition: single);
     procedure trbAudioChange(Sender: TObject);
@@ -147,7 +153,14 @@ procedure TfrmPlayer.trbProgressMouseUp(Sender: TObject; Button: TMouseButton; S
   Y: Integer);
 begin
   if not buttonPausePressed then                         // Utf8RPos('Pau',acPause.Caption) > 0
+     begin
      MPlayer.Paused:= false;
+     MPlayer.Position:=trbProgress.Position/100 * MPlayer.Duration;
+     MPlayer.SendMPlayerCommand('osd 3');
+     MPlayer.SendMPlayerCommand('osd_show_progression');
+     MPlayer.SendMPlayerCommand('speed_set 1.0');
+
+     end;
 end;
 
 function TfrmPlayer.timePointsToString: String;
@@ -172,13 +185,13 @@ begin
   MPlayer.Paused:= not MPlayer.Paused;
   if MPlayer.Paused then
    begin
-      btnPause.Caption:= 'PAUSED';
+      //btnPause.Caption:= 'PAUSED';
       buttonPausePressed:= True;
       acPlay.Enabled:= not acPlay.Enabled;
    end
   else
    begin
-      btnPause.Caption:= 'Pause';
+      //btnPause.Caption:= 'Pause';
       buttonPausePressed:= False;
       acPlay.Enabled:= not acPlay.Enabled;
    end;
@@ -228,6 +241,41 @@ begin
         lbTimePoints.Sorted:=True;
         lbTimePoints.ItemIndex:= pom;
       end;
+end;
+
+procedure TfrmPlayer.btnAddClick(Sender: TObject);
+begin
+  acAddExecute(Sender);
+end;
+
+procedure TfrmPlayer.btnClearListClick(Sender: TObject);
+begin
+  acClearListExecute(Sender);
+end;
+
+procedure TfrmPlayer.btnDeleteClick(Sender: TObject);
+begin
+  acDeleteExecute(Sender);
+end;
+
+procedure TfrmPlayer.btnPauseClick(Sender: TObject);
+begin
+  acPauseExecute(Sender);
+end;
+
+procedure TfrmPlayer.btnPlayClick(Sender: TObject);
+begin
+  acPlayExecute(Sender);
+end;
+
+procedure TfrmPlayer.btnStopClick(Sender: TObject);
+begin
+  acStopExecute(Sender);
+end;
+
+procedure TfrmPlayer.btnUpdateClick(Sender: TObject);
+begin
+  acUpdateExecute(Sender);
 end;
 
 end.

@@ -1,8 +1,6 @@
 {"version":1,"strings":[
 {"hash":41083474,"name":"tfrmplayer.caption","sourcebytes":[102,114,109,80,108,97,121,101,114],"value":"frmPlayer"},
 {"hash":71363779,"name":"tfrmplayer.lbltime.caption","sourcebytes":[72,58,77,77,58,83,83,32,47,32,72,58,77,77,58,83,83],"value":"H:MM:SS / H:MM:SS"},
-{"hash":1339,"name":"tfrmplayer.btnok.caption","sourcebytes":[79,75],"value":"OK"},
-{"hash":27392100,"name":"tfrmplayer.btncancell.caption","sourcebytes":[90,114,117,197,161,105,116],"value":"Zru\u0161it"},
 {"hash":264221028,"name":"tfrmplayer.acplay.caption","sourcebytes":[80,197,153,101,104,114,195,161,116],"value":"P\u0159ehr\u00E1t"},
 {"hash":371552,"name":"tfrmplayer.acstop.caption","sourcebytes":[83,116,111,112],"value":"Stop"},
 {"hash":5672085,"name":"tfrmplayer.acpause.caption","sourcebytes":[80,97,117,115,101],"value":"Pause"},

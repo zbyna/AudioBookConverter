@@ -49,10 +49,6 @@ msgstr "AUDIO původní"
 msgid "Ukonči program"
 msgstr "Ukonči program"
 
-#: tfrmbase.btnplay.caption
-msgid "Přehrávač"
-msgstr "Přehrávač"
-
 #: tfrmbase.btnsmazlog.caption
 msgid "Smaž log"
 msgstr "Smaž log"
@@ -143,6 +139,10 @@ msgctxt "tfrmbase.stgvlastnosti.columns[3].title.caption"
 msgid "Title"
 msgstr "Title"
 
+#: tfrmmain.caption
+msgid "frmMain"
+msgstr ""
+
 #: tfrmplayer.acadd.caption
 msgid "Přidat"
 msgstr "Přidat"
@@ -161,7 +161,7 @@ msgstr "Pause"
 
 #: tfrmplayer.acplay.caption
 msgid "Přehrát"
-msgstr "Přehrát"
+msgstr ""
 
 #: tfrmplayer.acstop.caption
 msgid "Stop"
@@ -171,14 +171,6 @@ msgstr "Stop"
 msgid "Aktualizovat"
 msgstr "Aktualizovat"
 
-#: tfrmplayer.btncancell.caption
-msgid "Zrušit"
-msgstr "Zrušit"
-
-#: tfrmplayer.btnok.caption
-msgid "OK"
-msgstr "OK"
-
 #: tfrmplayer.caption
 msgid "frmPlayer"
 msgstr "frmPlayer"
@@ -186,3 +178,4 @@ msgstr "frmPlayer"
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
 msgstr "H:MM:SS / H:MM:SS"
+
