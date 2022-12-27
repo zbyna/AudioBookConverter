@@ -94,6 +94,9 @@ type
     procedure runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);
     procedure FillGridFromFiles;
     procedure SpeedButton1Click(Sender: TObject);
+    procedure stgVlastnostiAfterSelection(Sender: TObject; aCol, aRow: Integer);
+    procedure stgVlastnostiBeforeSelection(Sender: TObject; aCol, aRow: Integer
+      );
   private
 
   public
@@ -294,6 +297,14 @@ begin
     end;
    prbUkazatel.Max:=progressMax;
    stgVlastnosti.AutoSizeColumns();
+   // fill player form from 1st line of stgVlastnosti  - player caption
+   frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
+   // file to play
+   frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   // user chapters if any
+   frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+   // values will be time points
+   radGrSegment.ItemIndex := 1;
 end;
 
 procedure TfrmBase.HowToSplit(i: integer);
@@ -320,6 +331,25 @@ end;
 procedure TfrmBase.SpeedButton1Click(Sender: TObject);
 begin
   if OpenDialog1.Execute then FillGridFromFiles;
+end;
+
+procedure TfrmBase.stgVlastnostiAfterSelection(Sender: TObject; aCol,
+  aRow: Integer);
+begin
+   // add selected rows file to play
+   frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
+   frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   // add user chapters if any
+   frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+end;
+
+procedure TfrmBase.stgVlastnostiBeforeSelection(Sender: TObject; aCol,
+  aRow: Integer);
+begin
+  filesChapters[stgVlastnosti.Row-1]['user'].Clear;
+  filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
+  // clear user chapters in frmPlayer listbox
+  frmPlayer.lbTimePoints.Clear;
 end;
 
 procedure TfrmBase.btnVideoClick(Sender: TObject);
