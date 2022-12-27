@@ -66,7 +66,6 @@ type
     btnAudioMP3: TButton;
     btnSmazLog: TButton;
     btnExit: TButton;
-    btnPlay: TButton;
     chcbPlaylist: TCheckBox;
     chcbWithoutSplit: TCheckBox;
     GroupBox1: TGroupBox;
@@ -86,7 +85,6 @@ type
     procedure btnAudioMP3Click(Sender: TObject);
     procedure btnAudioPuvodniClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
-    procedure btnPlayClick(Sender: TObject);
     procedure btnSmazLogClick(Sender: TObject);
     procedure btnVideoClick(Sender: TObject);
     procedure chcbWithoutSplitChange(Sender: TObject);
@@ -296,8 +294,6 @@ begin
     end;
    prbUkazatel.Max:=progressMax;
    stgVlastnosti.AutoSizeColumns();
-   // enable button for player launching
-   btnPlay.Enabled:=True;
 end;
 
 procedure TfrmBase.HowToSplit(i: integer);
@@ -364,11 +360,6 @@ begin
    radGrSegment.Enabled:= not radGrSegment.Enabled;
    leVelikostSegmentu.Enabled := not leVelikostSegmentu.Enabled;
    chcbPlaylist.Enabled :=  not chcbPlaylist.Enabled;
-   // btnPlay can be enabled outside this procedure
-   if (sender as TCheckBox).Checked or (stgVlastnosti.Cells[0,1].IsEmpty)  then
-      btnPlay.Enabled:= False
-   else
-       btnPlay.Enabled:= True;
 end;
 
 procedure TfrmBase.btnAudioPuvodniClick(Sender: TObject);
@@ -489,33 +480,6 @@ end;
 
 procedure TfrmBase.btnExitClick(Sender: TObject);
 begin
-  frmBase.Close;
-end;
-
-procedure TfrmBase.btnPlayClick(Sender: TObject);
-var
-  modResultFrmPlayer: Integer;
-begin
-  frmPlayer := TfrmPlayer.Create(Self);
-  frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
-  // file to play
-  frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
-  // values will be time points
-  radGrSegment.ItemIndex := 1;
-  modResultFrmPlayer := frmPlayer.ShowModal;
-  if modResultFrmPlayer = mrOK then
-       begin
-         filesChapters.Items[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
-         memLog.Append('Added time points from player.');
-         memLog.Append(filesChapters.Items[stgVlastnosti.Row-1]['user'].DelimitedText);
-         memLog.Append(IntToStr(stgVlastnosti.Row));
-       end
-  else
-      begin
-         memLog.Append('Time points from player cancelled.');
-      end;
-  FreeAndNil(frmPlayer);
-
   frmMain.Close;
 end;
 
@@ -544,7 +508,6 @@ begin
   stgVlastnosti.ColWidths[0]:=473;
   stgVlastnosti.ColWidths[1]:=100;
   radGrSegment.ItemIndex:=0;
-  btnPlay.Enabled:=False;
   stgVlastnosti.SelectedColor:= clHighlight;
   stgVlastnosti.FocusColor:= clDefault;
   filesChapters := TFilesChapters.Create(True);

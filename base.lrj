@@ -9,7 +9,6 @@
 {"hash":864,"name":"tfrmbase.levelikostsegmentu.text","sourcebytes":[51,48],"value":"30"},
 {"hash":192926484,"name":"tfrmbase.chcbplaylist.caption","sourcebytes":[71,101,110,101,114,117,106,32,32,112,108,97,121,108,105,115,116],"value":"Generuj  playlist"},
 {"hash":48,"name":"tfrmbase.lblpocetsouborucislo.caption","sourcebytes":[48],"value":"0"},
-{"hash":186005053,"name":"tfrmbase.btnplay.caption","sourcebytes":[80,197,153,101,104,114,195,161,118,97,196,141],"value":"P\u0159ehr\u00E1va\u010D"},
 {"hash":41653021,"name":"tfrmbase.chcbwithoutsplit.caption","sourcebytes":[66,101,122,32,114,111,122,100,196,155,108,101,110,195,173],"value":"Bez rozd\u011Blen\u00ED"},
 {"hash":5966629,"name":"tfrmbase.stgvlastnosti.columns[0].title.caption","sourcebytes":[84,105,116,108,101],"value":"Title"},
 {"hash":5966629,"name":"tfrmbase.stgvlastnosti.columns[1].title.caption","sourcebytes":[84,105,116,108,101],"value":"Title"},

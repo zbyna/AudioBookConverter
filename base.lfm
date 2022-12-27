@@ -3,39 +3,42 @@ object frmBase: TfrmBase
   Height = 888
   Hint = 'Exit'
   Top = 0
-  Width = 729
+  Width = 723
   ActiveControl = memLog
   Caption = 'Audio Book Converter'
   ClientHeight = 888
-  ClientWidth = 729
-  Constraints.MinHeight = 888
-  Constraints.MinWidth = 713
+  ClientWidth = 723
+  Constraints.MinWidth = 723
   DesignTimePPI = 103
   Font.Height = -12
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poDesktopCenter
-  LCLVersion = '2.3.0.0'
+  Visible = True
   object GroupBox1: TGroupBox
+    AnchorSideLeft.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 13
+    Left = 11
     Height = 240
     Top = 21
-    Width = 705
-    Anchors = [akTop, akLeft, akRight]
+    Width = 701
+    Anchors = [akLeft, akRight]
+    BorderSpacing.Left = 11
     BorderSpacing.Right = 11
     Caption = 'Vstup: '
     ClientHeight = 220
-    ClientWidth = 701
+    ClientWidth = 697
     ParentFont = False
     TabOrder = 3
     object lblPocetSouboru: TLabel
-      Left = 13
+      Left = 11
       Height = 18
       Top = 197
       Width = 150
+      Anchors = []
       AutoSize = False
+      BorderSpacing.Left = 11
       Caption = 'Celkem vybráno souborů: '
       Color = clDefault
       ParentColor = False
@@ -44,9 +47,12 @@ object frmBase: TfrmBase
     object radGrSegment: TRadioGroup
       Left = 11
       Height = 63
-      Top = 0
+      Top = -5
       Width = 84
+      Anchors = []
       AutoFill = True
+      BorderSpacing.Left = 11
+      BorderSpacing.Bottom = 6
       Caption = 'Segment'
       ChildSizing.LeftRightSpacing = 6
       ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
@@ -65,17 +71,15 @@ object frmBase: TfrmBase
       TabOrder = 1
     end
     object leVelikostSegmentu: TLabeledEdit
-      AnchorSideLeft.Side = asrBottom
-      AnchorSideRight.Control = btnPlay
-      Left = 151
+      Left = 149
       Height = 23
       Hint = 'HH:MM:SS'#13#10'MM'#13#10'HH:MM:SS,MM'
       Top = 21
-      Width = 454
+      Width = 537
       HelpType = htKeyword
       Alignment = taCenter
-      Anchors = [akTop, akLeft, akRight]
-      BorderSpacing.Left = 4
+      Anchors = []
+      BorderSpacing.Left = 5
       BorderSpacing.Right = 5
       EditLabel.Height = 15
       EditLabel.Width = 41
@@ -91,10 +95,11 @@ object frmBase: TfrmBase
       OnEditingDone = leVelikostSegmentuEditingDone
     end
     object chcbPlaylist: TCheckBox
-      Left = 456
+      Left = 453
       Height = 19
       Top = 196
       Width = 103
+      Anchors = []
       Caption = 'Generuj  playlist'
       Checked = True
       ParentFont = False
@@ -104,7 +109,7 @@ object frmBase: TfrmBase
     object lblPocetSouboruCislo: TLabel
       AnchorSideLeft.Control = lblPocetSouboru
       AnchorSideLeft.Side = asrBottom
-      Left = 163
+      Left = 161
       Height = 21
       Top = 197
       Width = 6
@@ -114,37 +119,24 @@ object frmBase: TfrmBase
       ParentColor = False
       ParentFont = False
     end
-    object btnPlay: TButton
-      AnchorSideRight.Control = GroupBox1
-      AnchorSideRight.Side = asrBottom
-      Left = 610
-      Height = 25
-      Top = 21
-      Width = 80
-      Anchors = [akTop, akRight]
-      BorderSpacing.Right = 11
-      Caption = 'Přehrávač'
-      OnClick = btnPlayClick
-      ParentFont = False
-      TabOrder = 3
-    end
     object chcbWithoutSplit: TCheckBox
-      Left = 272
+      Left = 270
       Height = 19
       Top = 196
       Width = 88
+      Anchors = []
       Caption = 'Bez rozdělení'
       OnChange = chcbWithoutSplitChange
-      TabOrder = 4
+      TabOrder = 3
     end
     object stgVlastnosti: TStringGrid
-      AnchorSideRight.Control = GroupBox1
       AnchorSideRight.Side = asrBottom
-      Left = 2
+      Left = 11
       Height = 116
       Top = 64
-      Width = 688
-      Anchors = [akTop, akLeft, akRight]
+      Width = 675
+      Anchors = []
+      BorderSpacing.Left = 11
       BorderSpacing.Right = 11
       ColCount = 4
       Columns = <      
@@ -167,13 +159,16 @@ object frmBase: TfrmBase
       FixedCols = 0
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goRowSelect, goSmoothScroll, goRowHighlight]
       RowCount = 1
-      TabOrder = 5
+      TabOrder = 4
+      OnAfterSelection = stgVlastnostiAfterSelection
+      OnBeforeSelection = stgVlastnostiBeforeSelection
     end
     object SpeedButton1: TSpeedButton
-      Left = 610
+      Left = 606
       Height = 34
       Top = 184
       Width = 80
+      Anchors = []
       Images = ImageList1
       ImageIndex = 0
       ImageWidth = 32
@@ -181,13 +176,15 @@ object frmBase: TfrmBase
     end
   end
   object GroupBox3: TGroupBox
+    AnchorSideLeft.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 13
+    Left = 11
     Height = 99
     Top = 272
-    Width = 705
-    Anchors = [akTop, akLeft, akRight]
+    Width = 701
+    Anchors = [akLeft, akRight]
+    BorderSpacing.Left = 11
     BorderSpacing.Right = 11
     Caption = 'Výstup: '
     Constraints.MinWidth = 651
@@ -196,11 +193,11 @@ object frmBase: TfrmBase
   end
   object btnVideo: TButton
     AnchorSideLeft.Control = GroupBox3
-    AnchorSideRight.Control = btnAudioPuvodni
-    Left = 24
+    Left = 22
     Height = 60
     Top = 292
     Width = 190
+    Anchors = []
     BorderSpacing.Left = 11
     BorderSpacing.Right = 32
     Caption = 'VIDEO původni'
@@ -210,14 +207,14 @@ object frmBase: TfrmBase
     TabOrder = 5
   end
   object btnAudioPuvodni: TButton
-    AnchorSideLeft.Control = btnVideo
     AnchorSideLeft.Side = asrBottom
-    AnchorSideRight.Control = btnAudioMP3
-    Left = 290
+    Left = 268
     Height = 60
     Top = 292
     Width = 190
-    Anchors = [akTop]
+    Anchors = []
+    BorderSpacing.Left = 56
+    BorderSpacing.Right = 56
     Caption = 'AUDIO původní'
     Constraints.MinWidth = 190
     OnClick = btnAudioPuvodniClick
@@ -225,14 +222,13 @@ object frmBase: TfrmBase
     TabOrder = 1
   end
   object btnAudioMP3: TButton
-    AnchorSideLeft.Side = asrBottom
     AnchorSideRight.Control = GroupBox3
     AnchorSideRight.Side = asrBottom
-    Left = 517
+    Left = 511
     Height = 60
     Top = 292
     Width = 190
-    Anchors = [akTop, akRight]
+    Anchors = []
     BorderSpacing.Right = 11
     Caption = 'AUDIO MP3'
     Constraints.MinWidth = 190
@@ -241,24 +237,28 @@ object frmBase: TfrmBase
     TabOrder = 2
   end
   object GroupBox4: TGroupBox
+    AnchorSideLeft.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 13
+    Left = 11
     Height = 392
     Top = 459
-    Width = 705
-    Anchors = [akTop, akLeft, akRight]
+    Width = 701
+    Anchors = [akLeft, akRight]
+    BorderSpacing.Left = 11
     BorderSpacing.Right = 11
     Caption = 'Log: '
     ClientHeight = 372
-    ClientWidth = 701
+    ClientWidth = 697
     ParentFont = False
     TabOrder = 6
     object btnSmazLog: TButton
-      Left = 13
+      Left = 11
       Height = 60
       Top = 300
       Width = 183
+      Anchors = [akTop]
+      BorderSpacing.Left = 11
       Caption = 'Smaž log'
       OnClick = btnSmazLogClick
       ParentFont = False
@@ -267,11 +267,11 @@ object frmBase: TfrmBase
     object btnExit: TButton
       AnchorSideRight.Control = GroupBox4
       AnchorSideRight.Side = asrBottom
-      Left = 500
+      Left = 496
       Height = 60
       Top = 300
       Width = 190
-      Anchors = [akTop, akRight]
+      Anchors = []
       BorderSpacing.Right = 11
       Caption = 'Ukonči program'
       Constraints.MaxWidth = 190
@@ -282,41 +282,41 @@ object frmBase: TfrmBase
     end
   end
   object memLog: TMemo
-    AnchorSideRight.Control = GroupBox4
     AnchorSideRight.Side = asrBottom
-    Left = 26
+    Left = 20
     Height = 275
     Top = 485
     Width = 681
-    Anchors = [akTop, akLeft, akRight]
+    Anchors = []
+    BorderSpacing.Left = 11
     BorderSpacing.Right = 11
     ParentFont = False
     ScrollBars = ssAutoBoth
     TabOrder = 0
   end
   object GroupBox2: TGroupBox
+    AnchorSideLeft.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 13
+    Left = 11
     Height = 82
     Top = 373
-    Width = 705
-    Anchors = [akTop, akLeft, akRight]
+    Width = 701
+    Anchors = [akLeft, akRight]
+    BorderSpacing.Left = 11
     BorderSpacing.Right = 11
     Caption = 'Progress: '
     ClientHeight = 62
-    ClientWidth = 701
+    ClientWidth = 697
     ParentFont = False
     TabOrder = 7
     object prbUkazatel: TProgressBar
-      AnchorSideLeft.Control = GroupBox2
-      AnchorSideRight.Control = GroupBox2
       AnchorSideRight.Side = asrBottom
-      Left = 11
+      Left = 9
       Height = 48
       Top = 0
       Width = 679
-      Anchors = [akTop, akLeft, akRight]
+      Anchors = []
       BorderSpacing.Left = 11
       BorderSpacing.Right = 11
       ParentFont = False
