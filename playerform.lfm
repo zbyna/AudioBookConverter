@@ -10,6 +10,7 @@ object frmPlayer: TfrmPlayer
   ChildSizing.EnlargeVertical = crsScaleChilds
   ClientHeight = 888
   ClientWidth = 425
+  Constraints.MinWidth = 425
   DesignTimePPI = 103
   OnCreate = FormCreate
   Position = poDesktopCenter
@@ -1895,6 +1896,7 @@ object frmPlayer: TfrmPlayer
     Height = 36
     Top = 440
     Width = 36
+    Action = acPlay
     Anchors = []
     AutoSize = True
     BorderSpacing.Left = 5
@@ -1902,7 +1904,7 @@ object frmPlayer: TfrmPlayer
     Images = ImageList1
     ImageIndex = 1
     ImageWidth = 32
-    OnClick = btnPlayClick
+    ShowCaption = False
     ParentFont = False
   end
   object btnStop: TSpeedButton
@@ -1910,13 +1912,14 @@ object frmPlayer: TfrmPlayer
     Height = 36
     Top = 440
     Width = 36
+    Action = acStop
     Anchors = []
     AutoSize = True
     BorderSpacing.Top = 5
     Images = ImageList1
     ImageIndex = 2
     ImageWidth = 32
-    OnClick = btnStopClick
+    ShowCaption = False
     ParentFont = False
   end
   object btnPause: TSpeedButton
@@ -1924,15 +1927,14 @@ object frmPlayer: TfrmPlayer
     Height = 36
     Top = 440
     Width = 36
-    AllowAllUp = True
+    Action = acPause
     Anchors = []
     AutoSize = True
     BorderSpacing.Top = 5
-    GroupIndex = 1
     Images = ImageList1
     ImageIndex = 0
     ImageWidth = 32
-    OnClick = btnPauseClick
+    ShowCaption = False
     ParentFont = False
   end
   object btnAdd: TSpeedButton
@@ -1940,6 +1942,7 @@ object frmPlayer: TfrmPlayer
     Height = 36
     Top = 440
     Width = 36
+    Action = acAdd
     Anchors = []
     AutoSize = True
     BorderSpacing.Left = 5
@@ -1947,7 +1950,7 @@ object frmPlayer: TfrmPlayer
     Images = ImageList1
     ImageIndex = 3
     ImageWidth = 32
-    OnClick = btnAddClick
+    ShowCaption = False
     ParentFont = False
   end
   object btnUpdate: TSpeedButton
@@ -1955,13 +1958,14 @@ object frmPlayer: TfrmPlayer
     Height = 36
     Top = 440
     Width = 36
+    Action = acUpdate
     Anchors = []
     AutoSize = True
     BorderSpacing.Top = 23
     Images = ImageList1
     ImageIndex = 4
     ImageWidth = 32
-    OnClick = btnUpdateClick
+    ShowCaption = False
     ParentFont = False
   end
   object btnDelete: TSpeedButton
@@ -1969,13 +1973,14 @@ object frmPlayer: TfrmPlayer
     Height = 36
     Top = 440
     Width = 36
+    Action = acDelete
     Anchors = []
     AutoSize = True
     BorderSpacing.Top = 23
     Images = ImageList1
     ImageIndex = 5
     ImageWidth = 32
-    OnClick = btnDeleteClick
+    ShowCaption = False
     ParentFont = False
   end
   object btnClearList: TSpeedButton
@@ -1983,6 +1988,7 @@ object frmPlayer: TfrmPlayer
     Height = 36
     Top = 440
     Width = 36
+    Action = acClearList
     Anchors = []
     AutoSize = True
     BorderSpacing.Left = 5
@@ -1991,7 +1997,7 @@ object frmPlayer: TfrmPlayer
     Images = ImageList1
     ImageIndex = 6
     ImageWidth = 32
-    OnClick = btnClearListClick
+    ShowCaption = False
     ParentFont = False
   end
   object aclAkce: TActionList

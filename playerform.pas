@@ -52,13 +52,6 @@ type
     procedure acPlayExecute(Sender: TObject);
     procedure acStopExecute(Sender: TObject);
     procedure acUpdateExecute(Sender: TObject);
-    procedure btnAddClick(Sender: TObject);
-    procedure btnClearListClick(Sender: TObject);
-    procedure btnDeleteClick(Sender: TObject);
-    procedure btnPauseClick(Sender: TObject);
-    procedure btnPlayClick(Sender: TObject);
-    procedure btnStopClick(Sender: TObject);
-    procedure btnUpdateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure MPlayerPlaying(ASender: TObject; APosition: single);
     procedure trbAudioChange(Sender: TObject);
@@ -241,41 +234,6 @@ begin
         lbTimePoints.Sorted:=True;
         lbTimePoints.ItemIndex:= pom;
       end;
-end;
-
-procedure TfrmPlayer.btnAddClick(Sender: TObject);
-begin
-  acAddExecute(Sender);
-end;
-
-procedure TfrmPlayer.btnClearListClick(Sender: TObject);
-begin
-  acClearListExecute(Sender);
-end;
-
-procedure TfrmPlayer.btnDeleteClick(Sender: TObject);
-begin
-  acDeleteExecute(Sender);
-end;
-
-procedure TfrmPlayer.btnPauseClick(Sender: TObject);
-begin
-  acPauseExecute(Sender);
-end;
-
-procedure TfrmPlayer.btnPlayClick(Sender: TObject);
-begin
-  acPlayExecute(Sender);
-end;
-
-procedure TfrmPlayer.btnStopClick(Sender: TObject);
-begin
-  acStopExecute(Sender);
-end;
-
-procedure TfrmPlayer.btnUpdateClick(Sender: TObject);
-begin
-  acUpdateExecute(Sender);
 end;
 
 end.
