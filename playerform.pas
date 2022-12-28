@@ -215,6 +215,7 @@ end;
 
 procedure TfrmPlayer.acStopExecute(Sender: TObject);
 begin
+  if MPlayer.Paused then acPlay.Enabled:=True;
   MPlayer.Stop;
   lblTime.Caption:= 'H:MM:SS / H:MM:SS';
   trbProgress.Position:= 0;
@@ -224,7 +225,7 @@ procedure TfrmPlayer.acUpdateExecute(Sender: TObject);
 var
    pom : Integer;
 begin
-  if lbTimePoints.ItemIndex <> -1 then
+  if (lbTimePoints.ItemIndex <> -1) and (lbTimePoints.Selected[lbTimePoints.ItemIndex])  then
       begin
         pom:= lbTimePoints.ItemIndex;
         lbTimePoints.ClearSelection;
