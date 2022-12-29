@@ -14,7 +14,6 @@ object frmBase: TfrmBase
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poDesktopCenter
-  LCLVersion = '2.3.0.0'
   Visible = True
   object GroupBox1: TGroupBox
     AnchorSideLeft.Control = Owner
@@ -198,12 +197,11 @@ object frmBase: TfrmBase
     Height = 60
     Top = 292
     Width = 190
+    Action = acVideoOriginal
     Anchors = []
     BorderSpacing.Left = 11
     BorderSpacing.Right = 32
-    Caption = 'VIDEO původni'
     Constraints.MinWidth = 190
-    OnClick = btnVideoClick
     ParentFont = False
     TabOrder = 5
   end
@@ -213,12 +211,11 @@ object frmBase: TfrmBase
     Height = 60
     Top = 292
     Width = 190
+    Action = acAudioOriginal
     Anchors = []
     BorderSpacing.Left = 56
     BorderSpacing.Right = 56
-    Caption = 'AUDIO původní'
     Constraints.MinWidth = 190
-    OnClick = btnAudioPuvodniClick
     ParentFont = False
     TabOrder = 1
   end
@@ -229,11 +226,10 @@ object frmBase: TfrmBase
     Height = 60
     Top = 292
     Width = 190
+    Action = acAudioMp3
     Anchors = []
     BorderSpacing.Right = 11
-    Caption = 'AUDIO MP3'
     Constraints.MinWidth = 190
-    OnClick = btnAudioMP3Click
     ParentFont = False
     TabOrder = 2
   end
@@ -258,10 +254,9 @@ object frmBase: TfrmBase
       Height = 60
       Top = 300
       Width = 183
+      Action = acClearLog
       Anchors = [akTop]
       BorderSpacing.Left = 11
-      Caption = 'Smaž log'
-      OnClick = btnSmazLogClick
       ParentFont = False
       TabOrder = 0
     end
@@ -272,12 +267,11 @@ object frmBase: TfrmBase
       Height = 60
       Top = 300
       Width = 190
+      Action = acQuitApplication
       Anchors = []
       BorderSpacing.Right = 11
-      Caption = 'Ukonči program'
       Constraints.MaxWidth = 190
       Constraints.MinWidth = 190
-      OnClick = btnExitClick
       ParentFont = False
       TabOrder = 1
     end
@@ -559,5 +553,40 @@ object frmBase: TfrmBase
     Options = [ofAllowMultiSelect, ofEnableSizing, ofViewDetail]
     Left = 464
     Top = 543
+  end
+  object baseAkce: TActionList
+    Images = frmMain.ilMain
+    Left = 175
+    Top = 541
+    object acVideoOriginal: TAction
+      Caption = 'VIDEO původní'
+      ImageIndex = 0
+      OnExecute = acVideoOriginalExecute
+    end
+    object acAudioOriginal: TAction
+      Caption = 'AUDIO původní'
+      ImageIndex = 1
+      OnExecute = acAudioOriginalExecute
+    end
+    object acAudioMp3: TAction
+      Caption = 'AUDIO MP3'
+      ImageIndex = 2
+      OnExecute = acAudioMp3Execute
+    end
+    object acClearLog: TAction
+      Caption = 'Smaž log'
+      ImageIndex = 3
+      OnExecute = acClearLogExecute
+    end
+    object acQuitApplication: TAction
+      Caption = 'Ukonči program'
+      ImageIndex = 4
+      OnExecute = acQuitApplicationExecute
+    end
+    object acFlipForms: TAction
+      Caption = 'Prohoď formuláře'
+      ImageIndex = 5
+      OnExecute = acFlipFormsExecute
+    end
   end
 end

@@ -15,11 +15,12 @@
 {"hash":5966629,"name":"tfrmbase.stgvlastnosti.columns[2].title.caption","sourcebytes":[84,105,116,108,101],"value":"Title"},
 {"hash":5966629,"name":"tfrmbase.stgvlastnosti.columns[3].title.caption","sourcebytes":[84,105,116,108,101],"value":"Title"},
 {"hash":78356784,"name":"tfrmbase.groupbox3.caption","sourcebytes":[86,195,189,115,116,117,112,58,32],"value":"V\u00FDstup: "},
-{"hash":65489193,"name":"tfrmbase.btnvideo.caption","sourcebytes":[86,73,68,69,79,32,112,197,175,118,111,100,110,105],"value":"VIDEO p\u016Fvodni"},
-{"hash":238330029,"name":"tfrmbase.btnaudiopuvodni.caption","sourcebytes":[65,85,68,73,79,32,112,197,175,118,111,100,110,195,173],"value":"AUDIO p\u016Fvodn\u00ED"},
-{"hash":148968611,"name":"tfrmbase.btnaudiomp3.caption","sourcebytes":[65,85,68,73,79,32,77,80,51],"value":"AUDIO MP3"},
 {"hash":5462720,"name":"tfrmbase.groupbox4.caption","sourcebytes":[76,111,103,58,32],"value":"Log: "},
-{"hash":235948391,"name":"tfrmbase.btnsmazlog.caption","sourcebytes":[83,109,97,197,190,32,108,111,103],"value":"Sma\u017E log"},
-{"hash":20483885,"name":"tfrmbase.btnexit.caption","sourcebytes":[85,107,111,110,196,141,105,32,112,114,111,103,114,97,109],"value":"Ukon\u010Di program"},
-{"hash":243916688,"name":"tfrmbase.groupbox2.caption","sourcebytes":[80,114,111,103,114,101,115,115,58,32],"value":"Progress: "}
+{"hash":243916688,"name":"tfrmbase.groupbox2.caption","sourcebytes":[80,114,111,103,114,101,115,115,58,32],"value":"Progress: "},
+{"hash":242523373,"name":"tfrmbase.acvideooriginal.caption","sourcebytes":[86,73,68,69,79,32,112,197,175,118,111,100,110,195,173],"value":"VIDEO p\u016Fvodn\u00ED"},
+{"hash":238330029,"name":"tfrmbase.acaudiooriginal.caption","sourcebytes":[65,85,68,73,79,32,112,197,175,118,111,100,110,195,173],"value":"AUDIO p\u016Fvodn\u00ED"},
+{"hash":148968611,"name":"tfrmbase.acaudiomp3.caption","sourcebytes":[65,85,68,73,79,32,77,80,51],"value":"AUDIO MP3"},
+{"hash":235948391,"name":"tfrmbase.acclearlog.caption","sourcebytes":[83,109,97,197,190,32,108,111,103],"value":"Sma\u017E log"},
+{"hash":20483885,"name":"tfrmbase.acquitapplication.caption","sourcebytes":[85,107,111,110,196,141,105,32,112,114,111,103,114,97,109],"value":"Ukon\u010Di program"},
+{"hash":242698773,"name":"tfrmbase.acflipforms.caption","sourcebytes":[80,114,111,104,111,196,143,32,102,111,114,109,117,108,195,161,197,153,101],"value":"Proho\u010F formul\u00E1\u0159e"}
 ]}

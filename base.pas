@@ -61,6 +61,13 @@ type
   { TfrmBase }
 
   TfrmBase = class(TLocalizedForm)
+    acAudioOriginal: TAction;
+    acAudioMp3: TAction;
+    acClearLog: TAction;
+    acQuitApplication: TAction;
+    acFlipForms: TAction;
+    acVideoOriginal: TAction;
+    baseAkce: TActionList;
     btnVideo: TButton;
     btnAudioPuvodni: TButton;
     btnAudioMP3: TButton;
@@ -82,11 +89,12 @@ type
     radGrSegment: TRadioGroup;
     SpeedButton1: TSpeedButton;
     stgVlastnosti: TStringGrid;
-    procedure btnAudioMP3Click(Sender: TObject);
-    procedure btnAudioPuvodniClick(Sender: TObject);
-    procedure btnExitClick(Sender: TObject);
-    procedure btnSmazLogClick(Sender: TObject);
-    procedure btnVideoClick(Sender: TObject);
+    procedure acAudioMp3Execute(Sender: TObject);
+    procedure acAudioOriginalExecute(Sender: TObject);
+    procedure acClearLogExecute(Sender: TObject);
+    procedure acFlipFormsExecute(Sender: TObject);
+    procedure acQuitApplicationExecute(Sender: TObject);
+    procedure acVideoOriginalExecute(Sender: TObject);
     procedure chcbWithoutSplitChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -352,7 +360,7 @@ begin
   frmPlayer.lbTimePoints.Clear;
 end;
 
-procedure TfrmBase.btnVideoClick(Sender: TObject);
+procedure  TfrmBase.acVideoOriginalExecute(Sender: TObject);
 // ExtractFileDir(pomFile)          i:\Jirka-video-audiobook čárka
 // ExtractFileNameOnly(pomFile)     Astrid_Lindgrenová_Děti_z_Bullerbynu
 // ExtractFileName(pomFile)         Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4
@@ -392,7 +400,7 @@ begin
    chcbPlaylist.Enabled :=  not chcbPlaylist.Enabled;
 end;
 
-procedure TfrmBase.btnAudioPuvodniClick(Sender: TObject);
+procedure  TfrmBase.acAudioOriginalExecute(Sender: TObject);
 var
   pomFile: String;
   i: Integer;
@@ -423,7 +431,7 @@ begin
     end;
 end;
 
-procedure TfrmBase.btnAudioMP3Click(Sender: TObject);
+procedure TfrmBase.acAudioMp3Execute(Sender: TObject);
 var
   pomFile: String;
   i: Integer;
@@ -451,6 +459,22 @@ begin
                                            '.mp3','"'),prbUkazatel.Position);
           end;
     end;
+end;
+
+procedure  TfrmBase.acClearLogExecute(Sender: TObject);
+begin
+  memLog.Clear;
+  prbUkazatel.Position:=0;
+end;
+
+procedure TfrmBase.acQuitApplicationExecute(Sender: TObject);
+begin
+  frmMain.Close;
+end;
+
+procedure TfrmBase.acFlipFormsExecute(Sender: TObject);
+begin
+
 end;
 
 procedure TfrmBase.runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);
@@ -508,11 +532,6 @@ begin
   lblPocetSouboru.Refresh;
 end;
 
-procedure TfrmBase.btnExitClick(Sender: TObject);
-begin
-  frmMain.Close;
-end;
-
 procedure TfrmBase.FormCreate(Sender: TObject);
 var
   FileVerInfo: TFileVersionInfo;
@@ -552,13 +571,6 @@ procedure TfrmBase.FormDestroy(Sender: TObject);
 begin
   filesChapters.Free;
 end;
-
-procedure TfrmBase.btnSmazLogClick(Sender: TObject);
-begin
-  memLog.Clear;
-  prbUkazatel.Position:=0;
-end;
-
 
 end.
 

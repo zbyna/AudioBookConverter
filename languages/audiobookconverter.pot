@@ -35,24 +35,33 @@ msgstr ""
 msgid "Začátek"
 msgstr ""
 
-#: tfrmbase.btnaudiomp3.caption
+#: tfrmbase.acaudiomp3.caption
+msgctxt "tfrmbase.acaudiomp3.caption"
 msgid "AUDIO MP3"
 msgstr ""
 
-#: tfrmbase.btnaudiopuvodni.caption
+#: tfrmbase.acaudiooriginal.caption
+msgctxt "tfrmbase.acaudiooriginal.caption"
 msgid "AUDIO původní"
 msgstr ""
 
-#: tfrmbase.btnexit.caption
-msgid "Ukonči program"
-msgstr ""
-
-#: tfrmbase.btnsmazlog.caption
+#: tfrmbase.acclearlog.caption
+msgctxt "tfrmbase.acclearlog.caption"
 msgid "Smaž log"
 msgstr ""
 
-#: tfrmbase.btnvideo.caption
-msgid "VIDEO původni"
+#: tfrmbase.acflipforms.caption
+msgctxt "tfrmbase.acflipforms.caption"
+msgid "Prohoď formuláře"
+msgstr ""
+
+#: tfrmbase.acquitapplication.caption
+msgctxt "tfrmbase.acquitapplication.caption"
+msgid "Ukonči program"
+msgstr ""
+
+#: tfrmbase.acvideooriginal.caption
+msgid "VIDEO původní"
 msgstr ""
 
 #: tfrmbase.caption
@@ -138,6 +147,21 @@ msgstr ""
 msgid "frmMain"
 msgstr ""
 
+#: tfrmmain.mmactions.caption
+msgctxt "tfrmmain.mmactions.caption"
+msgid "Akce"
+msgstr ""
+
+#: tfrmmain.mmplayer.caption
+msgctxt "tfrmmain.mmplayer.caption"
+msgid "Přehrávač"
+msgstr ""
+
+#: tfrmmain.mmview.caption
+msgctxt "tfrmmain.mmview.caption"
+msgid "Zobrazit"
+msgstr ""
+
 #: tfrmplayer.acadd.caption
 msgid "Přidat"
 msgstr ""
@@ -151,7 +175,8 @@ msgid "Smazat"
 msgstr ""
 
 #: tfrmplayer.acpause.caption
-msgid "Pause"
+msgctxt "tfrmplayer.acpause.caption"
+msgid "Pauza"
 msgstr ""
 
 #: tfrmplayer.acplay.caption

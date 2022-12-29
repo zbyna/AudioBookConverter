@@ -5,7 +5,7 @@ unit main;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus,
   AnchorDocking
   , AnchorDockOptionsDlg;
 
@@ -14,6 +14,24 @@ type
   { TfrmMain }
 
   TfrmMain = class(TForm)
+    ilMain: TImageList;
+    mmViewFlipForms: TMenuItem;
+    mmActionsClearLog: TMenuItem;
+    mmMain: TMainMenu;
+    mmActions: TMenuItem;
+    mmPlayerClearList: TMenuItem;
+    mmActionsVideoOr: TMenuItem;
+    mmActionsAudioOr: TMenuItem;
+    mmActionsAudioMp3: TMenuItem;
+    mmActionsQuit: TMenuItem;
+    mmPlayer: TMenuItem;
+    mmView: TMenuItem;
+    mmPlayerPlay: TMenuItem;
+    mmPlayerStop: TMenuItem;
+    mmPlayerPause: TMenuItem;
+    mmPlayerAdd: TMenuItem;
+    mmPlayerDelete: TMenuItem;
+    mmPLayerUpdate: TMenuItem;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
   private

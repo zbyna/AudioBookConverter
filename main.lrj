@@ -1,3 +1,6 @@
 {"version":1,"strings":[
-{"hash":227686302,"name":"tfrmmain.caption","sourcebytes":[102,114,109,77,97,105,110],"value":"frmMain"}
+{"hash":227686302,"name":"tfrmmain.caption","sourcebytes":[102,114,109,77,97,105,110],"value":"frmMain"},
+{"hash":295317,"name":"tfrmmain.mmactions.caption","sourcebytes":[65,107,99,101],"value":"Akce"},
+{"hash":186005053,"name":"tfrmmain.mmplayer.caption","sourcebytes":[80,197,153,101,104,114,195,161,118,97,196,141],"value":"P\u0159ehr\u00E1va\u010D"},
+{"hash":93886228,"name":"tfrmmain.mmview.caption","sourcebytes":[90,111,98,114,97,122,105,116],"value":"Zobrazit"}
 ]}

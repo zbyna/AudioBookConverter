@@ -3,7 +3,7 @@
 {"hash":71363779,"name":"tfrmplayer.lbltime.caption","sourcebytes":[72,58,77,77,58,83,83,32,47,32,72,58,77,77,58,83,83],"value":"H:MM:SS / H:MM:SS"},
 {"hash":264221028,"name":"tfrmplayer.acplay.caption","sourcebytes":[80,197,153,101,104,114,195,161,116],"value":"P\u0159ehr\u00E1t"},
 {"hash":371552,"name":"tfrmplayer.acstop.caption","sourcebytes":[83,116,111,112],"value":"Stop"},
-{"hash":5672085,"name":"tfrmplayer.acpause.caption","sourcebytes":[80,97,117,115,101],"value":"Pause"},
+{"hash":5672193,"name":"tfrmplayer.acpause.caption","sourcebytes":[80,97,117,122,97],"value":"Pauza"},
 {"hash":217053908,"name":"tfrmplayer.acadd.caption","sourcebytes":[80,197,153,105,100,97,116],"value":"P\u0159idat"},
 {"hash":127129348,"name":"tfrmplayer.acupdate.caption","sourcebytes":[65,107,116,117,97,108,105,122,111,118,97,116],"value":"Aktualizovat"},
 {"hash":94605444,"name":"tfrmplayer.acdelete.caption","sourcebytes":[83,109,97,122,97,116],"value":"Smazat"},
