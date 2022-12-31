@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 452
   Height = 22
   Top = 21
-  Width = 320
+  Width = 1148
   Caption = 'frmMain'
   DesignTimePPI = 103
   Menu = mmMain

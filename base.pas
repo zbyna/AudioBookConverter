@@ -473,8 +473,76 @@ begin
 end;
 
 procedure TfrmBase.acFlipFormsExecute(Sender: TObject);
-begin
 
+ {
+  var
+    i, j,k: Integer;
+    mujSplitter: TAnchorDockSplitter;
+ }
+
+
+begin
+  // undock frmPlayer
+  DockMaster.ManualFloat(frmPlayer) ;
+  // dock frmPlayer from other side
+  if playerPosition = alRight then
+       playerPosition:=alLeft
+  else
+       playerPosition:=alRight;
+  DockMaster.ManualDock(DockMaster.GetAnchorSite(frmPlayer),
+                        TCustomForm(frmMain), playerPosition, frmMain);
+  frmPlayer.Width:=425;
+  frmBase.Width:=723;
+
+// testing AnchorDock inners :-)
+  {
+   for i:=0 to DockMaster.ControlCount-1 do
+     begin
+          memLog.Append(Format('- control: %s  AnchorSite: %s. CustomSite: %s',
+                                 [DockMaster.Controls[i].ToString
+                                  ,BoolToStr(DockMaster.IsAnchorSite(DockMaster.Controls[i]),True)
+                                  ,BoolToStr(DockMaster.IsCustomSite(DockMaster.Controls[i]),True)
+                                 ]
+                              )
+                       );
+          for j:=0 to DockMaster.GetSite(DockMaster.Controls[i]).ControlCount -1 do
+            begin
+              memLog.Append(Format('    - - name: %s width: %d ',
+                                    [DockMaster.GetSite(DockMaster.Controls[i]).Controls[j].ToString
+                                     ,DockMaster.GetSite(DockMaster.Controls[i]).Controls[j].Width
+                                    ]
+                                  )
+                           );
+              for k:=0 to  DockMaster.GetSite(DockMaster.Controls[i]).Controls[j].AnchoredControlCount-1 do
+                begin
+                  memLog.Append(Format('        - - - name: %s width: %d ',
+                  [DockMaster.GetSite(DockMaster.Controls[i]).Controls[j].AnchoredControls[k].ToString
+                   ,DockMaster.GetSite(DockMaster.Controls[i]).Controls[j].AnchoredControls[k].Width]));
+                end;
+
+            end;
+     end;
+   memLog.Append(
+      (DockMaster.GetSite(DockMaster.Controls[0]).Controls[0].AnchoredControls[1] as TAnchorDockSplitter)
+        .getSplitterPosition.ToString);
+   (DockMaster.GetSite(DockMaster.Controls[0]).Controls[0].AnchoredControls[1] as TAnchorDockSplitter)
+       .SetSplitterPosition(0);
+   memlog.Append((frmMain.DockManager as TAnchorDockManager).Site.Controls[0].AnchoredControls[1].ToString);
+   ((frmMain.DockManager as TAnchorDockManager)
+       .Site.Controls[0].AnchoredControls[1] as TAnchorDockSplitter)
+       .SetSplitterPosition(1000);
+
+   if GetDockSplitter(DockMaster.GetSite(DockMaster.Controls[0]).Controls[0].AnchoredControls[0] ,
+                       akRight, mujSplitter) then
+        begin
+           memLog.Append(format('form: %s  widthSplitter: %s',
+                                       [mujSplitter.ToString, mujSplitter.GetSplitterPosition.ToString]
+                                )
+                         );
+
+        end;
+
+  }
 end;
 
 procedure TfrmBase.runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);

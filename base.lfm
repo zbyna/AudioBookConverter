@@ -5,6 +5,7 @@ object frmBase: TfrmBase
   Top = 0
   Width = 723
   ActiveControl = memLog
+  Anchors = []
   Caption = 'Audio Book Converter'
   ClientHeight = 888
   ClientWidth = 723

@@ -42,6 +42,7 @@ type
 
 var
   frmMain: TfrmMain;
+  playerPosition:TAlign = alRight;
 
 implementation
 
@@ -60,12 +61,16 @@ end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
-  Self.Width:= 750;
-  DockMaster.MakeDockSite(Self,[akBottom],admrpNone,False); // admrpChild throws cycle dected error with
+
+  DockMaster.MakeDockSite(Self,[akBottom],admrpChild,False); // admrpChild throws cycle dected error with
                                                             //  DockMaster.ManualDock see frmBase.Create;
   DockMaster.OnShowOptions:=@ShowAnchorDockOptions;
   DockMaster.ShowHeader:=True;
+  DockMaster.HeaderAlignTop:=1000;
   DockMaster.HeaderStyle:='ThemedCaption';
+  DockMaster.ScaleOnResize:=false;
+  DockMaster.AllowDragging:=false;
+  Self.Width:= 723;
 end;
 
 end.
