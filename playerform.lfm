@@ -2015,7 +2015,7 @@ object frmPlayer: TfrmPlayer
       Category = 'Akce'
       Caption = 'Stop'
       DisableIfNoHandler = False
-      ImageIndex = 0
+      ImageIndex = 2
       OnExecute = acStopExecute
     end
     object acPause: TAction
@@ -2064,7 +2064,6 @@ object frmPlayer: TfrmPlayer
     end
     object poiStop: TMenuItem
       Action = acStop
-      ImageIndex = 2
     end
     object poiPause: TMenuItem
       Action = acPause

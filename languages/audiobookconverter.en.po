@@ -13,6 +13,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en\n"
 
+#: base.rsbasecaption
+msgctxt "base.rsbasecaption"
+msgid "Akce"
+msgstr "Actions"
+
 #: base.rschapters
 msgid "Kapitoly"
 msgstr "Chapters"
@@ -37,20 +42,22 @@ msgstr "Size"
 msgid "Začátek"
 msgstr "Start"
 
+#: playerform.rsplayercaption
+msgctxt "playerform.rsplayercaption"
+msgid "Přehrávač"
+msgstr "Player"
+
 #: tfrmbase.acaudiomp3.caption
-#, fuzzy
 msgctxt "tfrmbase.acaudiomp3.caption"
 msgid "AUDIO MP3"
 msgstr "AUDIO MP3"
 
 #: tfrmbase.acaudiooriginal.caption
-#, fuzzy
 msgctxt "tfrmbase.acaudiooriginal.caption"
 msgid "AUDIO původní"
 msgstr "AUDIO original"
 
 #: tfrmbase.acclearlog.caption
-#, fuzzy
 msgctxt "tfrmbase.acclearlog.caption"
 msgid "Smaž log"
 msgstr "Clear log"
@@ -58,10 +65,9 @@ msgstr "Clear log"
 #: tfrmbase.acflipforms.caption
 msgctxt "tfrmbase.acflipforms.caption"
 msgid "Prohoď formuláře"
-msgstr ""
+msgstr "Flip Forms"
 
 #: tfrmbase.acquitapplication.caption
-#, fuzzy
 msgctxt "tfrmbase.acquitapplication.caption"
 msgid "Ukonči program"
 msgstr "Quit program"
@@ -159,17 +165,17 @@ msgstr ""
 #: tfrmmain.mmactions.caption
 msgctxt "tfrmmain.mmactions.caption"
 msgid "Akce"
-msgstr ""
+msgstr "Actions"
 
 #: tfrmmain.mmplayer.caption
 msgctxt "tfrmmain.mmplayer.caption"
 msgid "Přehrávač"
-msgstr ""
+msgstr "Player"
 
 #: tfrmmain.mmview.caption
 msgctxt "tfrmmain.mmview.caption"
 msgid "Zobrazit"
-msgstr ""
+msgstr "View"
 
 #: tfrmplayer.acadd.caption
 msgid "Přidat"
@@ -184,15 +190,13 @@ msgid "Smazat"
 msgstr "Delete"
 
 #: tfrmplayer.acpause.caption
-#, fuzzy
-#| msgid "Pause"
 msgctxt "tfrmplayer.acpause.caption"
 msgid "Pauza"
 msgstr "Pause"
 
 #: tfrmplayer.acplay.caption
 msgid "Přehrát"
-msgstr ""
+msgstr "Play"
 
 #: tfrmplayer.acstop.caption
 msgid "Stop"
@@ -209,4 +213,3 @@ msgstr "frmPlayer"
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
 msgstr "H:MM:SS / H:MM:SS"
-

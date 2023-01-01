@@ -8,7 +8,8 @@ uses
   Classes, SysUtils, Forms, Controls, ComCtrls, StdCtrls, ActnList, Menus, RTTICtrls,
   MPlayerCtrl,localizedforms,DefaultTranslator, Buttons,LazUTF8
   ,AnchorDocking
-  ,main;
+  ,main
+  ,FileInfo;
 
 type
 
@@ -67,6 +68,9 @@ type
      procedure UpdateTranslation(ALang: String); override;
   end;
 
+resourcestring
+  rsPlayerCaption = 'Přehrávač';
+
 var
   frmPlayer: TfrmPlayer;
 
@@ -83,6 +87,8 @@ var
     buttonPausePressed : Boolean = false;
 
 procedure TfrmPlayer.FormCreate(Sender: TObject);
+var
+  FileVerInfo: TFileVersionInfo;
 begin
   {$IFDEF Linux}
   MPlayer.StartParam := '-vo x11 -zoom -fs';
@@ -91,8 +97,17 @@ begin
   {$ENDIF}
   MPlayer.Volume:= 50;
   lbTimePoints.Sorted:= True;
+  frmPlayer.Caption:=rsPlayerCaption;
   DockMaster.MakeDockable(Self);
   DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alRight,nil);
+  FileVerInfo:=TFileVersionInfo.Create(nil);
+  try
+    FileVerInfo.ReadFileInfo;
+    frmMain.Caption:='Audio Book Converter' +
+         format(' %s',[FileVerInfo.VersionStrings.Values['FileVersion'].Substring(0,5)]);
+  finally
+    FileVerInfo.Free;
+  end;
 end;
 
 procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: single);

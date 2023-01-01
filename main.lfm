@@ -8,6 +8,7 @@ object frmMain: TfrmMain
   Menu = mmMain
   OnClose = FormClose
   OnCreate = FormCreate
+  LCLVersion = '2.3.0.0'
   object mmMain: TMainMenu
     Images = ilMain
     ImagesWidth = 16

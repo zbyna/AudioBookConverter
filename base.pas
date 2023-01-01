@@ -6,13 +6,11 @@ unit base;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, RTTICtrls, TATools, Forms, Controls, Graphics,
-  Dialogs, ActnList, ComCtrls, StdCtrls, Buttons, EditBtn, ExtCtrls, windows,
-  ValEdit, process, LazFileUtils, fpjson, jsonparser, dateutils, localizedforms,
-  DefaultTranslator, Grids, strutils, playerform
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics,
+  Dialogs, ActnList, ComCtrls, StdCtrls, Buttons, ExtCtrls, windows,
+  process, LazFileUtils, fpjson, dateutils, localizedforms,
+  Grids, strutils, playerform
   // FPC 3.0 fileinfo reads exe resources as long as you register the appropriate units
-  , fileinfo
-  , winpeimagereader {need this for reading exe info}
   , Generics.Collections
   , AnchorDocking
   , main;
@@ -121,6 +119,7 @@ type
   rsKodek = 'Kodek';
   rsChapters = 'Kapitoly';
   rsUseChapters = 'Použít kapitoly';
+  rsBaseCaption = 'Akce';
 
 var
   frmBase: TfrmBase;
@@ -474,13 +473,12 @@ end;
 
 procedure TfrmBase.acFlipFormsExecute(Sender: TObject);
 
+var
+  pomCaption: TCaption;
  {
-  var
     i, j,k: Integer;
     mujSplitter: TAnchorDockSplitter;
  }
-
-
 begin
   pomCaption := frmMain.Caption;
   // undock frmPlayer
@@ -495,7 +493,7 @@ begin
   Application.ProcessMessages;
   DockMaster.ManualDock(DockMaster.GetAnchorSite(frmPlayer),
                         TCustomForm(frmMain), playerPosition, frmMain);
-
+  frmMain.Caption:=pomCaption;
 // testing AnchorDock inners :-)
   {
    for i:=0 to DockMaster.ControlCount-1 do
@@ -603,8 +601,6 @@ begin
 end;
 
 procedure TfrmBase.FormCreate(Sender: TObject);
-var
-  FileVerInfo: TFileVersionInfo;
 begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
@@ -615,14 +611,6 @@ begin
   stgVlastnosti.Columns.Items[1].Title.Caption := rsKodek;
   stgVlastnosti.Columns.Items[2].Title.Caption := rsChapters ;
   stgVlastnosti.Columns.Items[3].Title.Caption := rsUseChapters;
-  FileVerInfo:=TFileVersionInfo.Create(nil);
-  try
-    FileVerInfo.ReadFileInfo;
-    frmBase.Caption:=frmBase.Caption +
-         format(' %s',[FileVerInfo.VersionStrings.Values['FileVersion'].Substring(0,5)]);
-  finally
-    FileVerInfo.Free;
-  end;
   memLog.MaxLength:=0;
   stgVlastnosti.ColWidths[0]:=473;
   stgVlastnosti.ColWidths[1]:=100;
@@ -634,7 +622,7 @@ begin
   segInfoBck.BackupSegmentInfo();
   DockMaster.MakeDockable(Self);
   DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alBottom,nil);
-  //DockMaster.ManualEnlarge(DockMaster.GetAnchorSite(frmMain),akRight,false);
+  frmBase.Caption:= rsBaseCaption;
 end;
 
 procedure TfrmBase.FormDestroy(Sender: TObject);
