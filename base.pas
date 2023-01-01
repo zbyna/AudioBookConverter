@@ -482,17 +482,19 @@ procedure TfrmBase.acFlipFormsExecute(Sender: TObject);
 
 
 begin
+  pomCaption := frmMain.Caption;
   // undock frmPlayer
+  frmPlayer.WindowState:=wsMinimized;
+  Application.ProcessMessages;
   DockMaster.ManualFloat(frmPlayer) ;
   // dock frmPlayer from other side
   if playerPosition = alRight then
        playerPosition:=alLeft
   else
        playerPosition:=alRight;
+  Application.ProcessMessages;
   DockMaster.ManualDock(DockMaster.GetAnchorSite(frmPlayer),
                         TCustomForm(frmMain), playerPosition, frmMain);
-  frmPlayer.Width:=425;
-  frmBase.Width:=723;
 
 // testing AnchorDock inners :-)
   {
