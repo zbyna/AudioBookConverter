@@ -316,6 +316,13 @@ end;
 
 procedure TfrmBase.HowToSplit(i: integer);
 begin
+  // when string grid position was not changed by user, user chapters dict needs update!
+  if stgVlastnosti.Row-1 = i then
+     begin
+        filesChapters[stgVlastnosti.Row-1]['user'].clear;
+        filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
+        //memLog.Append(format('for row: %d added chapters user chapters from player',[i]));
+     end;
   // file has user defined chapters - by movie player
   if filesChapters.Items[i]['user'].Count > 0 then
      begin
@@ -347,7 +354,8 @@ begin
    frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
    frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
    // add user chapters if any
-   frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+   if filesChapters[stgVlastnosti.Row-1]['user'].Count > 0 then
+      frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
 end;
 
 procedure TfrmBase.stgVlastnostiBeforeSelection(Sender: TObject; aCol,
