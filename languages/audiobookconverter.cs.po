@@ -22,6 +22,14 @@ msgstr ""
 msgid "Kapitoly"
 msgstr "Kapitoly"
 
+#: base.rsfile
+msgid "Soubor: "
+msgstr "Soubor: "
+
+#: base.rshas
+msgid "nemá "
+msgstr "nemá "
+
 #: base.rsjmno
 msgid "Jméno"
 msgstr "Jméno"
@@ -29,6 +37,10 @@ msgstr "Jméno"
 #: base.rskodek
 msgid "Kodek"
 msgstr "Kodek"
+
+#: base.rsnointernalch
+msgid "žádné interní kapitoly"
+msgstr "žádné interní kapitoly"
 
 #: base.rsusechapters
 msgid "Použít kapitoly"
@@ -45,22 +57,19 @@ msgstr "Začátek"
 #: playerform.rsplayercaption
 msgctxt "playerform.rsplayercaption"
 msgid "Přehrávač"
-msgstr ""
+msgstr "Přehrávač"
 
 #: tfrmbase.acaudiomp3.caption
-#, fuzzy
 msgctxt "tfrmbase.acaudiomp3.caption"
 msgid "AUDIO MP3"
 msgstr "AUDIO MP3"
 
 #: tfrmbase.acaudiooriginal.caption
-#, fuzzy
 msgctxt "tfrmbase.acaudiooriginal.caption"
 msgid "AUDIO původní"
 msgstr "AUDIO původní"
 
 #: tfrmbase.acclearlog.caption
-#, fuzzy
 msgctxt "tfrmbase.acclearlog.caption"
 msgid "Smaž log"
 msgstr "Smaž log"
@@ -68,17 +77,16 @@ msgstr "Smaž log"
 #: tfrmbase.acflipforms.caption
 msgctxt "tfrmbase.acflipforms.caption"
 msgid "Prohoď formuláře"
-msgstr ""
+msgstr "Prohoď formuláře"
 
 #: tfrmbase.acquitapplication.caption
-#, fuzzy
 msgctxt "tfrmbase.acquitapplication.caption"
 msgid "Ukonči program"
 msgstr "Ukonči program"
 
 #: tfrmbase.acvideooriginal.caption
 msgid "VIDEO původní"
-msgstr ""
+msgstr "VIDEO původní"
 
 #: tfrmbase.caption
 msgid "Audio Book Converter"
@@ -219,4 +227,3 @@ msgstr "frmPlayer"
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
 msgstr "H:MM:SS / H:MM:SS"
-

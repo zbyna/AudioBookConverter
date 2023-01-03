@@ -1861,7 +1861,7 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object lbTimePoints: TListBox
-    Left = 15
+    Left = 16
     Height = 337
     Top = 492
     Width = 405

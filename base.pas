@@ -8,7 +8,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ActnList, ComCtrls, StdCtrls, Buttons, ExtCtrls, windows,
-  process, LazFileUtils, fpjson, dateutils, localizedforms,
+  process, LazFileUtils, fpjson, dateutils, localizedforms,DefaultTranslator,
   Grids, strutils, playerform
   // FPC 3.0 fileinfo reads exe resources as long as you register the appropriate units
   , Generics.Collections
@@ -103,6 +103,8 @@ type
     procedure stgVlastnostiAfterSelection(Sender: TObject; aCol, aRow: Integer);
     procedure stgVlastnostiBeforeSelection(Sender: TObject; aCol, aRow: Integer
       );
+    procedure stgVlastnostiCheckboxToggled(Sender: TObject; aCol,
+      aRow: Integer; aState: TCheckboxState);
   private
 
   public
@@ -120,6 +122,9 @@ type
   rsChapters = 'Kapitoly';
   rsUseChapters = 'Použít kapitoly';
   rsBaseCaption = 'Akce';
+  rsFile = 'Soubor: ';
+  rsNoInternalCh = 'žádné interní kapitoly';
+  rsHas = 'nemá ';
 
 var
   frmBase: TfrmBase;
@@ -365,6 +370,18 @@ begin
   filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
   // clear user chapters in frmPlayer listbox
   frmPlayer.lbTimePoints.Clear;
+end;
+
+procedure TfrmBase.stgVlastnostiCheckboxToggled(Sender: TObject; aCol,
+  aRow: Integer; aState: TCheckboxState);
+begin
+  //memLog.Append(format('%d      %d      %d',[aCol,aRow, integer(astate)]));
+  if (aState = cbchecked) and (filesChapters[aRow-1]['internal'].count = 0) then
+      begin
+       stgVlastnosti.Cells[aCol,aRow] := '0';
+       ShowMessage( rsFile + stgVlastnosti.Cells[0, aRow] + LineEnding + rsHas
+                    + rsNoInternalCh);
+      end;
 end;
 
 procedure  TfrmBase.acVideoOriginalExecute(Sender: TObject);

@@ -22,6 +22,14 @@ msgstr "Actions"
 msgid "Kapitoly"
 msgstr "Chapters"
 
+#: base.rsfile
+msgid "Soubor: "
+msgstr "File: "
+
+#: base.rshas
+msgid "nemá "
+msgstr "has "
+
 #: base.rsjmno
 msgid "Jméno"
 msgstr "Name"
@@ -29,6 +37,10 @@ msgstr "Name"
 #: base.rskodek
 msgid "Kodek"
 msgstr "Codec"
+
+#: base.rsnointernalch
+msgid "žádné interní kapitoly"
+msgstr "no internal chapters"
 
 #: base.rsusechapters
 msgid "Použít kapitoly"
@@ -90,19 +102,19 @@ msgstr "Without splitting"
 
 #: tfrmbase.groupbox1.caption
 msgid "Vstup: "
-msgstr "Input"
+msgstr "Input: "
 
 #: tfrmbase.groupbox2.caption
 msgid "Progress: "
-msgstr "Progress"
+msgstr "Progress: "
 
 #: tfrmbase.groupbox3.caption
 msgid "Výstup: "
-msgstr "Output:"
+msgstr "Output: "
 
 #: tfrmbase.groupbox4.caption
 msgid "Log: "
-msgstr "Log:"
+msgstr "Log: "
 
 #: tfrmbase.hint
 msgid "Exit"
@@ -110,7 +122,7 @@ msgstr "Exit"
 
 #: tfrmbase.lblpocetsouboru.caption
 msgid "Celkem vybráno souborů: "
-msgstr "Files selected:"
+msgstr "Files selected: "
 
 #: tfrmbase.lblpocetsouborucislo.caption
 msgid "0"

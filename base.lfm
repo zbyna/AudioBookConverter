@@ -15,7 +15,6 @@ object frmBase: TfrmBase
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poDesktopCenter
-  LCLVersion = '2.3.0.0'
   Visible = True
   object GroupBox1: TGroupBox
     AnchorSideLeft.Control = Owner
@@ -164,6 +163,7 @@ object frmBase: TfrmBase
       TabOrder = 4
       OnAfterSelection = stgVlastnostiAfterSelection
       OnBeforeSelection = stgVlastnostiBeforeSelection
+      OnCheckboxToggled = stgVlastnostiCheckboxToggled
     end
     object SpeedButton1: TSpeedButton
       Left = 606

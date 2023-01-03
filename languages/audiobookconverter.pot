@@ -20,12 +20,24 @@ msgstr ""
 msgid "Kapitoly"
 msgstr ""
 
+#: base.rsfile
+msgid "Soubor: "
+msgstr ""
+
+#: base.rshas
+msgid "nemá "
+msgstr ""
+
 #: base.rsjmno
 msgid "Jméno"
 msgstr ""
 
 #: base.rskodek
 msgid "Kodek"
+msgstr ""
+
+#: base.rsnointernalch
+msgid "žádné interní kapitoly"
 msgstr ""
 
 #: base.rsusechapters
