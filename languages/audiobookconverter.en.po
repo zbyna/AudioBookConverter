@@ -86,7 +86,7 @@ msgstr "Quit program"
 
 #: tfrmbase.acvideooriginal.caption
 msgid "VIDEO původní"
-msgstr ""
+msgstr "VIDEO original"
 
 #: tfrmbase.caption
 msgid "Audio Book Converter"
@@ -200,6 +200,10 @@ msgstr "Clean list"
 #: tfrmplayer.acdelete.caption
 msgid "Smazat"
 msgstr "Delete"
+
+#: tfrmplayer.acimportchapters.caption
+msgid "Import kapitol"
+msgstr "Import chapters"
 
 #: tfrmplayer.acpause.caption
 msgctxt "tfrmplayer.acpause.caption"

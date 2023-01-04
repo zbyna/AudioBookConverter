@@ -196,6 +196,10 @@ msgstr ""
 msgid "Smazat"
 msgstr ""
 
+#: tfrmplayer.acimportchapters.caption
+msgid "Import kapitol"
+msgstr ""
+
 #: tfrmplayer.acpause.caption
 msgctxt "tfrmplayer.acpause.caption"
 msgid "Pauza"

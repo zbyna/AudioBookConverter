@@ -15,6 +15,7 @@ type
 
   TfrmMain = class(TForm)
     ilMain: TImageList;
+    mmPlayerImportChapters: TMenuItem;
     mmViewFlipForms: TMenuItem;
     mmActionsClearLog: TMenuItem;
     mmMain: TMainMenu;

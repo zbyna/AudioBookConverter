@@ -22,6 +22,7 @@ type
     acPause: TAction;
     acAdd: TAction;
     acClearList: TAction;
+    acImportChapters: TAction;
     acUpdate: TAction;
     acDelete: TAction;
     btnAdd: TSpeedButton;
@@ -34,6 +35,7 @@ type
     ImageList1: TImageList;
     lblTime: TLabel;
     lbTimePoints: TListBox;
+    poImportChapters: TMenuItem;
     poiPlay: TMenuItem;
     poiStop: TMenuItem;
     poiPause: TMenuItem;
@@ -44,11 +46,13 @@ type
     poiClearList: TMenuItem;
     MPlayer: TMPlayerControl;
     pomAkce: TPopupMenu;
+    btnImportChapters: TSpeedButton;
     trbAudio: TTITrackBar;
     trbProgress: TTrackBar;
     procedure acAddExecute(Sender: TObject);
     procedure acClearListExecute(Sender: TObject);
     procedure acDeleteExecute(Sender: TObject);
+    procedure acImportChaptersExecute(Sender: TObject);
     procedure acPauseExecute(Sender: TObject);
     procedure acPlayExecute(Sender: TObject);
     procedure acStopExecute(Sender: TObject);
@@ -75,6 +79,8 @@ var
   frmPlayer: TfrmPlayer;
 
 implementation
+
+uses base;
 
 {$R *.lfm}
 
@@ -226,6 +232,12 @@ begin
             lbTimePoints.Items.Delete(lbTimePoints.ItemIndex);
           lbTimePoints.ClearSelection;
       end;
+end;
+
+procedure TfrmPlayer.acImportChaptersExecute(Sender: TObject);
+begin
+  if frmBase.filesChapters[frmBase.stgVlastnosti.Row-1]['internal'].Count > 0 then
+      lbTimePoints.Items.AddStrings(frmBase.filesChapters[frmBase.stgVlastnosti.Row-1]['internal']);
 end;
 
 procedure TfrmPlayer.acStopExecute(Sender: TObject);

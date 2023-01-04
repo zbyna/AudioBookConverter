@@ -7,5 +7,6 @@
 {"hash":217053908,"name":"tfrmplayer.acadd.caption","sourcebytes":[80,197,153,105,100,97,116],"value":"P\u0159idat"},
 {"hash":127129348,"name":"tfrmplayer.acupdate.caption","sourcebytes":[65,107,116,117,97,108,105,122,111,118,97,116],"value":"Aktualizovat"},
 {"hash":94605444,"name":"tfrmplayer.acdelete.caption","sourcebytes":[83,109,97,122,97,116],"value":"Smazat"},
-{"hash":60056013,"name":"tfrmplayer.acclearlist.caption","sourcebytes":[86,121,196,141,105,115,116,105,116,32,115,101,122,110,97,109],"value":"Vy\u010Distit seznam"}
+{"hash":60056013,"name":"tfrmplayer.acclearlist.caption","sourcebytes":[86,121,196,141,105,115,116,105,116,32,115,101,122,110,97,109],"value":"Vy\u010Distit seznam"},
+{"hash":99719724,"name":"tfrmplayer.acimportchapters.caption","sourcebytes":[73,109,112,111,114,116,32,107,97,112,105,116,111,108],"value":"Import kapitol"}
 ]}

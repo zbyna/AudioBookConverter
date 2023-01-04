@@ -16,7 +16,7 @@ msgstr ""
 #: base.rsbasecaption
 msgctxt "base.rsbasecaption"
 msgid "Akce"
-msgstr ""
+msgstr "Akce"
 
 #: base.rschapters
 msgid "Kapitoly"
@@ -177,17 +177,17 @@ msgstr ""
 #: tfrmmain.mmactions.caption
 msgctxt "tfrmmain.mmactions.caption"
 msgid "Akce"
-msgstr ""
+msgstr "Akce"
 
 #: tfrmmain.mmplayer.caption
 msgctxt "tfrmmain.mmplayer.caption"
 msgid "Přehrávač"
-msgstr ""
+msgstr "Přehrávač"
 
 #: tfrmmain.mmview.caption
 msgctxt "tfrmmain.mmview.caption"
 msgid "Zobrazit"
-msgstr ""
+msgstr "Zobrazit"
 
 #: tfrmplayer.acadd.caption
 msgid "Přidat"
@@ -201,16 +201,19 @@ msgstr "Vyčistit seznam"
 msgid "Smazat"
 msgstr "Smazat"
 
+#: tfrmplayer.acimportchapters.caption
+msgid "Import kapitol"
+msgstr "Import kapitol"
+
 #: tfrmplayer.acpause.caption
-#, fuzzy
 #| msgid "Pause"
 msgctxt "tfrmplayer.acpause.caption"
 msgid "Pauza"
-msgstr "Pause"
+msgstr "Pauza"
 
 #: tfrmplayer.acplay.caption
 msgid "Přehrát"
-msgstr ""
+msgstr "Přehrát"
 
 #: tfrmplayer.acstop.caption
 msgid "Stop"
