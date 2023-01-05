@@ -278,7 +278,7 @@ begin
         for j:=1 to chaptersCount-1 do
         begin
           internalChapters.Add(
-             FormatDateTime('h:nnn:ss',
+             FormatDateTime('hh:nnn:ss',
                 jObject.FindPath('chapters').Items[j].FindPathDef('start_time').AsFloat / (24 * 60 * 60)) )
         end;
         internalChapters.Delimiter:= ',';

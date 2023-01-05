@@ -121,8 +121,8 @@ begin
   if (MPlayer.Duration > 0) and (APosition > 0) then
       begin
         changingPosition:= true;
-        lblTime.Caption :=  FormatDateTime('h:nnn:ss', APosition / (24 * 60 * 60)) + ' / ' +
-                            FormatDateTime('h:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
+        lblTime.Caption :=  FormatDateTime('hh:nnn:ss', APosition / (24 * 60 * 60)) + ' / ' +
+                            FormatDateTime('hh:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
         trbProgress.Position:=  trunc(APosition / MPlayer.Duration * 100);
         Application.ProcessMessages;
         //ShowMessage(Format('%f',[APosition / MPlayer.Duration]));
@@ -146,8 +146,8 @@ begin
    if not changingPosition then
        begin
          newPosition :=  trbProgress.Position/100 * MPlayer.Duration;
-         lblTime.Caption :=  FormatDateTime('h:nnn:ss', newPosition / (24 * 60 * 60)) + ' / ' +
-                             FormatDateTime('h:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
+         lblTime.Caption :=  FormatDateTime('hh:nnn:ss', newPosition / (24 * 60 * 60)) + ' / ' +
+                             FormatDateTime('hh:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
          MPlayer.Position:= newPosition;
        end;
 
@@ -213,7 +213,8 @@ end;
 
 procedure TfrmPlayer.acAddExecute(Sender: TObject);
 begin
-  lbTimePoints.Items.Append(FormatDateTime('h:nnn:ss', MPlayer.Position / (24 * 60 * 60)));
+  // probably better to use format 'hh:mmm:ss' because of sorting chapters in book tens hours long
+  lbTimePoints.Items.Append(FormatDateTime('hh:nnn:ss', MPlayer.Position / (24 * 60 * 60)));
 end;
 
 procedure TfrmPlayer.acClearListExecute(Sender: TObject);
@@ -244,7 +245,7 @@ procedure TfrmPlayer.acStopExecute(Sender: TObject);
 begin
   if MPlayer.Paused then acPlay.Enabled:=True;
   MPlayer.Stop;
-  lblTime.Caption:= 'H:MM:SS / H:MM:SS';
+  lblTime.Caption:= 'HH:MM:SS / HH:MM:SS';
   trbProgress.Position:= 0;
 end;
 
@@ -258,7 +259,7 @@ begin
         lbTimePoints.ClearSelection;
         lbTimePoints.Sorted:= false;
         lbTimePoints.Items.Strings[pom] := FormatDateTime(
-                                                    'h:nnn:ss', MPlayer.Position / (24 * 60 * 60));
+                                                    'hh:nnn:ss', MPlayer.Position / (24 * 60 * 60));
         lbTimePoints.Sorted:=True;
         lbTimePoints.ItemIndex:= pom;
       end;
