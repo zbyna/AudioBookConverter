@@ -317,6 +317,11 @@ begin
    frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
    // values will be time points
    radGrSegment.ItemIndex := 1;
+   // enable btnImportChapters action if possible
+   if filesChapters[stgVlastnosti.Row-1]['internal'].Count > 0 then
+      frmPlayer.acImportChapters.Enabled:=True
+   else
+      frmPlayer.acImportChapters.Enabled:=False;
 end;
 
 procedure TfrmBase.HowToSplit(i: integer);
@@ -361,6 +366,11 @@ begin
    // add user chapters if any
    if filesChapters[stgVlastnosti.Row-1]['user'].Count > 0 then
       frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+   // enable btnImportChapters action if possible
+   if filesChapters[stgVlastnosti.Row-1]['internal'].Count > 0 then
+      frmPlayer.acImportChapters.Enabled:=True
+   else
+      frmPlayer.acImportChapters.Enabled:=False;
 end;
 
 procedure TfrmBase.stgVlastnostiBeforeSelection(Sender: TObject; aCol,
