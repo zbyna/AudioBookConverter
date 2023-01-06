@@ -58,6 +58,7 @@ type
     procedure acStopExecute(Sender: TObject);
     procedure acUpdateExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure lbTimePointsDblClick(Sender: TObject);
     procedure MPlayerPlaying(ASender: TObject; APosition: single);
     procedure trbAudioChange(Sender: TObject);
     procedure trbProgressChange(Sender: TObject);
@@ -116,7 +117,20 @@ begin
   end;
 end;
 
-procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: single);
+procedure TfrmPlayer.lbTimePointsDblClick(Sender: TObject);
+var
+    pomDateTime : TDateTime;
+begin
+  if lbTimePoints.ItemIndex <> -1 then
+     begin
+       pomDateTime:=StrToDateTime(lbTimePoints.Items.Strings[lbTimePoints.ItemIndex]);
+       if not MPlayer.Playing then MPlayer.Play;
+       // due to 'hh:nnn:ss' is TDateTime aka Double in hours needs to be converted to seconds :-)
+       MPlayer.Position := pomDateTime * (24*60*60);
+     end;
+end;
+
+procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: Single);
 begin
   if (MPlayer.Duration > 0) and (APosition > 0) then
       begin

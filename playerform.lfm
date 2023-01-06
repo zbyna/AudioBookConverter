@@ -14,7 +14,6 @@ object frmPlayer: TfrmPlayer
   DesignTimePPI = 103
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '2.3.0.0'
   Visible = True
   object MPlayer: TMPlayerControl
     AnchorSideTop.Control = Owner
@@ -1856,6 +1855,7 @@ object frmPlayer: TfrmPlayer
     BorderSpacing.Bottom = 5
     ItemHeight = 0
     MultiSelect = True
+    OnDblClick = lbTimePointsDblClick
     ParentFont = False
     TabOrder = 2
   end
