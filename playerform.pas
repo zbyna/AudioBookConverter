@@ -125,13 +125,25 @@ begin
                             FormatDateTime('hh:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
         trbProgress.Position:=  trunc(APosition / MPlayer.Duration * 100);
         Application.ProcessMessages;
-        //ShowMessage(Format('%f',[APosition / MPlayer.Duration]));
         changingPosition:= false;
       end
                                                 else
-      lblTime.Caption := 'timescale not set';
-      //lblTime.Caption := Format('%f',[MPlayer.Duration]) ;
-      //lblTime.Caption :=  FormatDateTime('h:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
+      begin
+        lblTime.Caption := 'pts MISSING ...';
+        // this is a bad encoded file: (mostly badly embedded album art in m4b files)
+        // ffmpeg error: No pts value from demuxer to use for frame!
+        // pts after filters MISSING
+        // Possibly bad interleaving detected.
+        // Use -ni option if this causes playback issues and avoid or fix the program
+        // that created the file.
+        // partially working solution:
+        //  see: https://superuser.com/questions/710008/how-to-get-rid-of-ffmpeg-pts-has-no-value-error
+        // can be fixed by Mplayer.StartParam := '-novideo -nofontconfig';
+      end;
+      //frmBase.memLog.Append(Format('Poměr: %f',[APosition / MPlayer.Duration]));
+      //frmBase.memLog.Append(Format('APosition: %f',[APosition]));
+      //frmBase.memLog.Append(Format('Position: %f',[MPlayer.Position]));
+      //frmBase.memLog.Append(Format('Duration: %f',[MPlayer.Duration]));
 end;
 
 procedure TfrmPlayer.trbAudioChange(Sender: TObject);
