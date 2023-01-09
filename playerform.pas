@@ -9,6 +9,7 @@ uses
   MPlayerCtrl,localizedforms,DefaultTranslator, Buttons,LazUTF8
   ,AnchorDocking
   ,main
+  ,epiktimer
   ,FileInfo;
 
 type
@@ -32,6 +33,7 @@ type
     btnPlay: TSpeedButton;
     btnStop: TSpeedButton;
     btnUpdate: TSpeedButton;
+    etCustomTimer: TEpikTimer;
     ImageList1: TImageList;
     lblTime: TLabel;
     lbTimePoints: TListBox;
@@ -78,6 +80,8 @@ resourcestring
 
 var
   frmPlayer: TfrmPlayer;
+  usingCustomTimer : Boolean = false; // for use in bad encoded files without pts see: TfrmPlayer.MplayerPlaying()
+  elapsedBeforePause : Single = 0;  // time elapsed in customer timer before pause pressed
 
 implementation
 
@@ -115,6 +119,7 @@ begin
   finally
     FileVerInfo.Free;
   end;
+  etCustomTimer := TEpikTimer.Create(Application);
 end;
 
 procedure TfrmPlayer.lbTimePointsDblClick(Sender: TObject);
@@ -132,6 +137,29 @@ end;
 
 procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: Single);
 begin
+  if (APosition < -1) or usingCustomTimer then
+  begin
+  // this is a bad encoded file: (mostly badly embedded album art in m4b files)
+  // ffmpeg error:
+  //  No pts value from demuxer to use for frame! pts after filters MISSING.
+  //  Possibly bad interleaving detected.
+  //  Use -ni option if this causes playback issues and avoid or fix the program
+  //  that created the file.
+  // Partially working solution:
+  //  see: https://superuser.com/questions/710008/how-to-get-rid-of-ffmpeg-pts-has-no-value-error
+  // can be fixed by Mplayer.StartParam := '-novideo -nofontconfig';
+    if not usingCustomTimer then
+        begin
+          lblTime.Caption := 'pts MISSING ...';
+          frmBase.memLog.Append('pts MISSING ... using custom Timer!');
+          etCustomTimer.Clear;
+          etCustomTimer.Start;
+          usingCustomTimer := True;
+        end;
+  APosition := elapsedBeforePause + etCustomTimer.Elapsed;
+  //frmBase.memLog.Append('Aposition: ' + FloatToStr(APosition));
+  //frmBase.memLog.Append('elapsedBeforePause: ' + FloatToStr(elapsedBeforePause));
+  end;
   if (MPlayer.Duration > 0) and (APosition > 0) then
       begin
         changingPosition:= true;
@@ -143,17 +171,8 @@ begin
       end
                                                 else
       begin
-        lblTime.Caption := 'pts MISSING ...';
-        // this is a bad encoded file: (mostly badly embedded album art in m4b files)
-        // ffmpeg error: No pts value from demuxer to use for frame!
-        // pts after filters MISSING
-        // Possibly bad interleaving detected.
-        // Use -ni option if this causes playback issues and avoid or fix the program
-        // that created the file.
-        // partially working solution:
-        //  see: https://superuser.com/questions/710008/how-to-get-rid-of-ffmpeg-pts-has-no-value-error
-        // can be fixed by Mplayer.StartParam := '-novideo -nofontconfig';
       end;
+      //frmBase.memLog.Append(etCustomTimer.ElapsedDHMS);
       //frmBase.memLog.Append(Format('Poměr: %f',[APosition / MPlayer.Duration]));
       //frmBase.memLog.Append(Format('APosition: %f',[APosition]));
       //frmBase.memLog.Append(Format('Position: %f',[MPlayer.Position]));
@@ -175,7 +194,9 @@ begin
          lblTime.Caption :=  FormatDateTime('hh:nnn:ss', newPosition / (24 * 60 * 60)) + ' / ' +
                              FormatDateTime('hh:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
          MPlayer.Position:= newPosition;
+         if usingCustomTimer then elapsedBeforePause := newPosition;
        end;
+      //frmBase.memLog.Append('trbProgress - ProgressChange - fired');
 
    // alternative solution maybe using pause of mPlayer when onMouseDown and unpause when onMouseUp
    // not alternative but suplementary :-)
@@ -185,22 +206,29 @@ end;
 procedure TfrmPlayer.trbProgressMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 begin
-  if not buttonPausePressed then        //  Utf8RPos('Pau',acPause.Caption) > 0
-     MPlayer.Paused:= true;
+  if  not MPlayer.Paused then        //  Utf8RPos('Pau',acPause.Caption) > 0
+     begin
+        if usingCustomTimer then
+          begin
+              etCustomTimer.Stop;
+              etCustomTimer.Clear; 
+          end;
+      end;
 end;
+          
 
 procedure TfrmPlayer.trbProgressMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
 begin
-  if not buttonPausePressed then                         // Utf8RPos('Pau',acPause.Caption) > 0
+  if not MPlayer.Paused then                         // Utf8RPos('Pau',acPause.Caption) > 0
      begin
-     MPlayer.Paused:= false;
-     MPlayer.Position:=trbProgress.Position/100 * MPlayer.Duration;
+     if usingCustomTimer then etCustomTimer.Start;
      MPlayer.SendMPlayerCommand('osd 3');
      MPlayer.SendMPlayerCommand('osd_show_progression');
      MPlayer.SendMPlayerCommand('speed_set 1.0');
 
      end;
+  //frmBase.memLog.Append('trbProgress - MouseUp - fired');
 end;
 
 function TfrmPlayer.timePointsToString: String;
@@ -226,14 +254,20 @@ begin
   if MPlayer.Paused then
    begin
       //btnPause.Caption:= 'PAUSED';
-      buttonPausePressed:= True;
       acPlay.Enabled:= not acPlay.Enabled;
+      if usingCustomTimer then
+        begin
+          elapsedBeforePause := elapsedBeforePause + etCustomTimer.Elapsed;
+          etCustomTimer.Stop;
+          etCustomTimer.Clear;
+        end;  
+      
    end
   else
    begin
       //btnPause.Caption:= 'Pause';
-      buttonPausePressed:= False;
       acPlay.Enabled:= not acPlay.Enabled;
+      if usingCustomTimer then etCustomTimer.Start;
    end;
 end;
 
@@ -270,6 +304,13 @@ end;
 procedure TfrmPlayer.acStopExecute(Sender: TObject);
 begin
   if MPlayer.Paused then acPlay.Enabled:=True;
+  if usingCustomTimer then
+    begin
+      etCustomTimer.Stop;
+      etCustomTimer.Clear;
+      elapsedBeforePause := 0;
+      usingCustomTimer := false;
+    end;
   MPlayer.Stop;
   lblTime.Caption:= 'HH:MM:SS / HH:MM:SS';
   trbProgress.Position:= 0;

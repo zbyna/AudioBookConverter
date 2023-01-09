@@ -14,6 +14,7 @@ object frmPlayer: TfrmPlayer
   DesignTimePPI = 103
   OnCreate = FormCreate
   Position = poDesktopCenter
+  LCLVersion = '2.3.0.0'
   Visible = True
   object MPlayer: TMPlayerControl
     AnchorSideTop.Control = Owner
@@ -1834,6 +1835,7 @@ object frmPlayer: TfrmPlayer
     Height = 30
     Top = 398
     Width = 288
+    Frequency = 10
     Max = 100
     OnChange = trbProgressChange
     Position = 0
@@ -1868,6 +1870,7 @@ object frmPlayer: TfrmPlayer
     Height = 358
     Top = 25
     Width = 24
+    Frequency = 10
     Max = 100
     OnChange = trbAudioChange
     Orientation = trVertical
@@ -3403,5 +3406,12 @@ object frmPlayer: TfrmPlayer
       F6E1154D7D6EAA79FCB2668F90C6F2BB8DE46F3D2F7FFB39A9E529ED5E16FFAE
       8EFF0364EB0C90
     }
+  end
+  object etCustomTimer: TEpikTimer
+    StringPrecision = 6
+    TimebaseSource = SystemTimebase
+    CorrelationMode = OnTimebaseSelect
+    Left = 56
+    Top = 519
   end
 end
