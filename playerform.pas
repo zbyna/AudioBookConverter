@@ -82,6 +82,7 @@ var
   frmPlayer: TfrmPlayer;
   usingCustomTimer : Boolean = false; // for use in bad encoded files without pts see: TfrmPlayer.MplayerPlaying()
   elapsedBeforePause : Single = 0;  // time elapsed in customer timer before pause pressed
+  draggingPosition:Boolean = False; // changing! position in player´s progressbar
 
 implementation
 
@@ -94,8 +95,7 @@ uses base;
 { TfrmPlayer }
 
 var
-    changingPosition :Boolean = false;
-    buttonPausePressed : Boolean = false;
+    changingPosition :Boolean = false; // regurally position change during playing  see: TfrmPlayer.MplayerPlaying()
 
 procedure TfrmPlayer.FormCreate(Sender: TObject);
 var
@@ -137,6 +137,7 @@ end;
 
 procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: Single);
 begin
+  if draggingPosition then exit;
   if (APosition < -1) or usingCustomTimer then
   begin
   // this is a bad encoded file: (mostly badly embedded album art in m4b files)
@@ -190,6 +191,7 @@ var
 begin
    if not changingPosition then
        begin
+         draggingPosition := True;
          newPosition :=  trbProgress.Position/100 * MPlayer.Duration;
          lblTime.Caption :=  FormatDateTime('hh:nnn:ss', newPosition / (24 * 60 * 60)) + ' / ' +
                              FormatDateTime('hh:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
@@ -226,8 +228,8 @@ begin
      MPlayer.SendMPlayerCommand('osd 3');
      MPlayer.SendMPlayerCommand('osd_show_progression');
      MPlayer.SendMPlayerCommand('speed_set 1.0');
-
      end;
+  draggingPosition := False;
   //frmBase.memLog.Append('trbProgress - MouseUp - fired');
 end;
 
@@ -314,6 +316,7 @@ begin
   MPlayer.Stop;
   lblTime.Caption:= 'HH:MM:SS / HH:MM:SS';
   trbProgress.Position:= 0;
+  draggingPosition:=False;
 end;
 
 procedure TfrmPlayer.acUpdateExecute(Sender: TObject);
