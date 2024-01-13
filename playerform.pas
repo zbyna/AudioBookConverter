@@ -83,6 +83,7 @@ var
   usingCustomTimer : Boolean = false; // for use in bad encoded files without pts see: TfrmPlayer.MplayerPlaying()
   elapsedBeforePause : Single = 0;  // time elapsed in customer timer before pause pressed
   draggingPosition:Boolean = False; // changing! position in player´s progressbar
+  playingChapterPosition : Boolean = False;
 
 implementation
 
@@ -129,6 +130,8 @@ begin
   if lbTimePoints.ItemIndex <> -1 then
      begin
        pomDateTime:=StrToDateTime(lbTimePoints.Items.Strings[lbTimePoints.ItemIndex]);
+       playingChapterPosition:=True;
+       elapsedBeforePause:=pomDateTime * (24*60*60);
        if not MPlayer.Playing then MPlayer.Play;
        // due to 'hh:nnn:ss' is TDateTime aka Double in hours needs to be converted to seconds :-)
        MPlayer.Position := pomDateTime * (24*60*60);
@@ -138,7 +141,8 @@ end;
 procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: Single);
 begin
   if draggingPosition then exit;
-  if (APosition < -1) or usingCustomTimer then
+   frmBase.memLog.Append('Raw-Aposition: ' + FloatToStr(APosition));
+  if (APosition < -1) or usingCustomTimer or playingChapterPosition then
   begin
   // this is a bad encoded file: (mostly badly embedded album art in m4b files)
   // ffmpeg error:
@@ -151,15 +155,33 @@ begin
   // can be fixed by Mplayer.StartParam := '-novideo -nofontconfig';
     if not usingCustomTimer then
         begin
-          lblTime.Caption := 'pts MISSING ...';
-          frmBase.memLog.Append('pts MISSING ... using custom Timer!');
+          if playingChapterPosition then 
+            begin
+              playingChapterPosition:=False;  
+              frmBase.memLog.Append('Playing user chapter ... using custom Timer!');
+              // customTimer will be used even if there are pts in file because user does not have to click play
+              // and there is no way how to find presence of pts than playing file
+              // small issue (epikTimer has really small memory footprint)
+              // comparing full program funcionality for files without pts
+            end
+          else 
+            begin
+              lblTime.Caption := 'pts MISSING ...';
+              frmBase.memLog.Append('pts MISSING ... using custom Timer!');
+            end;
           etCustomTimer.Clear;
           etCustomTimer.Start;
           usingCustomTimer := True;
         end;
+    if playingChapterPosition then // playing another chapter without stopping player i.e. usingCustomTimer is True
+        begin
+          etCustomTimer.Clear;
+          etCustomTimer.Start;
+          playingChapterPosition:=False
+        end;
   APosition := elapsedBeforePause + etCustomTimer.Elapsed;
-  //frmBase.memLog.Append('Aposition: ' + FloatToStr(APosition));
-  //frmBase.memLog.Append('elapsedBeforePause: ' + FloatToStr(elapsedBeforePause));
+  // frmBase.memLog.Append('Aposition: ' + FloatToStr(APosition));
+  // frmBase.memLog.Append('elapsedBeforePause: ' + FloatToStr(elapsedBeforePause));
   end;
   if (MPlayer.Duration > 0) and (APosition > 0) then
       begin
