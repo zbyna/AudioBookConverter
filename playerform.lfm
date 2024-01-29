@@ -30,6 +30,7 @@ object frmPlayer: TfrmPlayer
     ParentColor = False
     PopupMenu = pomAkce
     TabOrder = 0
+    AutoStartPlayback = False
     AutoLoadSubtitle = False
     KeepAspect = True
     AspectRatio = arDefault

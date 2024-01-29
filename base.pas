@@ -312,7 +312,8 @@ begin
    // fill player form from 1st line of stgVlastnosti  - player caption
    frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
    // file to play
-   frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   // frmPlayer.mpvPlayer.FileName:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
    // user chapters if any
    frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
    // values will be time points
@@ -362,7 +363,8 @@ procedure TfrmBase.stgVlastnostiAfterSelection(Sender: TObject; aCol,
 begin
    // add selected rows file to play
    frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
-   frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   //frmPlayer.mpvPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
    // add user chapters if any
    if filesChapters[stgVlastnosti.Row-1]['user'].Count > 0 then
       frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
