@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, ComCtrls, StdCtrls, ActnList, Menus, RTTICtrls,
-  MPlayerCtrl,localizedforms,DefaultTranslator, Buttons,LazUTF8
+  MPVPlayer, BGRAOpenGL, BGRABitmapTypes,localizedforms,DefaultTranslator, Buttons,LazUTF8
   ,AnchorDocking
   ,main
   ,epiktimer
@@ -46,7 +46,7 @@ type
     poiUpdate: TMenuItem;
     poiDelete: TMenuItem;
     poiClearList: TMenuItem;
-    MPlayer: TMPlayerControl;
+    mpvPlayer: TMPVPlayer;
     pomAkce: TPopupMenu;
     btnImportChapters: TSpeedButton;
     trbAudio: TTITrackBar;
@@ -105,9 +105,10 @@ begin
   {$IFDEF Linux}
   MPlayer.StartParam := '-vo x11 -zoom -fs';
   {$else $IFDEF Windows}
-  MPlayer.StartParam := '-vo direct3d -nofontconfig';
+  mpvPlayer.StartParam := '-vo direct3d -nofontconfig';
   {$ENDIF}
   MPlayer.Volume:= 50;
+  mpvPlayer.Volume:= 50;
   lbTimePoints.Sorted:= True;
   frmPlayer.Caption:=rsPlayerCaption;
   DockMaster.MakeDockable(Self);
@@ -132,9 +133,9 @@ begin
        pomDateTime:=StrToDateTime(lbTimePoints.Items.Strings[lbTimePoints.ItemIndex]);
        playingChapterPosition:=True;
        elapsedBeforePause:=pomDateTime * (24*60*60);
-       if not MPlayer.Playing then MPlayer.Play;
+       if not mpvPlayer.Playing then mpvPlayer.Play;
        // due to 'hh:nnn:ss' is TDateTime aka Double in hours needs to be converted to seconds :-)
-       MPlayer.Position := pomDateTime * (24*60*60);
+       mpvPlayer.Position := pomDateTime * (24*60*60);
      end;
 end;
 
@@ -152,7 +153,7 @@ begin
   //  that created the file.
   // Partially working solution:
   //  see: https://superuser.com/questions/710008/how-to-get-rid-of-ffmpeg-pts-has-no-value-error
-  // can be fixed by Mplayer.StartParam := '-novideo -nofontconfig';
+  // can be fixed by mpvPlayer.StartParam := '-novideo -nofontconfig';
     if not usingCustomTimer then
         begin
           if playingChapterPosition then 
@@ -183,12 +184,12 @@ begin
   // frmBase.memLog.Append('Aposition: ' + FloatToStr(APosition));
   // frmBase.memLog.Append('elapsedBeforePause: ' + FloatToStr(elapsedBeforePause));
   end;
-  if (MPlayer.Duration > 0) and (APosition > 0) then
+  if (mpvPlayer.Duration > 0) and (APosition > 0) then
       begin
         changingPosition:= true;
         lblTime.Caption :=  FormatDateTime('hh:nnn:ss', APosition / (24 * 60 * 60)) + ' / ' +
-                            FormatDateTime('hh:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
-        trbProgress.Position:=  trunc(APosition / MPlayer.Duration * 100);
+                            FormatDateTime('hh:nnn:ss', mpvPlayer.Duration / (24 * 60 * 60));
+        trbProgress.Position:=  trunc(APosition / mpvPlayer.Duration * 100);
         Application.ProcessMessages;
         changingPosition:= false;
       end
@@ -196,15 +197,15 @@ begin
       begin
       end;
       //frmBase.memLog.Append(etCustomTimer.ElapsedDHMS);
-      //frmBase.memLog.Append(Format('Poměr: %f',[APosition / MPlayer.Duration]));
+      //frmBase.memLog.Append(Format('Poměr: %f',[APosition / mpvPlayer.Duration]));
       //frmBase.memLog.Append(Format('APosition: %f',[APosition]));
-      //frmBase.memLog.Append(Format('Position: %f',[MPlayer.Position]));
-      //frmBase.memLog.Append(Format('Duration: %f',[MPlayer.Duration]));
+      //frmBase.memLog.Append(Format('Position: %f',[mpvPlayer.Position]));
+      //frmBase.memLog.Append(Format('Duration: %f',[mpvPlayer.Duration]));
 end;
 
 procedure TfrmPlayer.trbAudioChange(Sender: TObject);
 begin
-  MPlayer.Volume:= trbAudio.Position;
+  mpvPlayer.Volume:= trbAudio.Position;
 end;
 
 procedure TfrmPlayer.trbProgressChange(Sender: TObject);
@@ -214,15 +215,15 @@ begin
    if not changingPosition then
        begin
          draggingPosition := True;
-         newPosition :=  trbProgress.Position/100 * MPlayer.Duration;
+         newPosition :=  trbProgress.Position/100 * mpvPlayer.Duration;
          lblTime.Caption :=  FormatDateTime('hh:nnn:ss', newPosition / (24 * 60 * 60)) + ' / ' +
-                             FormatDateTime('hh:nnn:ss', MPlayer.Duration / (24 * 60 * 60));
-         MPlayer.Position:= newPosition;
+                             FormatDateTime('hh:nnn:ss', mpvPlayer.Duration / (24 * 60 * 60));
+         mpvPlayer.Position:= newPosition;
          if usingCustomTimer then elapsedBeforePause := newPosition;
        end;
       //frmBase.memLog.Append('trbProgress - ProgressChange - fired');
 
-   // alternative solution maybe using pause of mPlayer when onMouseDown and unpause when onMouseUp
+   // alternative solution maybe using pause of mpvPlayer when onMouseDown and unpause when onMouseUp
    // not alternative but suplementary :-)
 
 end;
@@ -230,7 +231,7 @@ end;
 procedure TfrmPlayer.trbProgressMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 begin
-  if  not MPlayer.Paused then        //  Utf8RPos('Pau',acPause.Caption) > 0
+  if  not mpvPlayer.Paused then        //  Utf8RPos('Pau',acPause.Caption) > 0
      begin
         if usingCustomTimer then
           begin
@@ -244,12 +245,12 @@ end;
 procedure TfrmPlayer.trbProgressMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
 begin
-  if not MPlayer.Paused then                         // Utf8RPos('Pau',acPause.Caption) > 0
+  if not mpvPlayer.Paused then                         // Utf8RPos('Pau',acPause.Caption) > 0
      begin
      if usingCustomTimer then etCustomTimer.Start;
-     MPlayer.SendMPlayerCommand('osd 3');
-     MPlayer.SendMPlayerCommand('osd_show_progression');
-     MPlayer.SendMPlayerCommand('speed_set 1.0');
+     mpvPlayer.SendMPlayerCommand('osd 3');
+     mpvPlayer.SendMPlayerCommand('osd_show_progression');
+     mpvPlayer.SendMPlayerCommand('speed_set 1.0');
      end;
   draggingPosition := False;
   //frmBase.memLog.Append('trbProgress - MouseUp - fired');
@@ -268,14 +269,14 @@ end;
 
 procedure TfrmPlayer.acPlayExecute(Sender: TObject);
 begin
-  if not MPlayer.Paused then
-   MPlayer.Play;
+  if not mpvPlayer.Paused then
+   mpvPlayer.Play;
 end;
 
 procedure TfrmPlayer.acPauseExecute(Sender: TObject);
 begin
-  MPlayer.Paused:= not MPlayer.Paused;
-  if MPlayer.Paused then
+  mpvPlayer.Paused:= not mpvPlayer.Paused;
+  if mpvPlayer.Paused then
    begin
       //btnPause.Caption:= 'PAUSED';
       acPlay.Enabled:= not acPlay.Enabled;
@@ -298,7 +299,7 @@ end;
 procedure TfrmPlayer.acAddExecute(Sender: TObject);
 begin
   // probably better to use format 'hh:mmm:ss' because of sorting chapters in book tens hours long
-  lbTimePoints.Items.Append(FormatDateTime('hh:nnn:ss', MPlayer.Position / (24 * 60 * 60)));
+  lbTimePoints.Items.Append(FormatDateTime('hh:nnn:ss', mpvPlayer.Position / (24 * 60 * 60)));
 end;
 
 procedure TfrmPlayer.acClearListExecute(Sender: TObject);
@@ -327,7 +328,7 @@ end;
 
 procedure TfrmPlayer.acStopExecute(Sender: TObject);
 begin
-  if MPlayer.Paused then acPlay.Enabled:=True;
+  if mpvPlayer.Paused then acPlay.Enabled:=True;
   if usingCustomTimer then
     begin
       etCustomTimer.Stop;
@@ -335,7 +336,7 @@ begin
       elapsedBeforePause := 0;
       usingCustomTimer := false;
     end;
-  MPlayer.Stop;
+  mpvPlayer.Stop;
   lblTime.Caption:= 'HH:MM:SS / HH:MM:SS';
   trbProgress.Position:= 0;
   draggingPosition:=False;
@@ -351,7 +352,7 @@ begin
         lbTimePoints.ClearSelection;
         lbTimePoints.Sorted:= false;
         lbTimePoints.Items.Strings[pom] := FormatDateTime(
-                                                    'hh:nnn:ss', MPlayer.Position / (24 * 60 * 60));
+                                                    'hh:nnn:ss', mpvPlayer.Position / (24 * 60 * 60));
         lbTimePoints.Sorted:=True;
         lbTimePoints.ItemIndex:= pom;
       end;

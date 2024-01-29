@@ -119,19 +119,19 @@
     </RunParams>
     <RequiredPackages Count="8">
       <Item1>
-        <PackageName Value="etpackage_dsgn"/>
+        <PackageName Value="UWMPVPlayer"/>
       </Item1>
       <Item2>
-        <PackageName Value="etpackage"/>
+        <PackageName Value="etpackage_dsgn"/>
       </Item2>
       <Item3>
-        <PackageName Value="AnchorDocking"/>
+        <PackageName Value="etpackage"/>
       </Item3>
       <Item4>
-        <PackageName Value="FCL"/>
+        <PackageName Value="AnchorDocking"/>
       </Item4>
       <Item5>
-        <PackageName Value="MPlayerControlLaz"/>
+        <PackageName Value="FCL"/>
       </Item5>
       <Item6>
         <PackageName Value="TAChartLazarusPkg"/>

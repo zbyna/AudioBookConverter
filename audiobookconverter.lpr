@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, runtimetypeinfocontrols, tachartlazaruspkg, anchordockpkg, base,
-  playerform, mplayercontrollaz, main
+  playerform, main
   { you can add units after this };
 
 {$R *.res}

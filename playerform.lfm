@@ -1,33 +1,43 @@
 object frmPlayer: TfrmPlayer
   Left = 331
-  Height = 888
+  Height = 828
   Top = 722
-  Width = 425
+  Width = 396
   ActiveControl = trbProgress
   Anchors = []
   Caption = 'frmPlayer'
   ChildSizing.EnlargeHorizontal = crsScaleChilds
   ChildSizing.EnlargeVertical = crsScaleChilds
-  ClientHeight = 888
-  ClientWidth = 425
-  Constraints.MinWidth = 425
-  DesignTimePPI = 103
+  ClientHeight = 828
+  ClientWidth = 396
+  Constraints.MinWidth = 396
   OnCreate = FormCreate
   Position = poDesktopCenter
   LCLVersion = '2.3.0.0'
   Visible = True
-  object MPlayer: TMPlayerControl
+  object mpvPlayer: TMPVPlayer
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = trbAudio
-    Left = 22
-    Height = 371
-    Top = 27
-    Width = 371
+    Left = 9
+    Height = 346
+    Top = 25
+    Width = 346
     Anchors = [akTop]
     BorderSpacing.Left = 5
-    BorderSpacing.Top = 27
-    BorderSpacing.Right = 10
-    Loop = 0
+    BorderSpacing.Top = 25
+    BorderSpacing.Right = 9
+    BevelOuter = bvNone
+    ParentColor = False
+    PopupMenu = pomAkce
+    TabOrder = 0
+    AutoLoadSubtitle = False
+    KeepAspect = True
+    AspectRatio = arDefault
+    NoAudioDisplay = False
+    RendererMode = rmEmbedding
+    RenderFailAction = rfNone
+    UseHWDec = False
+    LogLevel = llStatus
     BackImage.Data = {
       1754506F727461626C654E6574776F726B4772617068696306E0000089504E47
       0D0A1A0A0000000D4948445200000173000001730806000000CCBAE992000000
@@ -1824,17 +1834,14 @@ object frmPlayer: TfrmPlayer
       C9A9F1F1F1995B7622121222F11FDAE3FF5B2C9252380000000049454E44AE42
       6082
     }
-    PopupMenu = pomAkce
-    Volume = 0
-    OnPlaying = MPlayerPlaying
   end
   object trbProgress: TTrackBar
-    AnchorSideTop.Control = MPlayer
+    AnchorSideTop.Control = mpvPlayer
     AnchorSideTop.Side = asrBottom
-    Left = 15
-    Height = 30
-    Top = 398
-    Width = 288
+    Left = 5
+    Height = 28
+    Top = 371
+    Width = 268
     Frequency = 10
     Max = 100
     OnChange = trbProgressChange
@@ -1848,10 +1855,10 @@ object frmPlayer: TfrmPlayer
     TabOrder = 1
   end
   object lbTimePoints: TListBox
-    Left = 22
-    Height = 300
-    Top = 488
-    Width = 371
+    Left = 9
+    Height = 280
+    Top = 446
+    Width = 346
     Anchors = []
     BorderSpacing.Top = 5
     BorderSpacing.Bottom = 5
@@ -1862,28 +1869,28 @@ object frmPlayer: TfrmPlayer
     TabOrder = 2
   end
   object trbAudio: TTITrackBar
-    AnchorSideLeft.Control = MPlayer
+    AnchorSideLeft.Control = mpvPlayer
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 403
-    Height = 358
-    Top = 25
-    Width = 24
+    Left = 364
+    Height = 334
+    Top = 23
+    Width = 22
     Frequency = 10
     Max = 100
     OnChange = trbAudioChange
     Orientation = trVertical
     Position = 50
     Reversed = True
-    BorderSpacing.Top = 25
+    BorderSpacing.Top = 23
     BorderSpacing.Right = 5
     TabOrder = 3
   end
   object btnPlay: TSpeedButton
-    Left = 22
+    Left = 19
     Height = 36
-    Top = 440
+    Top = 409
     Width = 36
     Action = acPlay
     Anchors = []
@@ -1897,9 +1904,9 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnStop: TSpeedButton
-    Left = 70
+    Left = 64
     Height = 36
-    Top = 440
+    Top = 409
     Width = 36
     Action = acStop
     Anchors = []
@@ -1912,9 +1919,9 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnPause: TSpeedButton
-    Left = 118
+    Left = 109
     Height = 36
-    Top = 440
+    Top = 409
     Width = 36
     Action = acPause
     Anchors = []
@@ -1927,15 +1934,15 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnAdd: TSpeedButton
-    Left = 166
+    Left = 153
     Height = 36
-    Top = 440
+    Top = 409
     Width = 36
     Action = acAdd
     Anchors = []
     AutoSize = True
     BorderSpacing.Left = 5
-    BorderSpacing.Top = 23
+    BorderSpacing.Top = 21
     Images = ImageList1
     ImageIndex = 3
     ImageWidth = 32
@@ -1943,14 +1950,14 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnUpdate: TSpeedButton
-    Left = 262
+    Left = 243
     Height = 36
-    Top = 440
+    Top = 409
     Width = 36
     Action = acUpdate
     Anchors = []
     AutoSize = True
-    BorderSpacing.Top = 23
+    BorderSpacing.Top = 21
     Images = ImageList1
     ImageIndex = 4
     ImageWidth = 32
@@ -1958,14 +1965,14 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnDelete: TSpeedButton
-    Left = 214
+    Left = 198
     Height = 36
-    Top = 440
+    Top = 409
     Width = 36
     Action = acDelete
     Anchors = []
     AutoSize = True
-    BorderSpacing.Top = 23
+    BorderSpacing.Top = 21
     Images = ImageList1
     ImageIndex = 5
     ImageWidth = 32
@@ -1973,15 +1980,15 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnClearList: TSpeedButton
-    Left = 310
+    Left = 288
     Height = 36
-    Top = 440
+    Top = 409
     Width = 36
     Action = acClearList
     Anchors = []
     AutoSize = True
     BorderSpacing.Left = 5
-    BorderSpacing.Top = 24
+    BorderSpacing.Top = 22
     BorderSpacing.Bottom = 5
     Images = ImageList1
     ImageIndex = 6
@@ -1990,9 +1997,9 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnImportChapters: TSpeedButton
-    Left = 357
+    Left = 331
     Height = 36
-    Top = 440
+    Top = 409
     Width = 36
     Action = acImportChapters
     Anchors = []
@@ -2005,10 +2012,10 @@ object frmPlayer: TfrmPlayer
   object lblTime: TLabel
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Side = asrBottom
-    Left = 307
-    Height = 15
-    Top = 413
-    Width = 109
+    Left = 283
+    Height = 14
+    Top = 385
+    Width = 102
     Anchors = []
     AutoSize = False
     BorderSpacing.Top = 4
@@ -2019,8 +2026,8 @@ object frmPlayer: TfrmPlayer
   end
   object aclAkce: TActionList
     Images = ImageList1
-    Left = 224
-    Top = 528
+    Left = 209
+    Top = 492
     object acPlay: TAction
       Category = 'Akce'
       Caption = 'Přehrát'
@@ -2080,8 +2087,8 @@ object frmPlayer: TfrmPlayer
   object pomAkce: TPopupMenu
     Images = ImageList1
     ImagesWidth = 16
-    Left = 144
-    Top = 576
+    Left = 134
+    Top = 537
     object poiPlay: TMenuItem
       Action = acPlay
     end
@@ -2114,8 +2121,8 @@ object frmPlayer: TfrmPlayer
     Height = 64
     Scaled = True
     Width = 64
-    Left = 224
-    Top = 576
+    Left = 209
+    Top = 537
     Bitmap = {
       4C7A080000004000000040000000D1A000000000000078DAEC7D07785357D2F6
       55B1BA64B9F72AC0F4DE6C7AAFC67403A6371BD331361D0C18D39B29A683E960
@@ -3411,7 +3418,7 @@ object frmPlayer: TfrmPlayer
     StringPrecision = 6
     TimebaseSource = SystemTimebase
     CorrelationMode = OnTimebaseSelect
-    Left = 56
-    Top = 519
+    Left = 52
+    Top = 484
   end
 end
