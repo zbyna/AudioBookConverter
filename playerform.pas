@@ -127,7 +127,7 @@ begin
        pomDateTime:=StrToDateTime(lbTimePoints.Items.Strings[lbTimePoints.ItemIndex]);
        playingChapterPosition:=True;
        elapsedBeforePause:=pomDateTime * (24*60*60);
-       if not mpvPlayer.Playing then mpvPlayer.Play;
+       if not mpvPlayer.isPlaying then mpvPlayer.Resume(True);
        // due to 'hh:nnn:ss' is TDateTime aka Double in hours needs to be converted to seconds :-)
        mpvPlayer.Position := pomDateTime * (24*60*60);
      end;
@@ -225,7 +225,7 @@ end;
 procedure TfrmPlayer.trbProgressMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState;
   X, Y: Integer);
 begin
-  if  not mpvPlayer.Paused then        //  Utf8RPos('Pau',acPause.Caption) > 0
+  if  not mpvPlayer.IsPaused then        //  Utf8RPos('Pau',acPause.Caption) > 0
      begin
         if usingCustomTimer then
           begin
@@ -239,7 +239,7 @@ end;
 procedure TfrmPlayer.trbProgressMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
 begin
-  if not mpvPlayer.Paused then                         // Utf8RPos('Pau',acPause.Caption) > 0
+  if not mpvPlayer.IsPaused then                         // Utf8RPos('Pau',acPause.Caption) > 0
      begin
      if usingCustomTimer then etCustomTimer.Start;
      end;
@@ -260,14 +260,14 @@ end;
 
 procedure TfrmPlayer.acPlayExecute(Sender: TObject);
 begin
-  if not mpvPlayer.Paused then
-   mpvPlayer.Play;
+  if mpvPlayer.IsPaused then
+   mpvPlayer.Resume(True);
 end;
 
 procedure TfrmPlayer.acPauseExecute(Sender: TObject);
 begin
-  mpvPlayer.Paused:= not mpvPlayer.Paused;
-  if mpvPlayer.Paused then
+  mpvPlayer.Pause;
+  if mpvPlayer.IsPaused then
    begin
       //btnPause.Caption:= 'PAUSED';
       acPlay.Enabled:= not acPlay.Enabled;
@@ -319,7 +319,7 @@ end;
 
 procedure TfrmPlayer.acStopExecute(Sender: TObject);
 begin
-  if mpvPlayer.Paused then acPlay.Enabled:=True;
+  if mpvPlayer.IsPaused then acPlay.Enabled:=True;
   if usingCustomTimer then
     begin
       etCustomTimer.Stop;
