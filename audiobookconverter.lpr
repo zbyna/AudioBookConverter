@@ -14,7 +14,7 @@ uses
 {$R *.res}
 
 begin
-  Application.Title:='Audio Book Converter';
+    Application.Title:='Audio Book Converter';
   RequireDerivedFormResource:=True;
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);

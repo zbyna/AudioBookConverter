@@ -13,7 +13,6 @@ object frmPlayer: TfrmPlayer
   Constraints.MinWidth = 396
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '2.3.0.0'
   Visible = True
   object mpvPlayer: TMPVPlayer
     AnchorSideTop.Control = Owner
@@ -35,7 +34,7 @@ object frmPlayer: TfrmPlayer
     KeepAspect = True
     AspectRatio = arDefault
     NoAudioDisplay = False
-    RendererMode = rmEmbedding
+    RendererMode = rmOpenGL
     RenderFailAction = rfNone
     UseHWDec = False
     LogLevel = llStatus
