@@ -102,7 +102,7 @@ procedure TfrmPlayer.FormCreate(Sender: TObject);
 var
   FileVerInfo: TFileVersionInfo;
 begin
-  mpvPlayer.Volume:= 50;
+  mpvPlayer.SetAudioVolume(50);
   lbTimePoints.Sorted:= True;
   frmPlayer.Caption:=rsPlayerCaption;
   DockMaster.MakeDockable(Self);
@@ -199,7 +199,7 @@ end;
 
 procedure TfrmPlayer.trbAudioChange(Sender: TObject);
 begin
-  mpvPlayer.Volume:= trbAudio.Position;
+  mpvPlayer.SetAudioVolume(trbAudio.Position);
 end;
 
 procedure TfrmPlayer.trbProgressChange(Sender: TObject);
