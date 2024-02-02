@@ -14,6 +14,17 @@ uses
 
 type
 
+  {TMPVPlayerHelper}
+
+  { TMVPVlayerHelper }
+
+  TMVPVlayerHelper = class helper for TMPVPlayer
+  private
+      function GetMediaLenInS: Integer;          // seconds TMPVPlayer has only miliseconds
+      function GetMediaPosInS: Integer;          //  ------------------- " ----------------
+      procedure SetMediaPosInS(AValue: Integer); //  ------------------- " ----------------
+  end;
+
   { TfrmPlayer }
 
   TfrmPlayer = class(TLocalizedForm)
@@ -98,6 +109,23 @@ uses base;
 var
     changingPosition :Boolean = false; // regurally position change during playing  see: TfrmPlayer.MplayerPlaying()
 
+{ TMVPVlayerHelper }
+
+function TMVPVlayerHelper.GetMediaLenInS: Integer;
+begin
+    Result := self.GetMediaLenInMs div 1000;
+end;
+
+function TMVPVlayerHelper.GetMediaPosInS: Integer;
+begin
+   Result := Self.GetMediaPosInMs div 1000;
+end;
+
+procedure TMVPVlayerHelper.SetMediaPosInS(AValue: Integer);
+begin
+   self.SetMediaPosInMs(AValue * 1000);
+end;
+
 procedure TfrmPlayer.FormCreate(Sender: TObject);
 var
   FileVerInfo: TFileVersionInfo;
@@ -129,7 +157,7 @@ begin
        elapsedBeforePause:=pomDateTime * (24*60*60);
        if not mpvPlayer.isPlaying then mpvPlayer.Resume(True);
        // due to 'hh:nnn:ss' is TDateTime aka Double in hours needs to be converted to seconds :-)
-       mpvPlayer.Position := pomDateTime * (24*60*60);
+       mpvPlayer.SetMediaPosInS(Round(pomDateTime * (24*60*60)));
      end;
 end;
 
@@ -178,12 +206,12 @@ begin
   // frmBase.memLog.Append('Aposition: ' + FloatToStr(APosition));
   // frmBase.memLog.Append('elapsedBeforePause: ' + FloatToStr(elapsedBeforePause));
   end;
-  if (mpvPlayer.Duration > 0) and (APosition > 0) then
+  if (mpvPlayer.GetMediaLenInS  > 0) and (APosition > 0) then
       begin
         changingPosition:= true;
         lblTime.Caption :=  FormatDateTime('hh:nnn:ss', APosition / (24 * 60 * 60)) + ' / ' +
-                            FormatDateTime('hh:nnn:ss', mpvPlayer.Duration / (24 * 60 * 60));
-        trbProgress.Position:=  trunc(APosition / mpvPlayer.Duration * 100);
+                            FormatDateTime('hh:nnn:ss', mpvPlayer.GetMediaLenInS / (24 * 60 * 60));
+        trbProgress.Position:=  trunc(APosition / mpvPlayer.GetMediaLenInS * 100);
         Application.ProcessMessages;
         changingPosition:= false;
       end
@@ -209,10 +237,10 @@ begin
    if not changingPosition then
        begin
          draggingPosition := True;
-         newPosition :=  trbProgress.Position/100 * mpvPlayer.Duration;
+         newPosition :=  trbProgress.Position/100 * mpvPlayer.GetMediaLenInS;
          lblTime.Caption :=  FormatDateTime('hh:nnn:ss', newPosition / (24 * 60 * 60)) + ' / ' +
-                             FormatDateTime('hh:nnn:ss', mpvPlayer.Duration / (24 * 60 * 60));
-         mpvPlayer.Position:= newPosition;
+                             FormatDateTime('hh:nnn:ss', mpvPlayer.GetMediaLenInS / (24 * 60 * 60));
+         mpvPlayer.SetMediaPosInS(Round(newPosition));
          if usingCustomTimer then elapsedBeforePause := newPosition;
        end;
       //frmBase.memLog.Append('trbProgress - ProgressChange - fired');
@@ -290,7 +318,7 @@ end;
 procedure TfrmPlayer.acAddExecute(Sender: TObject);
 begin
   // probably better to use format 'hh:mmm:ss' because of sorting chapters in book tens hours long
-  lbTimePoints.Items.Append(FormatDateTime('hh:nnn:ss', mpvPlayer.Position / (24 * 60 * 60)));
+  lbTimePoints.Items.Append(FormatDateTime('hh:nnn:ss', mpvPlayer.GetMediaPosInS / (24 * 60 * 60)));
 end;
 
 procedure TfrmPlayer.acClearListExecute(Sender: TObject);
@@ -343,7 +371,7 @@ begin
         lbTimePoints.ClearSelection;
         lbTimePoints.Sorted:= false;
         lbTimePoints.Items.Strings[pom] := FormatDateTime(
-                                                    'hh:nnn:ss', mpvPlayer.Position / (24 * 60 * 60));
+                                                    'hh:nnn:ss', mpvPlayer.GetMediaPosInS / (24 * 60 * 60));
         lbTimePoints.Sorted:=True;
         lbTimePoints.ItemIndex:= pom;
       end;
