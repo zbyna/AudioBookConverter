@@ -102,12 +102,6 @@ procedure TfrmPlayer.FormCreate(Sender: TObject);
 var
   FileVerInfo: TFileVersionInfo;
 begin
-  {$IFDEF Linux}
-  MPlayer.StartParam := '-vo x11 -zoom -fs';
-  {$else $IFDEF Windows}
-  mpvPlayer.StartParam := '-vo direct3d -nofontconfig';
-  {$ENDIF}
-  MPlayer.Volume:= 50;
   mpvPlayer.Volume:= 50;
   lbTimePoints.Sorted:= True;
   frmPlayer.Caption:=rsPlayerCaption;
@@ -248,9 +242,6 @@ begin
   if not mpvPlayer.Paused then                         // Utf8RPos('Pau',acPause.Caption) > 0
      begin
      if usingCustomTimer then etCustomTimer.Start;
-     mpvPlayer.SendMPlayerCommand('osd 3');
-     mpvPlayer.SendMPlayerCommand('osd_show_progression');
-     mpvPlayer.SendMPlayerCommand('speed_set 1.0');
      end;
   draggingPosition := False;
   //frmBase.memLog.Append('trbProgress - MouseUp - fired');
