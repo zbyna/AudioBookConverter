@@ -1,20 +1,19 @@
 object frmBase: TfrmBase
-  Left = 0
-  Height = 828
+  Left = 8
+  Height = 888
   Hint = 'Exit'
-  Top = 0
-  Width = 674
+  Top = 50
+  Width = 723
   ActiveControl = memLog
   Anchors = []
   Caption = 'Audio Book Converter'
-  ClientHeight = 828
-  ClientWidth = 674
-  Constraints.MinWidth = 674
+  ClientHeight = 888
+  ClientWidth = 723
+  Constraints.MinWidth = 723
   Font.Height = -11
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poDesktopCenter
-  LCLVersion = '2.3.0.0'
   Visible = True
   object GroupBox1: TGroupBox
     AnchorSideLeft.Control = Owner
@@ -22,18 +21,18 @@ object frmBase: TfrmBase
     AnchorSideRight.Side = asrBottom
     Left = 10
     Height = 224
-    Top = 12
-    Width = 654
+    Top = 21
+    Width = 703
     Anchors = [akLeft, akRight]
     BorderSpacing.Left = 10
     BorderSpacing.Right = 10
     Caption = 'Vstup: '
     ClientHeight = 204
-    ClientWidth = 650
+    ClientWidth = 699
     ParentFont = False
     TabOrder = 3
     object lblPocetSouboru: TLabel
-      Left = 6
+      Left = 18
       Height = 17
       Top = 182
       Width = 140
@@ -46,9 +45,9 @@ object frmBase: TfrmBase
       ParentFont = False
     end
     object radGrSegment: TRadioGroup
-      Left = 8
+      Left = 18
       Height = 59
-      Top = -7
+      Top = 0
       Width = 78
       Anchors = []
       AutoFill = True
@@ -72,11 +71,12 @@ object frmBase: TfrmBase
       TabOrder = 1
     end
     object leVelikostSegmentu: TLabeledEdit
-      Left = 122
+      AnchorSideRight.Side = asrBottom
+      Left = 153
       Height = 23
       Hint = 'HH:MM:SS'#13#10'MM'#13#10'HH:MM:SS,MM'
-      Top = 19
-      Width = 501
+      Top = 23
+      Width = 528
       HelpType = htKeyword
       Alignment = taCenter
       Anchors = []
@@ -96,7 +96,7 @@ object frmBase: TfrmBase
       OnEditingDone = leVelikostSegmentuEditingDone
     end
     object chcbPlaylist: TCheckBox
-      Left = 419
+      Left = 460
       Height = 19
       Top = 181
       Width = 102
@@ -110,7 +110,7 @@ object frmBase: TfrmBase
     object lblPocetSouboruCislo: TLabel
       AnchorSideLeft.Control = lblPocetSouboru
       AnchorSideLeft.Side = asrBottom
-      Left = 146
+      Left = 158
       Height = 20
       Top = 184
       Width = 6
@@ -121,7 +121,7 @@ object frmBase: TfrmBase
       ParentFont = False
     end
     object chcbWithoutSplit: TCheckBox
-      Left = 250
+      Left = 278
       Height = 19
       Top = 181
       Width = 87
@@ -132,10 +132,10 @@ object frmBase: TfrmBase
     end
     object stgVlastnosti: TStringGrid
       AnchorSideRight.Side = asrBottom
-      Left = -11
+      Left = 16
       Height = 108
-      Top = 55
-      Width = 629
+      Top = 62
+      Width = 665
       Anchors = []
       BorderSpacing.Left = 10
       BorderSpacing.Right = 10
@@ -166,9 +166,9 @@ object frmBase: TfrmBase
       OnCheckboxToggled = stgVlastnostiCheckboxToggled
     end
     object SpeedButton1: TSpeedButton
-      Left = 563
+      Left = 604
       Height = 32
-      Top = 169
+      Top = 172
       Width = 75
       Anchors = []
       Images = ImageList1
@@ -183,8 +183,8 @@ object frmBase: TfrmBase
     AnchorSideRight.Side = asrBottom
     Left = 10
     Height = 92
-    Top = 251
-    Width = 654
+    Top = 264
+    Width = 703
     Anchors = [akLeft, akRight]
     BorderSpacing.Left = 10
     BorderSpacing.Right = 10
@@ -195,9 +195,9 @@ object frmBase: TfrmBase
   end
   object btnVideo: TButton
     AnchorSideLeft.Control = GroupBox3
-    Left = 15
+    Left = 32
     Height = 56
-    Top = 270
+    Top = 283
     Width = 177
     Action = acVideoOriginal
     Anchors = []
@@ -209,9 +209,9 @@ object frmBase: TfrmBase
   end
   object btnAudioPuvodni: TButton
     AnchorSideLeft.Side = asrBottom
-    Left = 244
+    Left = 278
     Height = 56
-    Top = 270
+    Top = 283
     Width = 177
     Action = acAudioOriginal
     Anchors = []
@@ -224,9 +224,9 @@ object frmBase: TfrmBase
   object btnAudioMP3: TButton
     AnchorSideRight.Control = GroupBox3
     AnchorSideRight.Side = asrBottom
-    Left = 470
+    Left = 522
     Height = 56
-    Top = 270
+    Top = 283
     Width = 177
     Action = acAudioMp3
     Anchors = []
@@ -241,18 +241,18 @@ object frmBase: TfrmBase
     AnchorSideRight.Side = asrBottom
     Left = 10
     Height = 365
-    Top = 416
-    Width = 654
+    Top = 459
+    Width = 703
     Anchors = [akLeft, akRight]
     BorderSpacing.Left = 10
     BorderSpacing.Right = 10
     Caption = 'Log: '
     ClientHeight = 345
-    ClientWidth = 650
+    ClientWidth = 699
     ParentFont = False
     TabOrder = 6
     object btnSmazLog: TButton
-      Left = 5
+      Left = 18
       Height = 56
       Top = 280
       Width = 171
@@ -265,9 +265,9 @@ object frmBase: TfrmBase
     object btnExit: TButton
       AnchorSideRight.Control = GroupBox4
       AnchorSideRight.Side = asrBottom
-      Left = 457
+      Left = 504
       Height = 56
-      Top = 276
+      Top = 280
       Width = 177
       Action = acQuitApplication
       Anchors = []
@@ -280,10 +280,10 @@ object frmBase: TfrmBase
   end
   object memLog: TMemo
     AnchorSideRight.Side = asrBottom
-    Left = -3
+    Left = 32
     Height = 256
-    Top = 444
-    Width = 635
+    Top = 485
+    Width = 667
     Anchors = []
     BorderSpacing.Left = 10
     BorderSpacing.Right = 10
@@ -297,22 +297,22 @@ object frmBase: TfrmBase
     AnchorSideRight.Side = asrBottom
     Left = 10
     Height = 76
-    Top = 345
-    Width = 654
+    Top = 373
+    Width = 703
     Anchors = [akLeft, akRight]
     BorderSpacing.Left = 10
     BorderSpacing.Right = 10
     Caption = 'Progress: '
     ClientHeight = 56
-    ClientWidth = 650
+    ClientWidth = 699
     ParentFont = False
     TabOrder = 7
     object prbUkazatel: TProgressBar
       AnchorSideRight.Side = asrBottom
-      Left = -13
+      Left = 16
       Height = 45
-      Top = -2
-      Width = 633
+      Top = 0
+      Width = 665
       Anchors = []
       BorderSpacing.Left = 10
       BorderSpacing.Right = 10
@@ -324,8 +324,8 @@ object frmBase: TfrmBase
     AllocBy = 2
     Height = 64
     Width = 64
-    Left = 280
-    Top = 452
+    Left = 296
+    Top = 504
     Bitmap = {
       4C7A0200000040000000400000008D1B00000000000078DAED5D077454D5D64E
       00011590A680E8F3A108BF8A4F9026888825018C10F2E8D540020909252190D0
@@ -553,13 +553,13 @@ object frmBase: TfrmBase
   end
   object OpenDialog1: TOpenDialog
     Options = [ofAllowMultiSelect, ofEnableSizing, ofViewDetail]
-    Left = 432
-    Top = 506
+    Left = 424
+    Top = 560
   end
   object baseAkce: TActionList
     Images = frmMain.ilMain
     Left = 163
-    Top = 504
+    Top = 560
     object acVideoOriginal: TAction
       Caption = 'VIDEO původní'
       ImageIndex = 0
