@@ -1834,6 +1834,7 @@ object frmPlayer: TfrmPlayer
       C9A9F1F1F1995B7622121222F11FDAE3FF5B2C9252380000000049454E44AE42
       6082
     }
+    OnTimeChanged = MPVPlayerPlaying
   end
   object trbProgress: TTrackBar
     AnchorSideTop.Control = mpvPlayer

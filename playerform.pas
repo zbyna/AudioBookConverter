@@ -70,7 +70,7 @@ type
     procedure acUpdateExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lbTimePointsDblClick(Sender: TObject);
-    procedure MPlayerPlaying(ASender: TObject; APosition: single);
+    procedure MPVPlayerPlaying(ASender: TObject; APosition: Integer);
     procedure trbAudioChange(Sender: TObject);
     procedure trbProgressChange(Sender: TObject);
     procedure trbProgressMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
@@ -102,7 +102,7 @@ uses base;
 { TfrmPlayer }
 
 var
-    changingPosition :Boolean = false; // regurally position change during playing  see: TfrmPlayer.MplayerPlaying()
+    changingPosition :Boolean = false; // regurally position change during playing  see: TfrmPlayer.MPVPlayerPlaying()
 
 { TMVPVlayerHelper }
 
@@ -153,9 +153,11 @@ begin
      end;
 end;
 
-procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: Single);
+procedure TfrmPlayer.MPVPlayerPlaying(ASender: TObject; APosition: Integer);
 begin
+  APosition:=APosition div 1000; // position supplied by MPVPlayer is in ms
   if draggingPosition then exit;
+  //  frmBase.memLog.Append('Raw-Aposition: ' + INtToStr(APosition));
   if (mpvPlayer.GetMediaLenInS  > 0) and (APosition > 0) then
       begin
         changingPosition:= true;
