@@ -3414,11 +3414,4 @@ object frmPlayer: TfrmPlayer
       8EFF0364EB0C90
     }
   end
-  object etCustomTimer: TEpikTimer
-    StringPrecision = 6
-    TimebaseSource = SystemTimebase
-    CorrelationMode = OnTimebaseSelect
-    Left = 52
-    Top = 484
-  end
 end

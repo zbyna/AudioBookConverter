@@ -9,7 +9,6 @@ uses
   MPVPlayer, BGRAOpenGL, BGRABitmapTypes,localizedforms,DefaultTranslator, Buttons,LazUTF8
   ,AnchorDocking
   ,main
-  ,epiktimer
   ,FileInfo;
 
 type
@@ -44,7 +43,6 @@ type
     btnPlay: TSpeedButton;
     btnStop: TSpeedButton;
     btnUpdate: TSpeedButton;
-    etCustomTimer: TEpikTimer;
     ImageList1: TImageList;
     lblTime: TLabel;
     lbTimePoints: TListBox;
@@ -91,10 +89,7 @@ resourcestring
 
 var
   frmPlayer: TfrmPlayer;
-  usingCustomTimer : Boolean = false; // for use in bad encoded files without pts see: TfrmPlayer.MplayerPlaying()
-  elapsedBeforePause : Single = 0;  // time elapsed in customer timer before pause pressed
   draggingPosition:Boolean = False; // changing! position in player´s progressbar
-  playingChapterPosition : Boolean = False;
 
 implementation
 
@@ -143,7 +138,6 @@ begin
   finally
     FileVerInfo.Free;
   end;
-  etCustomTimer := TEpikTimer.Create(Application);
 end;
 
 procedure TfrmPlayer.lbTimePointsDblClick(Sender: TObject);
@@ -153,8 +147,6 @@ begin
   if lbTimePoints.ItemIndex <> -1 then
      begin
        pomDateTime:=StrToDateTime(lbTimePoints.Items.Strings[lbTimePoints.ItemIndex]);
-       playingChapterPosition:=True;
-       elapsedBeforePause:=pomDateTime * (24*60*60);
        if not mpvPlayer.isPlaying then mpvPlayer.Resume(True);
        // due to 'hh:nnn:ss' is TDateTime aka Double in hours needs to be converted to seconds :-)
        mpvPlayer.SetMediaPosInS(Round(pomDateTime * (24*60*60)));
@@ -164,48 +156,6 @@ end;
 procedure TfrmPlayer.MPlayerPlaying(ASender: TObject; APosition: Single);
 begin
   if draggingPosition then exit;
-   frmBase.memLog.Append('Raw-Aposition: ' + FloatToStr(APosition));
-  if (APosition < -1) or usingCustomTimer or playingChapterPosition then
-  begin
-  // this is a bad encoded file: (mostly badly embedded album art in m4b files)
-  // ffmpeg error:
-  //  No pts value from demuxer to use for frame! pts after filters MISSING.
-  //  Possibly bad interleaving detected.
-  //  Use -ni option if this causes playback issues and avoid or fix the program
-  //  that created the file.
-  // Partially working solution:
-  //  see: https://superuser.com/questions/710008/how-to-get-rid-of-ffmpeg-pts-has-no-value-error
-  // can be fixed by mpvPlayer.StartParam := '-novideo -nofontconfig';
-    if not usingCustomTimer then
-        begin
-          if playingChapterPosition then 
-            begin
-              playingChapterPosition:=False;  
-              frmBase.memLog.Append('Playing user chapter ... using custom Timer!');
-              // customTimer will be used even if there are pts in file because user does not have to click play
-              // and there is no way how to find presence of pts than playing file
-              // small issue (epikTimer has really small memory footprint)
-              // comparing full program funcionality for files without pts
-            end
-          else 
-            begin
-              lblTime.Caption := 'pts MISSING ...';
-              frmBase.memLog.Append('pts MISSING ... using custom Timer!');
-            end;
-          etCustomTimer.Clear;
-          etCustomTimer.Start;
-          usingCustomTimer := True;
-        end;
-    if playingChapterPosition then // playing another chapter without stopping player i.e. usingCustomTimer is True
-        begin
-          etCustomTimer.Clear;
-          etCustomTimer.Start;
-          playingChapterPosition:=False
-        end;
-  APosition := elapsedBeforePause + etCustomTimer.Elapsed;
-  // frmBase.memLog.Append('Aposition: ' + FloatToStr(APosition));
-  // frmBase.memLog.Append('elapsedBeforePause: ' + FloatToStr(elapsedBeforePause));
-  end;
   if (mpvPlayer.GetMediaLenInS  > 0) and (APosition > 0) then
       begin
         changingPosition:= true;
@@ -218,7 +168,6 @@ begin
                                                 else
       begin
       end;
-      //frmBase.memLog.Append(etCustomTimer.ElapsedDHMS);
       //frmBase.memLog.Append(Format('Poměr: %f',[APosition / mpvPlayer.Duration]));
       //frmBase.memLog.Append(Format('APosition: %f',[APosition]));
       //frmBase.memLog.Append(Format('Position: %f',[mpvPlayer.Position]));
@@ -241,7 +190,6 @@ begin
          lblTime.Caption :=  FormatDateTime('hh:nnn:ss', newPosition / (24 * 60 * 60)) + ' / ' +
                              FormatDateTime('hh:nnn:ss', mpvPlayer.GetMediaLenInS / (24 * 60 * 60));
          mpvPlayer.SetMediaPosInS(Round(newPosition));
-         if usingCustomTimer then elapsedBeforePause := newPosition;
        end;
       //frmBase.memLog.Append('trbProgress - ProgressChange - fired');
 
@@ -255,11 +203,6 @@ procedure TfrmPlayer.trbProgressMouseDown(Sender: TObject; Button: TMouseButton;
 begin
   if  not mpvPlayer.IsPaused then        //  Utf8RPos('Pau',acPause.Caption) > 0
      begin
-        if usingCustomTimer then
-          begin
-              etCustomTimer.Stop;
-              etCustomTimer.Clear; 
-          end;
       end;
 end;
           
@@ -269,7 +212,6 @@ procedure TfrmPlayer.trbProgressMouseUp(Sender: TObject; Button: TMouseButton; S
 begin
   if not mpvPlayer.IsPaused then                         // Utf8RPos('Pau',acPause.Caption) > 0
      begin
-     if usingCustomTimer then etCustomTimer.Start;
      end;
   draggingPosition := False;
   //frmBase.memLog.Append('trbProgress - MouseUp - fired');
@@ -299,19 +241,11 @@ begin
    begin
       //btnPause.Caption:= 'PAUSED';
       acPlay.Enabled:= not acPlay.Enabled;
-      if usingCustomTimer then
-        begin
-          elapsedBeforePause := elapsedBeforePause + etCustomTimer.Elapsed;
-          etCustomTimer.Stop;
-          etCustomTimer.Clear;
-        end;  
-      
    end
   else
    begin
       //btnPause.Caption:= 'Pause';
       acPlay.Enabled:= not acPlay.Enabled;
-      if usingCustomTimer then etCustomTimer.Start;
    end;
 end;
 
@@ -348,13 +282,6 @@ end;
 procedure TfrmPlayer.acStopExecute(Sender: TObject);
 begin
   if mpvPlayer.IsPaused then acPlay.Enabled:=True;
-  if usingCustomTimer then
-    begin
-      etCustomTimer.Stop;
-      etCustomTimer.Clear;
-      elapsedBeforePause := 0;
-      usingCustomTimer := false;
-    end;
   mpvPlayer.Stop;
   lblTime.Caption:= 'HH:MM:SS / HH:MM:SS';
   trbProgress.Position:= 0;
