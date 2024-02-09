@@ -1856,12 +1856,14 @@ object frmPlayer: TfrmPlayer
     TabOrder = 1
   end
   object lbTimePoints: TListBox
+    AnchorSideTop.Control = btnPlay
+    AnchorSideTop.Side = asrBottom
     Left = 9
-    Height = 280
-    Top = 446
+    Height = 357
+    Top = 452
     Width = 346
-    Anchors = []
-    BorderSpacing.Top = 5
+    Anchors = [akTop]
+    BorderSpacing.Top = 12
     BorderSpacing.Bottom = 5
     ItemHeight = 0
     MultiSelect = True
@@ -1889,12 +1891,14 @@ object frmPlayer: TfrmPlayer
     TabOrder = 3
   end
   object btnPlay: TSpeedButton
-    Left = 19
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 9
     Height = 36
-    Top = 409
+    Top = 404
     Width = 36
     Action = acPlay
-    Anchors = []
+    Anchors = [akTop]
     AutoSize = True
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
@@ -1905,12 +1909,14 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnStop: TSpeedButton
-    Left = 64
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 54
     Height = 36
-    Top = 409
+    Top = 404
     Width = 36
     Action = acStop
-    Anchors = []
+    Anchors = [akTop]
     AutoSize = True
     BorderSpacing.Top = 5
     Images = ImageList1
@@ -1920,12 +1926,14 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnPause: TSpeedButton
-    Left = 109
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 99
     Height = 36
-    Top = 409
+    Top = 404
     Width = 36
     Action = acPause
-    Anchors = []
+    Anchors = [akTop]
     AutoSize = True
     BorderSpacing.Top = 5
     Images = ImageList1
@@ -1935,15 +1943,17 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnAdd: TSpeedButton
-    Left = 153
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 143
     Height = 36
-    Top = 409
+    Top = 404
     Width = 36
     Action = acAdd
-    Anchors = []
+    Anchors = [akTop]
     AutoSize = True
     BorderSpacing.Left = 5
-    BorderSpacing.Top = 21
+    BorderSpacing.Top = 5
     Images = ImageList1
     ImageIndex = 3
     ImageWidth = 32
@@ -1951,14 +1961,16 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnUpdate: TSpeedButton
-    Left = 243
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 233
     Height = 36
-    Top = 409
+    Top = 404
     Width = 36
     Action = acUpdate
-    Anchors = []
+    Anchors = [akTop]
     AutoSize = True
-    BorderSpacing.Top = 21
+    BorderSpacing.Top = 5
     Images = ImageList1
     ImageIndex = 4
     ImageWidth = 32
@@ -1966,14 +1978,16 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnDelete: TSpeedButton
-    Left = 198
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 188
     Height = 36
-    Top = 409
+    Top = 404
     Width = 36
     Action = acDelete
-    Anchors = []
+    Anchors = [akTop]
     AutoSize = True
-    BorderSpacing.Top = 21
+    BorderSpacing.Top = 5
     Images = ImageList1
     ImageIndex = 5
     ImageWidth = 32
@@ -1981,15 +1995,17 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnClearList: TSpeedButton
-    Left = 288
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 278
     Height = 36
-    Top = 409
+    Top = 404
     Width = 36
     Action = acClearList
-    Anchors = []
+    Anchors = [akTop]
     AutoSize = True
     BorderSpacing.Left = 5
-    BorderSpacing.Top = 22
+    BorderSpacing.Top = 5
     BorderSpacing.Bottom = 5
     Images = ImageList1
     ImageIndex = 6
@@ -1998,28 +2014,32 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
   end
   object btnImportChapters: TSpeedButton
-    Left = 331
+    AnchorSideTop.Control = trbProgress
+    AnchorSideTop.Side = asrBottom
+    Left = 321
     Height = 36
-    Top = 409
+    Top = 404
     Width = 36
     Action = acImportChapters
-    Anchors = []
+    Anchors = [akTop]
     AutoSize = True
+    BorderSpacing.Top = 5
     Images = ImageList1
     ImageIndex = 7
     ImageWidth = 32
     ShowCaption = False
   end
   object lblTime: TLabel
+    AnchorSideLeft.Control = trbProgress
     AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = mpvPlayer
     AnchorSideTop.Side = asrBottom
-    Left = 283
+    Left = 278
     Height = 14
-    Top = 385
+    Top = 376
     Width = 102
-    Anchors = []
     AutoSize = False
-    BorderSpacing.Top = 4
+    BorderSpacing.Top = 5
     Caption = 'H:MM:SS / H:MM:SS'
     Color = clDefault
     ParentColor = False
