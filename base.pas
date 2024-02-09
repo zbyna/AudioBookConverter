@@ -519,6 +519,7 @@ var
 begin
   pomCaption := frmMain.Caption;
   // undock frmPlayer
+  frmPlayer.mpvPlayer.Close();
   frmPlayer.WindowState:=wsMinimized;
   Application.ProcessMessages;
   DockMaster.ManualFloat(frmPlayer) ;
@@ -531,6 +532,8 @@ begin
   DockMaster.ManualDock(DockMaster.GetAnchorSite(frmPlayer),
                         TCustomForm(frmMain), playerPosition, frmMain);
   frmMain.Caption:=pomCaption;
+  If stgVlastnosti.RowCount > 1 then
+     frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
 // testing AnchorDock inners :-)
   {
    for i:=0 to DockMaster.ControlCount-1 do
