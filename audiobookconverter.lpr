@@ -18,8 +18,11 @@ begin
   RequireDerivedFormResource:=True;
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmBase, frmBase);
+  frmMain.Hide;
   Application.CreateForm(TfrmPlayer, frmPlayer);
+  frmPlayer.Hide;
+  Application.CreateForm(TfrmBase, frmBase);
+  frmBase.Hide;
   Application.Run;
 end.  
  
