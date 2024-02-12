@@ -4,15 +4,15 @@ object frmMain: TfrmMain
   Top = 21
   Width = 1148
   Caption = 'frmMain'
-  DesignTimePPI = 103
   Menu = mmMain
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   object mmMain: TMainMenu
     Images = ilMain
     ImagesWidth = 16
-    Left = 203
-    Top = 12
+    Left = 189
+    Top = 11
     object mmActions: TMenuItem
       Caption = 'Akce'
       object mmActionsVideoOr: TMenuItem
@@ -70,8 +70,8 @@ object frmMain: TfrmMain
   object ilMain: TImageList
     Height = 64
     Width = 64
-    Left = 112
-    Top = 12
+    Left = 104
+    Top = 11
     Bitmap = {
       4C7A060000004000000040000000F78D00000000000078DAEC9D055855DBD6F7
       178D1818D8DD0136822D360276A262A02028B6D8DD85818DA208028AA0821DD8

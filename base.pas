@@ -312,7 +312,8 @@ begin
    // fill player form from 1st line of stgVlastnosti  - player caption
    frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
    // file to play
-   frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   // frmPlayer.mpvPlayer.FileName:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
    // user chapters if any
    frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
    // values will be time points
@@ -362,7 +363,8 @@ procedure TfrmBase.stgVlastnostiAfterSelection(Sender: TObject; aCol,
 begin
    // add selected rows file to play
    frmPlayer.Caption:= stgVlastnosti.Cells[0,stgVlastnosti.Row];
-   frmPlayer.MPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   //frmPlayer.mpvPlayer.Filename:= OpenDialog1.Files[stgVlastnosti.Row-1];
+   frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
    // add user chapters if any
    if filesChapters[stgVlastnosti.Row-1]['user'].Count > 0 then
       frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
@@ -517,6 +519,7 @@ var
 begin
   pomCaption := frmMain.Caption;
   // undock frmPlayer
+  frmPlayer.mpvPlayer.Close();
   frmPlayer.WindowState:=wsMinimized;
   Application.ProcessMessages;
   DockMaster.ManualFloat(frmPlayer) ;
@@ -529,6 +532,8 @@ begin
   DockMaster.ManualDock(DockMaster.GetAnchorSite(frmPlayer),
                         TCustomForm(frmMain), playerPosition, frmMain);
   frmMain.Caption:=pomCaption;
+  If stgVlastnosti.RowCount > 1 then
+     frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
 // testing AnchorDock inners :-)
   {
    for i:=0 to DockMaster.ControlCount-1 do
@@ -639,7 +644,7 @@ procedure TfrmBase.FormCreate(Sender: TObject);
 begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
-  //OpenDialog1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
+  // OpenDialog1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
   radGrSegment.Items[0] := rsVelikost;
   radGrSegment.Items[1] := rsZaTek;
   stgVlastnosti.Columns.Items[0].Title.Caption := rsJmNo ;
@@ -655,8 +660,8 @@ begin
   filesChapters := TFilesChapters.Create(True);
   segInfoBck := TSegmentInfoBackup.Create(Self);
   segInfoBck.BackupSegmentInfo();
-  DockMaster.MakeDockable(Self);
-  DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alBottom,nil);
+  //DockMaster.MakeDockable(Self);
+   //DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alBottom,nil);
   frmBase.Caption:= rsBaseCaption;
 end;
 
