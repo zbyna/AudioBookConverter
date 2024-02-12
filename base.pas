@@ -644,7 +644,7 @@ procedure TfrmBase.FormCreate(Sender: TObject);
 begin
   // fixed file name and its duration for debugging
   //prbUkazatel.Max:=3764;
-  //OpenDialog1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
+  // OpenDialog1.FileName:='i:\Jirka-video-audiobook čárka\Astrid_Lindgrenová_Děti_z_Bullerbynu.mp4';
   radGrSegment.Items[0] := rsVelikost;
   radGrSegment.Items[1] := rsZaTek;
   stgVlastnosti.Columns.Items[0].Title.Caption := rsJmNo ;
@@ -660,8 +660,8 @@ begin
   filesChapters := TFilesChapters.Create(True);
   segInfoBck := TSegmentInfoBackup.Create(Self);
   segInfoBck.BackupSegmentInfo();
-  DockMaster.MakeDockable(Self);
-  DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alBottom,nil);
+  //DockMaster.MakeDockable(Self);
+   //DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alBottom,nil);
   frmBase.Caption:= rsBaseCaption;
 end;
 

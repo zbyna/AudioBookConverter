@@ -128,8 +128,8 @@ begin
   mpvPlayer.SetAudioVolume(50);
   lbTimePoints.Sorted:= True;
   frmPlayer.Caption:=rsPlayerCaption;
-  DockMaster.MakeDockable(Self);
-  DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alRight,nil);
+  //DockMaster.MakeDockable(Self);
+  //DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alRight,nil);
   FileVerInfo:=TFileVersionInfo.Create(nil);
   try
     FileVerInfo.ReadFileInfo;
