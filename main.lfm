@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 452
   Height = 21
   Top = 21
-  Width = 1148
+  Width = 723
   Caption = 'frmMain'
   Menu = mmMain
   OnActivate = FormActivate

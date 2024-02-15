@@ -61,16 +61,12 @@ uses base, playerform;
 procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
    SaveLayout('layout.xml');
-  // to prevent annoying white flash before application quitting :-)
-  DockMaster.ManualFloat(frmBase);
-  DockMaster.ManualFloat(frmPlayer);
 end;
 
 procedure TfrmMain.FormActivate(Sender: TObject);
 begin
      if not layoutLoaded then
         begin
-
           DockMaster.MakeDockable(frmBase);
           DockMaster.MakeDockable(frmPlayer);
           LoadLayout('layout.xml');
