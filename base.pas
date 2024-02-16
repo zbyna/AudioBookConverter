@@ -111,6 +111,7 @@ type
     filesChapters : TFilesChapters;
     segInfoBck :TSegmentInfoBackup;
     procedure HowToSplit(i:integer);
+    procedure UseInternalChapterNames(fileName:String);
     procedure UpdateTranslation(ALang: String); override;
   end;
 
@@ -140,14 +141,15 @@ begin
           end;
 end;
 
-function pomSegmentList(pomFile:String):String;
+function pomsegmentlist(pomfile:string):string;
 begin
  // ' , -segment_list out.m3u8'
-  if  not frmBase.chcbPlaylist.Checked then
+  if  not(frmBase.chcbPlaylist.Checked) and not(frmBase.stgVlastnosti.Cells[3,frmBase.stgVlastnosti.Row] = '1') then
       Result := ''
   else
       Result:= ' , -segment_list ' + AnsiQuotedStr(ExtractFilePath(pomFile)+
                                                     ExtractFileNameOnly(pomFile) + '.m3u8','"');
+
 end;
 
 {$R *.lfm}
@@ -245,10 +247,12 @@ procedure TfrmBase.FillGridFromFiles;
 var
   jData:TJSONData;
   jObject:TJSONObject;
+  pomJData:TJSONData;
   i,j: Integer;
   progressMax:Integer;
   streamsInf : String;
   internalChapters: TStringList;
+  internalChapterNames: TStringList; // file names for splitting according to the internal chapters
   fileChaptersItem : TFileChaptersItem;
   userChapters :TStringList;
   chaptersCount : Word;
@@ -269,25 +273,32 @@ begin
       jObject:=TJSONObject(jData);
       userChapters := TStringList.Create(True);
       internalChapters := TStringList.Create(True);
+      internalChapterNames := TStringList.Create(True);
       chaptersCount := jObject.FindPath('chapters').Count;
       if  chaptersCount <> 0 then
       // file has internal chapters
       begin
+        internalChapterNames.Add(
+            Format('%.2d - %s',[0,jObject.FindPath('chapters[0].tags.title').AsString] ) );
         chaptersCount := jObject.FindPath('chapters').Count;
         // starting from 1 not 0 b/c starting time of 1st chapter is zero
         for j:=1 to chaptersCount-1 do
         begin
+          pomJData :=  jObject.FindPath('chapters').Items[j] ;
           internalChapters.Add(
-             FormatDateTime('hh:nnn:ss',
-                jObject.FindPath('chapters').Items[j].FindPathDef('start_time').AsFloat / (24 * 60 * 60)) )
+             FormatDateTime('hh:nnn:ss', pomJData.FindPathDef('start_time').AsFloat / (24 * 60 * 60)) );
+          internalChapterNames.Add( Format('%.2d - %s', [j,pomJData.FindPathDef('tags.title').AsString]) );
         end;
         internalChapters.Delimiter:= ',';
+        internalChapterNames.Delimiter:=',';
         //memLog.Append(internalChapters.DelimitedText);
+        // memLog.Append(internalChapterNames.DelimitedText);
         //leVelikostSegmentu.Caption:= internalChapters.DelimitedText;
       end;
       userChapters.Delimiter:= ',';
       fileChaptersItem := TFileChaptersItem.Create([doOwnsValues]);
       fileChaptersItem.add('internal',internalChapters);
+      fileChaptersItem.add('internalNames',internalChapterNames);
       fileChaptersItem.add('user',userChapters);
       filesChapters.Add(fileChaptersItem);
       //memLog.Append('User chapters count: '+IntToStr(userChapters.Count));
@@ -352,6 +363,42 @@ begin
       segInfoBck.RestoreBackup();
     end;
 end;
+
+procedure TfrmBase.UseInternalChapterNames(fileName: String);
+
+ var
+   partsFromM3U8: TStringList;
+   i:Byte;
+   oldName, newName, filePath, fileExt: String;
+ begin
+     memLog.Append('Parts renaming ... '); 
+       partsFromM3U8 := TStringList.Create();
+       filePath := ExtractFilePath(fileName);
+       // LoadFromFile() does not need AnsiQuatedStr()
+       partsFromM3U8.LoadFromFile(filePath + ExtractFileNameOnly(fileName) + '.m3u8');
+       for i := partsFromM3U8.Count - 1 downto 0 do
+         if partsFromM3U8[i].StartsWith('#') then
+           partsFromM3U8.delete(i)
+         else 
+           partsFromM3U8[i] := filePath + partsFromM3U8[i];
+      // memLog.Append('Je to ? :-) ...  '+partsFromM3U8.Text);
+      // propert Text includes all items separated by line ending
+       fileExt :=  ExtractFileExt(partsFromM3U8[0]);
+       for i:=0 to partsFromM3U8.count - 1 do
+         begin
+           oldName := partsFromM3U8[i];
+          //  memLog.Append(oldName);
+           newName := filePath + filesChapters.Items[stgVlastnosti.Row-1]['internalNames'][i] + fileExt;
+          //  memLog.Append(newName);
+           RenameFileUTF8(oldName,newName);
+           Application.ProcessMessages;
+         end;
+      FreeAndNil(partsFromM3U8);
+      // delete m3u8 playlist if not requested by user
+      if  not(frmBase.chcbPlaylist.Checked) then 
+          DeleteFileUTF8(filePath + ExtractFileNameOnly(fileName) + '.m3u8');
+      memLog.Append('Parts renaming done');
+ end;
 
 procedure TfrmBase.SpeedButton1Click(Sender: TObject);
 begin
@@ -455,6 +502,8 @@ begin
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                      '_%03d.aac','"'),prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
+           if (stgVlastnosti.Cells[3,stgVlastnosti.Row] = '1') then
+              UseInternalChapterNames(pomFile); // rename parts according to the internal chapters name
          end
       else
           begin
@@ -486,6 +535,8 @@ begin
                              AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                            '_%03d.mp3','"'),prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
+           if (stgVlastnosti.Cells[3,stgVlastnosti.Row] = '1') then
+              UseInternalChapterNames(pomFile); // rename parts according to the internal chapters name
          end
       else
           begin
