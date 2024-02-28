@@ -255,6 +255,7 @@ var
   internalChapterNames: TStringList; // file names for splitting according to the internal chapters
   fileChaptersItem : TFileChaptersItem;
   userChapters :TStringList;
+  userChapterNames : TStringList;
   chaptersCount : Word;
 begin
   progressMax:=0;
@@ -272,6 +273,7 @@ begin
       jData:=GetJSON(memLog.Text);  // !!! object created it needs to be freed in the end :-)
       jObject:=TJSONObject(jData);
       userChapters := TStringList.Create(True);
+      userChapterNames := TStringList.Create(True);
       internalChapters := TStringList.Create(True);
       internalChapterNames := TStringList.Create(True);
       chaptersCount := jObject.FindPath('chapters').Count;
@@ -297,6 +299,7 @@ begin
       fileChaptersItem.add('internal',internalChapters);
       fileChaptersItem.add('internalNames',internalChapterNames);
       fileChaptersItem.add('user',userChapters);
+      fileChaptersItem.add('userNames',userChapterNames);
       filesChapters.Add(fileChaptersItem);
       //memLog.Append('User chapters count: '+IntToStr(userChapters.Count));
       //memLog.Append('Internal chapters count: '+IntToStr(internalChapters.Count));
@@ -416,6 +419,8 @@ begin
         frmPlayer.stgTimePoints.RowCount:= filesChapters[stgVlastnosti.Row-1]['user'].count;
         frmPlayer.stgTimePoints.Cols[0].Clear;
         frmPlayer.stgTimePoints.Cols[0].AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+        frmPlayer.stgTimePoints.Cols[1].Clear;
+        frmPlayer.stgTimePoints.Cols[1].AddStrings(filesChapters[stgVlastnosti.Row-1]['userNames']);
       end;
    // enable btnImportChapters action if possible
    if filesChapters[stgVlastnosti.Row-1]['internal'].Count > 0 then
@@ -431,6 +436,8 @@ begin
   filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.stgTimePoints.Cols[0]);
   // clear user chapters in frmPlayer  String Grid edit: seems like does not clear Columns properly
   // and that is why frmPlayer.stgTimePoints.Cols[0].Clear is line 417 needed;
+  filesChapters[stgVlastnosti.Row-1]['userNames'].Clear;
+  filesChapters[stgVlastnosti.Row-1]['userNames'].AddStrings(frmPlayer.stgTimePoints.Cols[1]);
   frmPlayer.stgTimePoints.Clear;
 end;
 
