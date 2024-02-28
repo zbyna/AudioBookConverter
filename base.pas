@@ -278,11 +278,8 @@ begin
       if  chaptersCount <> 0 then
       // file has internal chapters
       begin
-        internalChapterNames.Add(
-            Format('%.2d - %s',[0,jObject.FindPath('chapters[0].tags.title').AsString] ) );
         chaptersCount := jObject.FindPath('chapters').Count;
-        // starting from 1 not 0 b/c starting time of 1st chapter is zero
-        for j:=1 to chaptersCount-1 do
+        for j:=0 to chaptersCount-1 do
         begin
           pomJData :=  jObject.FindPath('chapters').Items[j] ;
           internalChapters.Add(
@@ -326,7 +323,8 @@ begin
    // frmPlayer.mpvPlayer.FileName:= OpenDialog1.Files[stgVlastnosti.Row-1];
    frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
    // user chapters if any
-   frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+  //  frmPlayer.stgTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+   frmPlayer.stgTimePoints.Cols[0].AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
    // values will be time points
    radGrSegment.ItemIndex := 1;
    // enable btnImportChapters action if possible
@@ -342,7 +340,7 @@ begin
   if stgVlastnosti.Row-1 = i then
      begin
         filesChapters[stgVlastnosti.Row-1]['user'].clear;
-        filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
+        filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.stgTimePoints.Cols[0]);
         //memLog.Append(format('for row: %d added chapters user chapters from player',[i]));
      end;
   // file has user defined chapters - by movie player
@@ -414,7 +412,11 @@ begin
    frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
    // add user chapters if any
    if filesChapters[stgVlastnosti.Row-1]['user'].Count > 0 then
-      frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+      begin
+        frmPlayer.stgTimePoints.RowCount:= filesChapters[stgVlastnosti.Row-1]['user'].count;
+        frmPlayer.stgTimePoints.Cols[0].Clear;
+        frmPlayer.stgTimePoints.Cols[0].AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+      end;
    // enable btnImportChapters action if possible
    if filesChapters[stgVlastnosti.Row-1]['internal'].Count > 0 then
       frmPlayer.acImportChapters.Enabled:=True
@@ -426,9 +428,10 @@ procedure TfrmBase.stgVlastnostiBeforeSelection(Sender: TObject; aCol,
   aRow: Integer);
 begin
   filesChapters[stgVlastnosti.Row-1]['user'].Clear;
-  filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
-  // clear user chapters in frmPlayer listbox
-  frmPlayer.lbTimePoints.Clear;
+  filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.stgTimePoints.Cols[0]);
+  // clear user chapters in frmPlayer  String Grid edit: seems like does not clear Columns properly
+  // and that is why frmPlayer.stgTimePoints.Cols[0].Clear is line 417 needed;
+  frmPlayer.stgTimePoints.Clear;
 end;
 
 procedure TfrmBase.stgVlastnostiCheckboxToggled(Sender: TObject; aCol,

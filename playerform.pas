@@ -5,11 +5,9 @@ unit playerform;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, ComCtrls, StdCtrls, ActnList, Menus, RTTICtrls,
-  MPVPlayer, BGRAOpenGL, BGRABitmapTypes,localizedforms,DefaultTranslator, Buttons,LazUTF8
-  ,AnchorDocking
-  ,main
-  ,FileInfo;
+  Classes, SysUtils, Forms, Controls, ComCtrls, StdCtrls, ActnList, Menus,
+  RTTICtrls, MPVPlayer, BGRAOpenGL, BGRABitmapTypes, localizedforms,
+  DefaultTranslator, Buttons, Grids, LazUTF8, AnchorDocking, main, FileInfo;
 
 type
 
@@ -45,7 +43,6 @@ type
     btnUpdate: TSpeedButton;
     ImageList1: TImageList;
     lblTime: TLabel;
-    lbTimePoints: TListBox;
     poImportChapters: TMenuItem;
     poiPlay: TMenuItem;
     poiStop: TMenuItem;
@@ -58,6 +55,7 @@ type
     mpvPlayer: TMPVPlayer;
     pomAkce: TPopupMenu;
     btnImportChapters: TSpeedButton;
+    stgTimePoints: TStringGrid;
     trbAudio: TTITrackBar;
     trbProgress: TTrackBar;
     procedure acAddExecute(Sender: TObject);
@@ -69,7 +67,7 @@ type
     procedure acStopExecute(Sender: TObject);
     procedure acUpdateExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure lbTimePointsDblClick(Sender: TObject);
+    procedure stgTimePointsDblClick(Sender: TObject);
     procedure MPVPlayerPlaying(ASender: TObject; APosition: Integer);
     procedure trbAudioChange(Sender: TObject);
     procedure trbProgressChange(Sender: TObject);
@@ -126,7 +124,10 @@ var
   FileVerInfo: TFileVersionInfo;
 begin
   mpvPlayer.SetAudioVolume(50);
-  lbTimePoints.Sorted:= True;
+  // stgTimePoints.InsertRowWithValues(0,['00:00:00','default part name']);
+  // stgTimePoints.Sorted:= True; 
+  // sorted will have to be done directly after adding time point with SortColRow method:
+  // https://wiki.freepascal.org/Grids_Reference_Page#Sorting_Columns_or_Rows
   frmPlayer.Caption:=rsPlayerCaption;
   //DockMaster.MakeDockable(Self);
   //DockMaster.ManualDock(DockMaster.GetAnchorSite(self),TCustomForm(frmMain),alRight,nil);
@@ -140,13 +141,13 @@ begin
   end;
 end;
 
-procedure TfrmPlayer.lbTimePointsDblClick(Sender: TObject);
+procedure TfrmPlayer.stgTimePointsDblClick(Sender: TObject);
 var
     pomDateTime : TDateTime;
 begin
-  if lbTimePoints.ItemIndex <> -1 then
+  if stgTimePoints.Row <> -1 then
      begin
-       pomDateTime:=StrToDateTime(lbTimePoints.Items.Strings[lbTimePoints.ItemIndex]);
+       pomDateTime:=StrToDateTime(stgTimePoints.Cells[0,stgTimePoints.Row]);
        if not mpvPlayer.isPlaying then mpvPlayer.Resume(True);
        // due to 'hh:nnn:ss' is TDateTime aka Double in hours needs to be converted to seconds :-)
        mpvPlayer.SetMediaPosInS(Round(pomDateTime * (24*60*60)));
@@ -221,8 +222,8 @@ end;
 
 function TfrmPlayer.timePointsToString: String;
 begin
-  lbTimePoints.Items.Delimiter:=',';
-  Result:= lbTimePoints.Items.DelimitedText;
+  stgTimePoints.Cols[0].Delimiter:=',';
+  Result:= stgTimePoints.Cols[0].DelimitedText;
 end;
 
 procedure TfrmPlayer.UpdateTranslation(ALang: String);
@@ -254,31 +255,43 @@ end;
 procedure TfrmPlayer.acAddExecute(Sender: TObject);
 begin
   // probably better to use format 'hh:mmm:ss' because of sorting chapters in book tens hours long
-  lbTimePoints.Items.Append(FormatDateTime('hh:nnn:ss', mpvPlayer.GetMediaPosInS / (24 * 60 * 60)));
+  if stgTimePoints.RowCount = 0 then
+      stgTimePoints.InsertRowWithValues(0,['00:00:00','default part name']);
+  stgTimePoints.InsertRowWithValues(stgTimePoints.RowCount,
+                                     [FormatDateTime('hh:nnn:ss', mpvPlayer.GetMediaPosInS / (24 * 60 * 60)),
+                                     'default part file name']);
+ stgTimePoints.SortColRow(True,0);
 end;
 
 procedure TfrmPlayer.acClearListExecute(Sender: TObject);
 begin
-   lbTimePoints.Items.Clear;
+   stgTimePoints.Clear;
 end;
 
 procedure TfrmPlayer.acDeleteExecute(Sender: TObject);
 var
   i: Integer;
 begin
-  if lbTimePoints.ItemIndex <> -1 then
+  if stgTimePoints.Row <> -1 then
       begin
-        for i:= lbTimePoints.Count - 1 downto 0 do
-          if lbTimePoints.Selected[i] then
-            lbTimePoints.Items.Delete(lbTimePoints.ItemIndex);
-          lbTimePoints.ClearSelection;
+        for i:= stgTimePoints.cols[0].Count - 1 downto 0 do
+          if stgTimePoints.Row = i then
+             begin
+               stgTimePoints.DeleteRow(i);
+               break;
+             end;
+          stgTimePoints.ClearSelections;
       end;
 end;
 
 procedure TfrmPlayer.acImportChaptersExecute(Sender: TObject);
 begin
   if frmBase.filesChapters[frmBase.stgVlastnosti.Row-1]['internal'].Count > 0 then
-      lbTimePoints.Items.AddStrings(frmBase.filesChapters[frmBase.stgVlastnosti.Row-1]['internal']);
+    begin
+      stgTimePoints.RowCount:= frmBase.filesChapters[frmBase.stgVlastnosti.Row-1]['internal'].Count;
+      stgTimePoints.Cols[0].AddStrings(frmBase.filesChapters[frmBase.stgVlastnosti.Row-1]['internal'],True);
+      stgTimePoints.Cols[1].AddStrings(frmBase.filesChapters[frmBase.stgVlastnosti.Row-1]['internalNames'],True);
+    end;
 end;
 
 procedure TfrmPlayer.acStopExecute(Sender: TObject);
@@ -294,15 +307,15 @@ procedure TfrmPlayer.acUpdateExecute(Sender: TObject);
 var
    pom : Integer;
 begin
-  if (lbTimePoints.ItemIndex <> -1) and (lbTimePoints.Selected[lbTimePoints.ItemIndex])  then
+  if (stgTimePoints.Row <> -1) and (stgTimePoints.Cells[stgTimePoints.Col,stgTimePoints.Row] <> '' )  then
       begin
-        pom:= lbTimePoints.ItemIndex;
-        lbTimePoints.ClearSelection;
-        lbTimePoints.Sorted:= false;
-        lbTimePoints.Items.Strings[pom] := FormatDateTime(
+        pom:= stgTimePoints.Row;
+        stgTimePoints.ClearSelections;
+        // stgTimePoints.Sorted:= false;
+        stgTimePoints.Cols[0].Strings[pom] := FormatDateTime(
                                                     'hh:nnn:ss', mpvPlayer.GetMediaPosInS / (24 * 60 * 60));
-        lbTimePoints.Sorted:=True;
-        lbTimePoints.ItemIndex:= pom;
+        // stgTimePoints.Sorted:=True;
+        stgTimePoints.Row:= pom;
       end;
 end;
 

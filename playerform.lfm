@@ -1855,22 +1855,6 @@ object frmPlayer: TfrmPlayer
     ParentFont = False
     TabOrder = 1
   end
-  object lbTimePoints: TListBox
-    AnchorSideTop.Control = btnPlay
-    AnchorSideTop.Side = asrBottom
-    Left = 9
-    Height = 357
-    Top = 452
-    Width = 346
-    Anchors = [akTop]
-    BorderSpacing.Top = 12
-    BorderSpacing.Bottom = 5
-    ItemHeight = 0
-    MultiSelect = True
-    OnDblClick = lbTimePointsDblClick
-    ParentFont = False
-    TabOrder = 2
-  end
   object trbAudio: TTITrackBar
     AnchorSideLeft.Control = mpvPlayer
     AnchorSideLeft.Side = asrBottom
@@ -1888,7 +1872,7 @@ object frmPlayer: TfrmPlayer
     Reversed = True
     BorderSpacing.Top = 23
     BorderSpacing.Right = 5
-    TabOrder = 3
+    TabOrder = 2
   end
   object btnPlay: TSpeedButton
     AnchorSideTop.Control = trbProgress
@@ -2044,6 +2028,45 @@ object frmPlayer: TfrmPlayer
     Color = clDefault
     ParentColor = False
     ParentFont = False
+  end
+  object stgTimePoints: TStringGrid
+    AnchorSideTop.Control = btnPlay
+    AnchorSideTop.Side = asrBottom
+    Left = 8
+    Height = 357
+    Top = 452
+    Width = 346
+    Anchors = [akTop]
+    AutoFillColumns = True
+    BorderSpacing.Top = 12
+    BorderSpacing.Bottom = 5
+    Color = clDefault
+    ColCount = 2
+    ColRowDragIndicatorColor = clMoneyGreen
+    Columns = <    
+      item
+        MinSize = 100
+        MaxSize = 100
+        SizePriority = 0
+        Title.Caption = ''
+        Width = 100
+      end    
+      item
+        SizePriority = 0
+        Title.Caption = ''
+        Width = 242
+      end>
+    FixedCols = 0
+    FixedRows = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRowSelect, goSmoothScroll]
+    ParentFont = False
+    RowCount = 0
+    TabOrder = 3
+    OnDblClick = stgTimePointsDblClick
+    ColWidths = (
+      100
+      242
+    )
   end
   object aclAkce: TActionList
     Images = ImageList1
