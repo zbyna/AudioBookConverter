@@ -111,7 +111,7 @@ type
     filesChapters : TFilesChapters;
     segInfoBck :TSegmentInfoBackup;
     procedure HowToSplit(i:integer);
-    procedure UseInternalChapterNames(fileName:String);
+    procedure HowToName(fileName:String;actualFile:Integer);
     procedure UpdateTranslation(ALang: String); override;
   end;
 
@@ -341,12 +341,15 @@ procedure TfrmBase.HowToSplit(i: integer);
 var
     pomStringList : TStringList;
 begin
-  // when string grid position was not changed by user, user chapters dict needs update!
+  // when string grid position was not changed by user, user chapters dicts needs update!
   if stgVlastnosti.Row-1 = i then
      begin
         filesChapters[stgVlastnosti.Row-1]['user'].clear;
         filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.stgTimePoints.Cols[0]);
         //memLog.Append(format('for row: %d added chapters user chapters from player',[i]));
+        filesChapters[stgVlastnosti.Row-1]['userNames'].clear;
+        filesChapters[stgVlastnosti.Row-1]['userNames'].AddStrings(frmPlayer.stgTimePoints.Cols[1]);
+        //memLog.Append(format('for row: %d added user chapters names from player',[i]));
      end;
   // file has user defined chapters - by movie player
   if filesChapters.Items[i]['user'].Count > 0 then
@@ -371,39 +374,51 @@ begin
     end;
 end;
 
-procedure TfrmBase.UseInternalChapterNames(fileName: String);
+procedure TfrmBase.HowToName(fileName: String; actualFile:Integer);
 
  var
    partsFromM3U8: TStringList;
    i:Byte;
    oldName, newName, filePath, fileExt: String;
+   whichNames:String;
+   j: Integer;
  begin
+      // apply the same logic as in HowToSplit()
+      if filesChapters.Items[actualFile]['user'].Count > 0 then
+           whichNames := 'userNames'
+      else if (filesChapters.Items[actualFile]['internal'].count > 0) and (stgVlastnosti.Cells[3,actualFile+1] = '1')   then
+           whichNames := 'internalNames'
+      else
+          exit; // renamig is not needed
      memLog.Append('Parts renaming ... '); 
        partsFromM3U8 := TStringList.Create();
        filePath := ExtractFilePath(fileName);
        // LoadFromFile() does not need AnsiQuatedStr()
        partsFromM3U8.LoadFromFile(filePath + ExtractFileNameOnly(fileName) + '.m3u8');
-       for i := partsFromM3U8.Count - 1 downto 0 do
-         if partsFromM3U8[i].StartsWith('#') then
-           partsFromM3U8.delete(i)
-         else 
-           partsFromM3U8[i] := filePath + partsFromM3U8[i];
-      // memLog.Append('Je to ? :-) ...  '+partsFromM3U8.Text);
-      // propert Text includes all items separated by line ending
-       fileExt :=  ExtractFileExt(partsFromM3U8[0]);
+       j:=0; // index for file names in m3u8
        for i:=0 to partsFromM3U8.count - 1 do
-         begin
-           oldName := partsFromM3U8[i];
-          //  memLog.Append(oldName);
-           newName := filePath + filesChapters.Items[stgVlastnosti.Row-1]['internalNames'][i] + fileExt;
-          //  memLog.Append(newName);
-           RenameFileUTF8(oldName,newName);
-           Application.ProcessMessages;
-         end;
-      FreeAndNil(partsFromM3U8);
+         if partsFromM3U8[i].StartsWith('#') then
+            Continue
+         else
+            begin
+              oldName := filePath + partsFromM3U8[i];
+              fileExt :=  ExtractFileExt(partsFromM3U8[i]);
+                // memLog.Append(oldName);
+              newName := filePath + filesChapters.Items[actualFile][whichNames][j] + fileExt;
+                // memLog.Append(newName);
+              RenameFileUTF8(oldName,newName);
+              partsFromM3U8[i] := filesChapters.Items[actualFile][whichNames][j] + fileExt; 
+              j:= j + 1;
+              Application.ProcessMessages;
+            end;
+       memLog.Append('Je to ? :-) ...  '+partsFromM3U8.Text);
+      // propert Text includes all items separated by line ending
       // delete m3u8 playlist if not requested by user
       if  not(frmBase.chcbPlaylist.Checked) then 
-          DeleteFileUTF8(filePath + ExtractFileNameOnly(fileName) + '.m3u8');
+          DeleteFileUTF8(filePath + ExtractFileNameOnly(fileName) + '.m3u8')
+      else
+          partsFromM3U8.SaveToFile(filePath + ExtractFileNameOnly(fileName) + '.m3u8');
+      FreeAndNil(partsFromM3U8);
       memLog.Append('Parts renaming done');
  end;
 
@@ -518,8 +533,7 @@ begin
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                      '_%03d.aac','"'),prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
-           if (stgVlastnosti.Cells[3,stgVlastnosti.Row] = '1') then
-              UseInternalChapterNames(pomFile); // rename parts according to the internal chapters name
+           HowToName(pomFile,i); // rename parts according to the logic from HowToSplit()
          end
       else
           begin
@@ -551,8 +565,7 @@ begin
                              AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                            '_%03d.mp3','"'),prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
-           if (stgVlastnosti.Cells[3,stgVlastnosti.Row] = '1') then
-              UseInternalChapterNames(pomFile); // rename parts according to the internal chapters name
+           HowToName(pomFile,i); // rename parts according to the logic from HowToSplit()
          end
       else
           begin
