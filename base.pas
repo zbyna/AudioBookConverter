@@ -338,6 +338,8 @@ begin
 end;
 
 procedure TfrmBase.HowToSplit(i: integer);
+var
+    pomStringList : TStringList;
 begin
   // when string grid position was not changed by user, user chapters dict needs update!
   if stgVlastnosti.Row-1 = i then
@@ -349,8 +351,12 @@ begin
   // file has user defined chapters - by movie player
   if filesChapters.Items[i]['user'].Count > 0 then
      begin
-       leVelikostSegmentu.Caption:= filesChapters.Items[i]['user'].DelimitedText;
-       radGrSegment.ItemIndex := 1 ;
+        // remove time code 00:00:00 for the first part ! :-)
+        pomStringList := TStringList.Create();
+        filesChapters.Items[i]['user'].Slice(1,pomStringList);
+        leVelikostSegmentu.Caption:= pomStringList.DelimitedText;
+        radGrSegment.ItemIndex := 1 ;
+        FreeAndNil(pomStringList);
      end
   // file has internal chapters and  using them is checked in 4th grid column
   else if (filesChapters.Items[i]['internal'].count > 0) and (stgVlastnosti.Cells[3,i+1] = '1')   then
