@@ -2045,8 +2045,10 @@ object frmPlayer: TfrmPlayer
     ColRowDragIndicatorColor = clMoneyGreen
     Columns = <    
       item
+        ButtonStyle = cbsNone
         MinSize = 100
         MaxSize = 100
+        ReadOnly = True
         SizePriority = 0
         Title.Caption = ''
         Width = 100
@@ -2058,7 +2060,7 @@ object frmPlayer: TfrmPlayer
       end>
     FixedCols = 0
     FixedRows = 0
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRowSelect, goSmoothScroll]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing, goRowSelect, goSmoothScroll]
     ParentFont = False
     RowCount = 0
     TabOrder = 3
