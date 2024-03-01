@@ -365,8 +365,11 @@ begin
   // file has internal chapters and  using them is checked in 4th grid column
   else if (filesChapters.Items[i]['internal'].count > 0) and (stgVlastnosti.Cells[3,i+1] = '1')   then
      begin
-       leVelikostSegmentu.Caption:= filesChapters.Items[i]['internal'].DelimitedText;
+       pomStringList := TStringList.Create();
+       filesChapters.Items[i]['internal'].Slice(1,pomStringList);
+       leVelikostSegmentu.Caption:= pomStringList.DelimitedText;
        radGrSegment.ItemIndex := 1 ;
+       FreeAndNil(pomStringList);
      end
   else
   // use no chapter but split setting from leVelikostSegmentu and radGrSegment
