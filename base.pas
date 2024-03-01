@@ -141,10 +141,11 @@ begin
           end;
 end;
 
-function pomsegmentlist(pomfile:string):string;
+function pomsegmentlist(pomfile:string;i:integer):string;
 begin
  // ' , -segment_list out.m3u8'
-  if  not(frmBase.chcbPlaylist.Checked) and not(frmBase.stgVlastnosti.Cells[3,frmBase.stgVlastnosti.Row] = '1') then
+  if  not(frmBase.chcbPlaylist.Checked) and not(frmBase.stgVlastnosti.Cells[3,frmBase.stgVlastnosti.Row] = '1')
+      and not(frmBase.filesChapters.Items[i]['user'].Count > 0) then
       Result := ''
   else
       Result:= ' , -segment_list ' + AnsiQuotedStr(ExtractFilePath(pomFile)+
@@ -493,7 +494,7 @@ begin
         memLog.Append('velikost segmentu: ' + leVelikostSegmentu.toHHMMSS );
         runFFMPEG(ffmpeg,'-progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                          ' -c copy, -map 0, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
-                         pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
+                         pomSegmentList(pomFile,i) + ', -f segment, -reset_timestamps 1,'+
                          AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                        '_%03d.mp4','"'),prbUkazatel.Position);
       except
@@ -529,7 +530,7 @@ begin
             HowToSplit(i); // decide what to use for splitting
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                        ' -vn, -c copy, -map 0, ' + pomSegment +leVelikostSegmentu.toHHMMSS +
-                       pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
+                       pomSegmentList(pomFile,i) + ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                      '_%03d.aac','"'),prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
@@ -561,7 +562,7 @@ begin
             HowToSplit(i); // decide what to use for splitting
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                              ' -vn, -c mp3, -map a, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
-                             pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
+                             pomSegmentList(pomFile,i) + ', -f segment, -reset_timestamps 1,'+
                              AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                            '_%03d.mp3','"'),prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
