@@ -111,7 +111,7 @@ type
     filesChapters : TFilesChapters;
     segInfoBck :TSegmentInfoBackup;
     procedure HowToSplit(i:integer);
-    procedure UseInternalChapterNames(fileName:String);
+    procedure HowToName(fileName:String;actualFile:Integer);
     procedure UpdateTranslation(ALang: String); override;
   end;
 
@@ -141,10 +141,11 @@ begin
           end;
 end;
 
-function pomsegmentlist(pomfile:string):string;
+function pomsegmentlist(pomfile:string;i:integer):string;
 begin
  // ' , -segment_list out.m3u8'
-  if  not(frmBase.chcbPlaylist.Checked) and not(frmBase.stgVlastnosti.Cells[3,frmBase.stgVlastnosti.Row] = '1') then
+  if  not(frmBase.chcbPlaylist.Checked) and not(frmBase.stgVlastnosti.Cells[3,frmBase.stgVlastnosti.Row] = '1')
+      and not(frmBase.filesChapters.Items[i]['user'].Count > 0) then
       Result := ''
   else
       Result:= ' , -segment_list ' + AnsiQuotedStr(ExtractFilePath(pomFile)+
@@ -253,9 +254,12 @@ var
   streamsInf : String;
   internalChapters: TStringList;
   internalChapterNames: TStringList; // file names for splitting according to the internal chapters
+  codecInfo: TStringList;
   fileChaptersItem : TFileChaptersItem;
   userChapters :TStringList;
+  userChapterNames : TStringList;
   chaptersCount : Word;
+  codecName, codecType:String;
 begin
   progressMax:=0;
   stgVlastnosti.ClearRows; // clear all rows (fixed too)
@@ -272,17 +276,15 @@ begin
       jData:=GetJSON(memLog.Text);  // !!! object created it needs to be freed in the end :-)
       jObject:=TJSONObject(jData);
       userChapters := TStringList.Create(True);
+      userChapterNames := TStringList.Create(True);
       internalChapters := TStringList.Create(True);
       internalChapterNames := TStringList.Create(True);
       chaptersCount := jObject.FindPath('chapters').Count;
       if  chaptersCount <> 0 then
       // file has internal chapters
       begin
-        internalChapterNames.Add(
-            Format('%.2d - %s',[0,jObject.FindPath('chapters[0].tags.title').AsString] ) );
         chaptersCount := jObject.FindPath('chapters').Count;
-        // starting from 1 not 0 b/c starting time of 1st chapter is zero
-        for j:=1 to chaptersCount-1 do
+        for j:=0 to chaptersCount-1 do
         begin
           pomJData :=  jObject.FindPath('chapters').Items[j] ;
           internalChapters.Add(
@@ -295,28 +297,39 @@ begin
         // memLog.Append(internalChapterNames.DelimitedText);
         //leVelikostSegmentu.Caption:= internalChapters.DelimitedText;
       end;
+      streamsInf:= '';
+      for j:=0 to jObject.FindPath('streams').Count-1 do
+        begin
+          codecType := jObject.FindPath('streams').Items[j].FindPathDef('codec_type').AsString;
+          codecName := jObject.FindPath('streams').Items[j].FindPathDef('codec_name').AsString;
+          streamsInf:= streamsInf + codecType  + ':' +  codecName + ' ';
+        end;
+      progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
+      stgVlastnosti.InsertRowWithValues( i+1,
+                                 [ ExtractFileName(jObject.FindPath('format.filename').AsString),
+                                    streamsInf,IntToStr(chaptersCount),'false' ] );
+      jData.Free;                  // Object cleaned after 5 min debugging :-)
+      // audio codec extention needed for original audio extracting
+      codecInfo := TStringList.Create(True); 
+      codecInfo.NameValueSeparator := ':';
+      codecInfo.Delimiter := ' ';
+      codecInfo.StrictDelimiter := True;
+      codecInfo.DelimitedText := streamsInf;
+      // add dictionaries with TStringList items to fileChapters list
       userChapters.Delimiter:= ',';
       fileChaptersItem := TFileChaptersItem.Create([doOwnsValues]);
       fileChaptersItem.add('internal',internalChapters);
       fileChaptersItem.add('internalNames',internalChapterNames);
       fileChaptersItem.add('user',userChapters);
+      fileChaptersItem.add('userNames',userChapterNames);
+      fileChaptersItem.add('codecInfo',codecInfo);
       filesChapters.Add(fileChaptersItem);
       //memLog.Append('User chapters count: '+IntToStr(userChapters.Count));
       //memLog.Append('Internal chapters count: '+IntToStr(internalChapters.Count));
       //memLog.Append(IntToStr(filesChapters[i]['internal'].Count));
       //memlog.Append(intTostr(filesChapters.Items[i]['user'].Count)) ;
+      // memLog.Append('TADY TO JE ..... ' + codecInfo.Values['audio']);
       //internalChapters.Free; - TObjectDictionary manages memory of its items automatically
-      streamsInf:= '';
-      for j:=0 to jObject.FindPath('streams').Count-1 do
-      begin
-        streamsInf:= streamsInf + (jObject.FindPath('streams').Items[j].FindPathDef('codec_type').AsString +
-                     ':'+ jObject.FindPath('streams').Items[j].FindPathDef('codec_name').AsString + ' ');
-      end;
-      progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
-      stgVlastnosti.InsertRowWithValues( i+1,
-                                 [ ExtractFileName(jObject.FindPath('format.filename').AsString),
-                                   streamsInf,IntToStr(chaptersCount),'false' ] );
-      jData.Free;                  // Object cleaned after 5 min debugging :-)
     end;
    prbUkazatel.Max:=progressMax;
    stgVlastnosti.AutoSizeColumns();
@@ -326,7 +339,8 @@ begin
    // frmPlayer.mpvPlayer.FileName:= OpenDialog1.Files[stgVlastnosti.Row-1];
    frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
    // user chapters if any
-   frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+  //  frmPlayer.stgTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+   frmPlayer.stgTimePoints.Cols[0].AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
    // values will be time points
    radGrSegment.ItemIndex := 1;
    // enable btnImportChapters action if possible
@@ -337,25 +351,37 @@ begin
 end;
 
 procedure TfrmBase.HowToSplit(i: integer);
+var
+    pomStringList : TStringList;
 begin
-  // when string grid position was not changed by user, user chapters dict needs update!
+  // when string grid position was not changed by user, user chapters dicts needs update!
   if stgVlastnosti.Row-1 = i then
      begin
         filesChapters[stgVlastnosti.Row-1]['user'].clear;
-        filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
+        filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.stgTimePoints.Cols[0]);
         //memLog.Append(format('for row: %d added chapters user chapters from player',[i]));
+        filesChapters[stgVlastnosti.Row-1]['userNames'].clear;
+        filesChapters[stgVlastnosti.Row-1]['userNames'].AddStrings(frmPlayer.stgTimePoints.Cols[1]);
+        //memLog.Append(format('for row: %d added user chapters names from player',[i]));
      end;
   // file has user defined chapters - by movie player
   if filesChapters.Items[i]['user'].Count > 0 then
      begin
-       leVelikostSegmentu.Caption:= filesChapters.Items[i]['user'].DelimitedText;
-       radGrSegment.ItemIndex := 1 ;
+        // remove time code 00:00:00 for the first part ! :-)
+        pomStringList := TStringList.Create();
+        filesChapters.Items[i]['user'].Slice(1,pomStringList);
+        leVelikostSegmentu.Caption:= pomStringList.DelimitedText;
+        radGrSegment.ItemIndex := 1 ;
+        FreeAndNil(pomStringList);
      end
   // file has internal chapters and  using them is checked in 4th grid column
   else if (filesChapters.Items[i]['internal'].count > 0) and (stgVlastnosti.Cells[3,i+1] = '1')   then
      begin
-       leVelikostSegmentu.Caption:= filesChapters.Items[i]['internal'].DelimitedText;
+       pomStringList := TStringList.Create();
+       filesChapters.Items[i]['internal'].Slice(1,pomStringList);
+       leVelikostSegmentu.Caption:= pomStringList.DelimitedText;
        radGrSegment.ItemIndex := 1 ;
+       FreeAndNil(pomStringList);
      end
   else
   // use no chapter but split setting from leVelikostSegmentu and radGrSegment
@@ -364,39 +390,51 @@ begin
     end;
 end;
 
-procedure TfrmBase.UseInternalChapterNames(fileName: String);
+procedure TfrmBase.HowToName(fileName: String; actualFile:Integer);
 
  var
    partsFromM3U8: TStringList;
    i:Byte;
    oldName, newName, filePath, fileExt: String;
+   whichNames:String;
+   j: Integer;
  begin
+      // apply the same logic as in HowToSplit()
+      if filesChapters.Items[actualFile]['user'].Count > 0 then
+           whichNames := 'userNames'
+      else if (filesChapters.Items[actualFile]['internal'].count > 0) and (stgVlastnosti.Cells[3,actualFile+1] = '1')   then
+           whichNames := 'internalNames'
+      else
+          exit; // renamig is not needed
      memLog.Append('Parts renaming ... '); 
        partsFromM3U8 := TStringList.Create();
        filePath := ExtractFilePath(fileName);
        // LoadFromFile() does not need AnsiQuatedStr()
        partsFromM3U8.LoadFromFile(filePath + ExtractFileNameOnly(fileName) + '.m3u8');
-       for i := partsFromM3U8.Count - 1 downto 0 do
-         if partsFromM3U8[i].StartsWith('#') then
-           partsFromM3U8.delete(i)
-         else 
-           partsFromM3U8[i] := filePath + partsFromM3U8[i];
-      // memLog.Append('Je to ? :-) ...  '+partsFromM3U8.Text);
-      // propert Text includes all items separated by line ending
-       fileExt :=  ExtractFileExt(partsFromM3U8[0]);
+       j:=0; // index for file names in m3u8
        for i:=0 to partsFromM3U8.count - 1 do
-         begin
-           oldName := partsFromM3U8[i];
-          //  memLog.Append(oldName);
-           newName := filePath + filesChapters.Items[stgVlastnosti.Row-1]['internalNames'][i] + fileExt;
-          //  memLog.Append(newName);
-           RenameFileUTF8(oldName,newName);
-           Application.ProcessMessages;
-         end;
-      FreeAndNil(partsFromM3U8);
+         if partsFromM3U8[i].StartsWith('#') then
+            Continue
+         else
+            begin
+              oldName := filePath + partsFromM3U8[i];
+              fileExt :=  ExtractFileExt(partsFromM3U8[i]);
+                // memLog.Append(oldName);
+              newName := filePath + filesChapters.Items[actualFile][whichNames][j] + fileExt;
+                // memLog.Append(newName);
+              RenameFileUTF8(oldName,newName);
+              partsFromM3U8[i] := filesChapters.Items[actualFile][whichNames][j] + fileExt; 
+              j:= j + 1;
+              Application.ProcessMessages;
+            end;
+       memLog.Append('Je to ? :-) ...  '+partsFromM3U8.Text);
+      // propert Text includes all items separated by line ending
       // delete m3u8 playlist if not requested by user
       if  not(frmBase.chcbPlaylist.Checked) then 
-          DeleteFileUTF8(filePath + ExtractFileNameOnly(fileName) + '.m3u8');
+          DeleteFileUTF8(filePath + ExtractFileNameOnly(fileName) + '.m3u8')
+      else
+          partsFromM3U8.SaveToFile(filePath + ExtractFileNameOnly(fileName) + '.m3u8');
+      FreeAndNil(partsFromM3U8);
       memLog.Append('Parts renaming done');
  end;
 
@@ -414,7 +452,13 @@ begin
    frmPlayer.mpvPlayer.Play(OpenDialog1.Files[stgVlastnosti.Row-1]);
    // add user chapters if any
    if filesChapters[stgVlastnosti.Row-1]['user'].Count > 0 then
-      frmPlayer.lbTimePoints.Items.AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+      begin
+        frmPlayer.stgTimePoints.RowCount:= filesChapters[stgVlastnosti.Row-1]['user'].count;
+        frmPlayer.stgTimePoints.Cols[0].Clear;
+        frmPlayer.stgTimePoints.Cols[0].AddStrings(filesChapters[stgVlastnosti.Row-1]['user']);
+        frmPlayer.stgTimePoints.Cols[1].Clear;
+        frmPlayer.stgTimePoints.Cols[1].AddStrings(filesChapters[stgVlastnosti.Row-1]['userNames']);
+      end;
    // enable btnImportChapters action if possible
    if filesChapters[stgVlastnosti.Row-1]['internal'].Count > 0 then
       frmPlayer.acImportChapters.Enabled:=True
@@ -426,9 +470,12 @@ procedure TfrmBase.stgVlastnostiBeforeSelection(Sender: TObject; aCol,
   aRow: Integer);
 begin
   filesChapters[stgVlastnosti.Row-1]['user'].Clear;
-  filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.lbTimePoints.Items);
-  // clear user chapters in frmPlayer listbox
-  frmPlayer.lbTimePoints.Clear;
+  filesChapters[stgVlastnosti.Row-1]['user'].AddStrings(frmPlayer.stgTimePoints.Cols[0]);
+  // clear user chapters in frmPlayer  String Grid edit: seems like does not clear Columns properly
+  // and that is why frmPlayer.stgTimePoints.Cols[0].Clear is line 417 needed;
+  filesChapters[stgVlastnosti.Row-1]['userNames'].Clear;
+  filesChapters[stgVlastnosti.Row-1]['userNames'].AddStrings(frmPlayer.stgTimePoints.Cols[1]);
+  frmPlayer.stgTimePoints.Clear;
 end;
 
 procedure TfrmBase.stgVlastnostiCheckboxToggled(Sender: TObject; aCol,
@@ -462,7 +509,7 @@ begin
         memLog.Append('velikost segmentu: ' + leVelikostSegmentu.toHHMMSS );
         runFFMPEG(ffmpeg,'-progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                          ' -c copy, -map 0, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
-                         pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
+                         pomSegmentList(pomFile,i) + ', -f segment, -reset_timestamps 1,'+
                          AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                        '_%03d.mp4','"'),prbUkazatel.Position);
       except
@@ -498,19 +545,20 @@ begin
             HowToSplit(i); // decide what to use for splitting
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                        ' -vn, -c copy, -map 0, ' + pomSegment +leVelikostSegmentu.toHHMMSS +
-                       pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
+                       pomSegmentList(pomFile,i) + ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                     '_%03d.aac','"'),prbUkazatel.Position);
+                                     '_%03d.' + filesChapters[i]['codecInfo'].Values['audio'] ,'"')
+                       ,prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
-           if (stgVlastnosti.Cells[3,stgVlastnosti.Row] = '1') then
-              UseInternalChapterNames(pomFile); // rename parts according to the internal chapters name
+           HowToName(pomFile,i); // rename parts according to the logic from HowToSplit()
          end
       else
           begin
              runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                        ' -vn, -c copy, -map 0, '+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                     '.aac','"'),prbUkazatel.Position);
+                                     '.' + filesChapters[i]['codecInfo'].Values['audio'] ,'"')
+                       ,prbUkazatel.Position);
           end;
 
     end;
@@ -531,12 +579,11 @@ begin
             HowToSplit(i); // decide what to use for splitting
             runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                              ' -vn, -c mp3, -map a, ' + pomSegment + leVelikostSegmentu.toHHMMSS +
-                             pomSegmentList(pomFile) + ', -f segment, -reset_timestamps 1,'+
+                             pomSegmentList(pomFile,i) + ', -f segment, -reset_timestamps 1,'+
                              AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
                                            '_%03d.mp3','"'),prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
-           if (stgVlastnosti.Cells[3,stgVlastnosti.Row] = '1') then
-              UseInternalChapterNames(pomFile); // rename parts according to the internal chapters name
+           HowToName(pomFile,i); // rename parts according to the logic from HowToSplit()
          end
       else
           begin
