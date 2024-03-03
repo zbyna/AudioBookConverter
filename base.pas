@@ -254,10 +254,12 @@ var
   streamsInf : String;
   internalChapters: TStringList;
   internalChapterNames: TStringList; // file names for splitting according to the internal chapters
+  codecInfo: TStringList;
   fileChaptersItem : TFileChaptersItem;
   userChapters :TStringList;
   userChapterNames : TStringList;
   chaptersCount : Word;
+  codecName, codecType:String;
 begin
   progressMax:=0;
   stgVlastnosti.ClearRows; // clear all rows (fixed too)
@@ -295,29 +297,39 @@ begin
         // memLog.Append(internalChapterNames.DelimitedText);
         //leVelikostSegmentu.Caption:= internalChapters.DelimitedText;
       end;
+      streamsInf:= '';
+      for j:=0 to jObject.FindPath('streams').Count-1 do
+        begin
+          codecType := jObject.FindPath('streams').Items[j].FindPathDef('codec_type').AsString;
+          codecName := jObject.FindPath('streams').Items[j].FindPathDef('codec_name').AsString;
+          streamsInf:= streamsInf + codecType  + ':' +  codecName + ' ';
+        end;
+      progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
+      stgVlastnosti.InsertRowWithValues( i+1,
+                                 [ ExtractFileName(jObject.FindPath('format.filename').AsString),
+                                    streamsInf,IntToStr(chaptersCount),'false' ] );
+      jData.Free;                  // Object cleaned after 5 min debugging :-)
+      // audio codec extention needed for original audio extracting
+      codecInfo := TStringList.Create(True); 
+      codecInfo.NameValueSeparator := ':';
+      codecInfo.Delimiter := ' ';
+      codecInfo.StrictDelimiter := True;
+      codecInfo.DelimitedText := streamsInf;
+      // add dictionaries with TStringList items to fileChapters list
       userChapters.Delimiter:= ',';
       fileChaptersItem := TFileChaptersItem.Create([doOwnsValues]);
       fileChaptersItem.add('internal',internalChapters);
       fileChaptersItem.add('internalNames',internalChapterNames);
       fileChaptersItem.add('user',userChapters);
       fileChaptersItem.add('userNames',userChapterNames);
+      fileChaptersItem.add('codecInfo',codecInfo);
       filesChapters.Add(fileChaptersItem);
       //memLog.Append('User chapters count: '+IntToStr(userChapters.Count));
       //memLog.Append('Internal chapters count: '+IntToStr(internalChapters.Count));
       //memLog.Append(IntToStr(filesChapters[i]['internal'].Count));
       //memlog.Append(intTostr(filesChapters.Items[i]['user'].Count)) ;
+      // memLog.Append('TADY TO JE ..... ' + codecInfo.Values['audio']);
       //internalChapters.Free; - TObjectDictionary manages memory of its items automatically
-      streamsInf:= '';
-      for j:=0 to jObject.FindPath('streams').Count-1 do
-      begin
-        streamsInf:= streamsInf + (jObject.FindPath('streams').Items[j].FindPathDef('codec_type').AsString +
-                     ':'+ jObject.FindPath('streams').Items[j].FindPathDef('codec_name').AsString + ' ');
-      end;
-      progressMax:=progressMax+round(jObject.FindPath('format.duration').AsFloat);
-      stgVlastnosti.InsertRowWithValues( i+1,
-                                 [ ExtractFileName(jObject.FindPath('format.filename').AsString),
-                                   streamsInf,IntToStr(chaptersCount),'false' ] );
-      jData.Free;                  // Object cleaned after 5 min debugging :-)
     end;
    prbUkazatel.Max:=progressMax;
    stgVlastnosti.AutoSizeColumns();
@@ -535,7 +547,8 @@ begin
                        ' -vn, -c copy, -map 0, ' + pomSegment +leVelikostSegmentu.toHHMMSS +
                        pomSegmentList(pomFile,i) + ', -f segment, -reset_timestamps 1,'+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                     '_%03d.aac','"'),prbUkazatel.Position);
+                                     '_%03d.' + filesChapters[i]['codecInfo'].Values['audio'] ,'"')
+                       ,prbUkazatel.Position);
            segInfoBck.RestoreBackup(); // restore leVelikostSegmentu and radGrSegment backup
            HowToName(pomFile,i); // rename parts according to the logic from HowToSplit()
          end
@@ -544,7 +557,8 @@ begin
              runFFMPEG(ffmpeg,' -progress stats.txt, -i, '+AnsiQuotedStr(pomFile,'"')+
                        ' -vn, -c copy, -map 0, '+
                        AnsiQuotedStr(ExtractFilePath(pomFile)+ExtractFileNameOnly(pomFile)+
-                                     '.aac','"'),prbUkazatel.Position);
+                                     '.' + filesChapters[i]['codecInfo'].Values['audio'] ,'"')
+                       ,prbUkazatel.Position);
           end;
 
     end;
