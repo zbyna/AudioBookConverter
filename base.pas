@@ -64,6 +64,7 @@ type
     acClearLog: TAction;
     acQuitApplication: TAction;
     acFlipForms: TAction;
+    acOpenFiles: TAction;
     acVideoOriginal: TAction;
     baseAkce: TActionList;
     btnVideo: TButton;
@@ -77,7 +78,6 @@ type
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
-    ImageList1: TImageList;
     lblPocetSouboruCislo: TLabel;
     lblPocetSouboru: TLabel;
     leVelikostSegmentu: TLabeledEdit;
@@ -91,6 +91,7 @@ type
     procedure acAudioOriginalExecute(Sender: TObject);
     procedure acClearLogExecute(Sender: TObject);
     procedure acFlipFormsExecute(Sender: TObject);
+    procedure acOpenFilesExecute(Sender: TObject);
     procedure acQuitApplicationExecute(Sender: TObject);
     procedure acVideoOriginalExecute(Sender: TObject);
     procedure chcbWithoutSplitChange(Sender: TObject);
@@ -99,7 +100,6 @@ type
     procedure leVelikostSegmentuEditingDone(Sender: TObject);
     procedure runFFMPEG(exeFile,myParameters:String;progressBegin:Integer);
     procedure FillGridFromFiles;
-    procedure SpeedButton1Click(Sender: TObject);
     procedure stgVlastnostiAfterSelection(Sender: TObject; aCol, aRow: Integer);
     procedure stgVlastnostiBeforeSelection(Sender: TObject; aCol, aRow: Integer
       );
@@ -438,9 +438,9 @@ procedure TfrmBase.HowToName(fileName: String; actualFile:Integer);
       memLog.Append('Parts renaming done');
  end;
 
-procedure TfrmBase.SpeedButton1Click(Sender: TObject);
+procedure TfrmBase.acOpenFilesExecute(Sender: TObject);
 begin
-  if OpenDialog1.Execute then FillGridFromFiles;
+     if OpenDialog1.Execute then FillGridFromFiles;
 end;
 
 procedure TfrmBase.stgVlastnostiAfterSelection(Sender: TObject; aCol,

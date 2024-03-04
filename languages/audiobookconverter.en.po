@@ -229,3 +229,4 @@ msgstr "frmPlayer"
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
 msgstr "H:MM:SS / H:MM:SS"
+

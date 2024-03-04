@@ -206,7 +206,6 @@ msgid "Import kapitol"
 msgstr "Import kapitol"
 
 #: tfrmplayer.acpause.caption
-#| msgid "Pause"
 msgctxt "tfrmplayer.acpause.caption"
 msgid "Pauza"
 msgstr "Pauza"
@@ -230,3 +229,4 @@ msgstr "frmPlayer"
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
 msgstr "H:MM:SS / H:MM:SS"
+
