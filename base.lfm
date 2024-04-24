@@ -1,7 +1,7 @@
 object frmBase: TfrmBase
   Left = 8
   Height = 888
-  Hint = 'Exit'
+  Hint = '>'
   Top = 50
   Width = 723
   ActiveControl = memLog

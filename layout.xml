@@ -3,13 +3,13 @@
   <MainConfig>
     <Nodes ChildCount="1" PixelsPerInch="0">
       <Item1 Name="frmMain" Type="CustomSite" ChildCount="1">
-        <Bounds Top="49" Left="158" Width="1145" Height="916">
+        <Bounds Top="35" Left="247" Width="1135" Height="916">
           <WorkArea>
             <Rect Right="1920" Bottom="1040"/>
           </WorkArea>
         </Bounds>
         <Item1 Name="AnchorDockSite3" Type="Layout" ChildCount="3">
-          <Bounds Top="24" Width="1145" Height="892" SplitterPos="19"/>
+          <Bounds Top="24" Width="1135" Height="892" SplitterPos="19"/>
           <Anchors Align="Bottom"/>
           <Item1 Name="frmBase" Type="Control">
             <Bounds Width="736" Height="892"/>
@@ -19,7 +19,7 @@
             <Bounds Left="736" Width="4" Height="892"/>
           </Item2>
           <Item3 Name="frmPlayer" Type="Control">
-            <Bounds Left="740" Width="405" Height="892"/>
+            <Bounds Left="740" Width="395" Height="892"/>
             <Anchors Left="AnchorDockSplitter2"/>
           </Item3>
         </Item1>

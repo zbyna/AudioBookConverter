@@ -1,5 +1,5 @@
 {"version":1,"strings":[
-{"hash":315140,"name":"tfrmbase.hint","sourcebytes":[69,120,105,116],"value":"Exit"},
+{"hash":62,"name":"tfrmbase.hint","sourcebytes":[62],"value":">"},
 {"hash":169984146,"name":"tfrmbase.caption","sourcebytes":[65,117,100,105,111,32,66,111,111,107,32,67,111,110,118,101,114,116,101,114],"value":"Audio Book Converter"},
 {"hash":229360528,"name":"tfrmbase.groupbox1.caption","sourcebytes":[86,115,116,117,112,58,32],"value":"Vstup: "},
 {"hash":263271120,"name":"tfrmbase.lblpocetsouboru.caption","sourcebytes":[67,101,108,107,101,109,32,118,121,98,114,195,161,110,111,32,115,111,117,98,111,114,197,175,58,32],"value":"Celkem vybr\u00E1no soubor\u016F: "},

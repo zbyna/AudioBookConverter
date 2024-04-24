@@ -117,8 +117,9 @@ msgid "Log: "
 msgstr "Log: "
 
 #: tfrmbase.hint
-msgid "Exit"
-msgstr "Exit"
+msgctxt "tfrmbase.hint"
+msgid ">"
+msgstr ">"
 
 #: tfrmbase.lblpocetsouboru.caption
 msgid "Celkem vybráno souborů: "
@@ -205,6 +206,11 @@ msgstr "Smazat"
 msgid "Import kapitol"
 msgstr "Import kapitol"
 
+#: tfrmplayer.acloadgrid.caption
+msgctxt "tfrmplayer.acloadgrid.caption"
+msgid "Nahrát kapitoly"
+msgstr "Nahrát kapitoly"
+
 #: tfrmplayer.acpause.caption
 msgctxt "tfrmplayer.acpause.caption"
 msgid "Pauza"
@@ -214,6 +220,11 @@ msgstr "Pauza"
 msgid "Přehrát"
 msgstr "Přehrát"
 
+#: tfrmplayer.acsavegrid.caption
+msgctxt "tfrmplayer.acsavegrid.caption"
+msgid "Uložit kapitoly"
+msgstr "Uložit kapitoly"
+
 #: tfrmplayer.acstop.caption
 msgid "Stop"
 msgstr "Stop"
@@ -222,6 +233,16 @@ msgstr "Stop"
 msgid "Aktualizovat"
 msgstr "Aktualizovat"
 
+#: tfrmplayer.btnload.hint
+msgctxt "tfrmplayer.btnload.hint"
+msgid "Nahrát kapitoly"
+msgstr "Nahrát kapitoly"
+
+#: tfrmplayer.btnsave.hint
+msgctxt "tfrmplayer.btnsave.hint"
+msgid "Uložit kapitoly"
+msgstr "Uložit kapitoly"
+
 #: tfrmplayer.caption
 msgid "frmPlayer"
 msgstr "frmPlayer"
@@ -229,4 +250,3 @@ msgstr "frmPlayer"
 #: tfrmplayer.lbltime.caption
 msgid "H:MM:SS / H:MM:SS"
 msgstr "H:MM:SS / H:MM:SS"
-

@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, ComCtrls, StdCtrls, ActnList, Menus,
   RTTICtrls, MPVPlayer, BGRAOpenGL, BGRABitmapTypes, localizedforms,
-  DefaultTranslator, Buttons, Grids, LazUTF8, AnchorDocking, main, FileInfo;
+  DefaultTranslator, Buttons, Grids, Dialogs, LazUTF8, AnchorDocking, main,
+  FileInfo;
 
 type
 
@@ -32,6 +33,8 @@ type
     acAdd: TAction;
     acClearList: TAction;
     acImportChapters: TAction;
+    acLoadGrid: TAction;
+    acSaveGrid: TAction;
     acUpdate: TAction;
     acDelete: TAction;
     btnAdd: TSpeedButton;
@@ -43,6 +46,7 @@ type
     btnUpdate: TSpeedButton;
     ImageList1: TImageList;
     lblTime: TLabel;
+    odLoadGrid: TOpenDialog;
     poImportChapters: TMenuItem;
     poiPlay: TMenuItem;
     poiStop: TMenuItem;
@@ -55,6 +59,9 @@ type
     mpvPlayer: TMPVPlayer;
     pomAkce: TPopupMenu;
     btnImportChapters: TSpeedButton;
+    btnLoad: TSpeedButton;
+    btnSave: TSpeedButton;
+    sdSaveGrid: TSaveDialog;
     stgTimePoints: TStringGrid;
     trbAudio: TTITrackBar;
     trbProgress: TTrackBar;
@@ -62,8 +69,10 @@ type
     procedure acClearListExecute(Sender: TObject);
     procedure acDeleteExecute(Sender: TObject);
     procedure acImportChaptersExecute(Sender: TObject);
+    procedure acLoadGridExecute(Sender: TObject);
     procedure acPauseExecute(Sender: TObject);
     procedure acPlayExecute(Sender: TObject);
+    procedure acSaveGridExecute(Sender: TObject);
     procedure acStopExecute(Sender: TObject);
     procedure acUpdateExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -317,6 +326,17 @@ begin
         // stgTimePoints.Sorted:=True;
         stgTimePoints.Row:= pom;
       end;
+end;
+
+procedure TfrmPlayer.acLoadGridExecute(Sender: TObject);
+begin
+   if odLoadGrid.Execute then  stgTimePoints.LoadFromCSVFile(odLoadGrid.FileName,',',False,0,False);
+end;
+
+procedure TfrmPlayer.acSaveGridExecute(Sender: TObject);
+begin
+   sdSaveGrid.FileName:='';
+   if sdSaveGrid.Execute then  stgTimePoints.SaveToCSVFile(sdSaveGrid.FileName);
 end;
 
 end.
