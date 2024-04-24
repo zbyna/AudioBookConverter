@@ -166,7 +166,7 @@ msgid "Title"
 msgstr ""
 
 #: tfrmmain.caption
-msgid "frmMain"
+msgid "Audio book Converter"
 msgstr ""
 
 #: tfrmmain.mmactions.caption

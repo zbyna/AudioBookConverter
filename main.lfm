@@ -3,7 +3,7 @@ object frmMain: TfrmMain
   Height = 21
   Top = 21
   Width = 723
-  Caption = 'frmMain'
+  Caption = 'Audio book Converter'
   Menu = mmMain
   OnActivate = FormActivate
   OnClose = FormClose
