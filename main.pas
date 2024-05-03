@@ -145,7 +145,7 @@ begin
         [mbCancel],0);
     end;
   end;
-  frmMain.Caption:= 'Audio book Converter';
+  frmMain.Caption:= 'Audio book Converter 2.0';
 end;
 
 end.
